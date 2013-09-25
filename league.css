@@ -1,0 +1,305 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-image: url("images/background.jpg");
+}
+
+body, p, td, h1, h2, h3, input, textarea {
+	font-size: 11px;
+	font-family: verdana, sans-serif;
+}
+
+div#content {
+	margin-left: 200px;
+	padding: 10px;
+}
+
+div#navbar {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 200px;
+	background: url("/deco/dco_nav_blimp.gif") no-repeat;
+	padding: 60px 0 0 10px;
+}
+
+div#navbar img {
+	vertical-align: top;
+}
+
+div#navbar div {
+	margin-top: 5px;
+}
+
+div#navbar div.heading {
+	margin-top: 10px;
+}
+
+div#navbar div.languages {
+	margin-top: 10px;
+	text-align: center;
+}
+
+h1 {
+	margin: 0;
+}
+
+h2 {
+	margin: 10px 0 10px 0;
+	padding: 4px;
+	color: white;
+	background-color: navy;
+	background-image: url("images/bg_bar.gif");
+}
+
+h3, p, ul, ol, dl {
+	margin: 10px 10px 10px 5px;
+}
+
+h4 {
+	margin: 3px 5px 3px 0px;
+	padding: 2px 5Px;
+	font-size: 10px;
+	color: white;
+	background-color: #999999;
+	background-image: url("images/bg_grey.gif");
+}
+
+ul {
+	padding-left: 25px;
+	list-style-type: disc;
+}
+
+ol {
+	padding-left: 35px;
+}	
+
+dt {
+	margin: 10px 10px 0 0;
+	font-weight: bold;
+}
+
+dd {
+	margin: 0 10px 0 0;
+}
+
+ul.arrows {
+	list-style-image: url("images/dco_arrow.gif");
+}
+
+dl.arrows dt:before {
+	content: url("images/dco_arrow.gif") " ";
+}
+
+img {
+	border: 0;
+	vertical-align: middle;
+}
+
+p.center {
+	text-align: center;
+}
+
+
+/* League2 */
+div.filter
+{
+	border-style:none;
+	margin: 3px 5px 3px 0px;
+	padding: 2px 5Px;
+	font-size: 10px;
+}
+
+div.pages, div.filterstatus, div.messagebox
+{
+	border-style:solid;
+	border-color:grey;
+	border-width:1px;
+	margin: 3px 0px 3px 0px;
+	height:15px;
+	padding: 5px 5px;
+	background-color: #EEEEEE;
+	background-image:url("images/bg_gray.gif");
+	vertical-align:middle;
+	clear:left;
+}
+
+div.messagebox
+{
+	font-weight:bold;
+	border-color: Red;
+}
+
+table {
+	border-collapse:collapse;
+}
+
+
+body, p, td, h1, h2, h3, th {
+	font-size: 11px;
+	font-family: verdana, sans-serif;
+}
+
+
+th {
+	margin: 10px 0 10px 0;
+	padding: 4px;
+	color: white;
+	white-space:nowrap;
+}
+
+tr 
+{
+	border-style:solid;
+	border-width:1px;
+	border-color:Gray;
+	background-color:EEEEEE;
+}
+
+tr.th 
+{
+	background-color: navy;
+	background-image: url("images/bg_bar.gif");
+	text-align:left;
+	vertical-align:middle;
+	border-color:Black;
+}
+
+
+th a:link, th a:visited, th a:active, th a:hover { 
+	color: white;
+	text-decoration:none;
+} 
+
+
+td 
+{
+	padding: 2px;	
+	padding-right:8px;
+}
+
+
+table.navbar 
+{
+	border-style:none;
+	position:absolute;
+	z-index:2;
+	text-align:center;
+}
+table.navbar tr 
+{
+	border-style:none;
+	background-color:transparent;
+}
+table.navbar td
+{
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 2px;
+}
+
+div.navbarbg
+{
+	height:50px;
+	width:100%;
+	top:25px;
+	position:relative;
+	z-index:1;
+	background-image: url("images/bg_navbar.gif");
+}
+
+div.navbarbgright
+{
+	height:50px;
+	width:2px;
+	background-image: url("images/bg_navbar_right.gif");
+	float:right;
+}
+div.navbarbgleft
+{
+	height:50px;
+	width:2px;
+	background-image: url("images/bg_navbar_left.gif");
+	float:left;
+}
+
+div.navbar
+{
+	height:75px;
+}
+
+
+img.vrbar 
+{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+span.scorewon, span.scorewon a:link, span.scorewon a:visited, span.scorewon a:active, span.scorewon a:hover{ 
+	color:#003399;
+	font-weight:bold;
+} 
+
+span.scorelost, span.scorelost a:link, span.scorelost a:visited, span.scorelost a:active, span.scorelost a:hover{ 
+	color:Gray;
+	font-weight:bold;
+} 
+
+span.score
+{
+	font-weight:bold;
+}
+
+div.textleft
+{
+	margin-top:5px;
+	margin-right:20px;
+	line-height:150%;
+	display:inline;
+	float:left;
+}
+
+table.simple tr
+{
+	background-color:Transparent;
+	border-style:none;
+}
+
+
+form.search 
+{
+	display:inline;
+}
+
+input.search
+{
+	width:10em;
+	vertical-align:middle;
+}
+
+input.searchbutton
+{
+	vertical-align:middle;
+}
+
+span.revoked
+{
+	font-weight:bold;
+	color:red;
+}
+
+tr.revoked, div.revoked
+{
+	color:#888888;
+}
+tr.revoked a:visited, th a:active, th a:hover
+{
+	color:#888888;
+}
+tr.revoked span.scorewon a:visited, th a:active, th a:hover
+{
+	color: #4477DD;
+}
