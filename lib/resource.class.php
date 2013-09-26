@@ -47,6 +47,11 @@ class resource
 	function check(&$game_reference)
 	{
 		global $database;
+		global $debug_skip_resource_checksum;
+		if (isset($debug_skip_resource_checksum) && $debug_skip_resource_checksum == TRUE)
+		{
+			return TRUE;
+		}
 		foreach($game_reference->data['[Reference]'][0]['[Resource]'] AS $resouce_data)
 		{
 			$a = $database->get_array("SELECT hash FROM lg_resources

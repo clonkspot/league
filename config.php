@@ -20,6 +20,7 @@ $debug_sql_slow_log = TRUE;
 $debug_skip_backend_checksum = TRUE;
 $debug_skip_flood_protection = FALSE;
 $debug_skip_session_path = TRUE;
+$debug_skip_resource_checksum = TRUE;
 
 $cfg_official_server = array('1.2.3.4','1.2.3.4');
 $cfg_settle_on_official_server_only = false;
