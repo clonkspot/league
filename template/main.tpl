@@ -87,11 +87,6 @@
 </div>
 
 <div id='navbar'>
-{if $l->get_current_language_code() == 'de'} 
-    {include_php file='/usr/local/apache2/htdocs/navbar_de.html'}
-{else} 
-    {include_php file='/usr/local/apache2/htdocs/navbar_en.html'}
-{/if}
 <div class='languages'>
     [ <a href='/league2/index.php?lang=de'><img src='/deco/dco_de.gif' alt='Deutsch'></a>
     | <a href='/league2/index.php?lang=en'><img src='/deco/dco_en.gif' alt='English'></a> ]
