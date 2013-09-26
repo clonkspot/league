@@ -215,7 +215,7 @@ class league_backend
 		$response = & new game_reference();
 		global $language;
 		
-		if($game->update(&$game_reference))
+		if($game->update($game_reference))
 		{
 			//success:
 			$response->data['[Response]'][0]['Status'] = 'Success';
@@ -248,7 +248,7 @@ class league_backend
 		$response = & new game_reference();
 		global $language;
 		
-		if($game->end(&$game_reference))
+		if($game->end($game_reference))
 		{
 			//success:
 			$response->data['[Response]'][0]['Status'] = 'Success';
