@@ -145,6 +145,7 @@ $this->strings['inactivity_malus'] = "Punkteabzug wegen Inaktivität";
 $this->strings['in'] = "in";
 $this->strings['days'] = "Tagen";
 $this->strings['rename_limit'] = "Namens-Änderung maximal alle zwei Monate!";
+$this->strings['scenario_data'] = "Szenariendaten";
 
 //teams/clans:
 $this->strings['clan']='Team';

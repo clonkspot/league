@@ -949,7 +949,8 @@ class game
 						, s.string) AS string,
 		
 			sc.score, sc.rank, gp.status, gs.score AS game_score, gs.old_player_score, gs.bonus,
-			sc.user_id, sc.league_id
+			sc.user_id, sc.league_id,
+			sud.data AS scenario_user_data
 			FROM lg_game_leagues gl
 			JOIN lg_leagues AS l ON l.id = gl.league_id
 			
@@ -957,6 +958,8 @@ class game
 			LEFT JOIN lg_scores sc ON sc.league_id = l.id AND sc.user_id = gp.user_id
 			
 			LEFT JOIN lg_game_scores gs ON gs.league_id = l.id AND gs.game_id = gl.game_id AND gs.player_id = gp.player_id
+
+			LEFT JOIN lg_scenario_user_data sud ON sud.scenario_id = ".$this->data['scenario_id']." AND sud.user_id = gp.user_id
 			
 			LEFT JOIN lg_strings s ON s.id = l.name_sid AND s.language_id = '".$language->get_current_language_id()."'
 			WHERE gl.game_id = '".$this->data['id']."'
@@ -972,6 +975,7 @@ class game
 		$game_scores = array();
 		$game_bonus_scores = array();
 		$rank_symbols = array();
+		$scenario_user_data = array();
 		if(is_array($a))
 		{
 			foreach($a AS $l)
@@ -979,6 +983,7 @@ class game
 				$league_names[] = $l['string'];
 				$league_scores[] = $l['score'];
 				$league_ranks[] = $l['rank'];
+				$scenario_user_data[] = $l['scenario_user_data'];
 				if("lost"==$l['status'])
 					$player_status[] = "Lost";
 				else
@@ -1019,6 +1024,7 @@ class game
 		$response_array['GameScore'] = implode(',',$game_scores);
 		$response_array['GameBonus'] = implode(',',$game_bonus_scores);
 		$response_array['RankSymbol'] = implode(',',$rank_symbols);
+		$response_array['ProgressData'] = implode(',',$scenario_user_data);
 	}
 	
 	
@@ -1422,7 +1428,24 @@ class game
 								
 								$player->save_player_data(); //save data (no user-data changed)
 								$players[] = $player;	
-								
+
+								// per-player scenario data
+								if(isset($p['LeagueProgressData']))
+								{
+									require_once('lib/scenario_user_data.class.php');
+									$scenario_id = $this->data['scenario_id'];
+									$user_id = $player->player_data['user_id'];
+									// Only allow alphanumeric and spaces. The league could handle any string, but sending weird stuff back in the reference might confuse the engine
+									// (e.g., the data for multiple leagues is sent comma-separated)
+									$user_data = preg_replace ("/[^a-zA-Z0-9 ]/", "", $p['LeagueProgressData']);
+									// we don't want to save empty user data
+									if (!('' === $user_data))
+									{
+										$scen_user_data = new scenario_user_data();
+										$scen_user_data->set($scenario_id, $user_id, $user_data);
+										$scen_user_data->save();
+									}
+								}
 						//	}
 						}
 						

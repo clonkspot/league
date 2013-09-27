@@ -824,6 +824,10 @@ class user
 		$a = $this->add_rank_and_league_data($a);
 		$smarty->assign("scores", $a);
 		
+		// get per scenario data
+		$a = $database->get_array("SELECT scenario_id,data FROM lg_scenario_user_data WHERE user_id = ".$database->escape($id));
+		$smarty->assign("scenario_data", $a);
+		
 		// load player data
 		$player = new user();
 		$player->load_data($id);

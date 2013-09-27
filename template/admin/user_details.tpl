@@ -17,6 +17,13 @@
 <br>
 <b>{$l->s('date_created')}:</b> {$user.date_created|date_format:"%d.%m.%Y"}
 <br>
+<b>{$l->s('scenario_data')}:</b>
+<table class="simple" width="250">
+{foreach from=$scenario_data item=scen_data}
+	<tr><td><b><a href="?part=scenario&method=edit&scenario[id]={$scen_data.scenario_id}">{$scen_data.scenario_id}</a>:</b></td><td>{$scen_data.data|escape:"htmlall"}</td></tr>
+{/foreach}
+</table>
+<br>
 <br>
 <form method="post" action="?part=user">
     <input type="hidden" name="method" value="reset_password">

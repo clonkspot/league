@@ -1,3 +1,12 @@
+CREATE TABLE `lg_scenario_user_data` (
+  `scenario_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `data` varchar(2048) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`scenario_id`,`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
 ======================================================================================================
 24.02.09: resource filenames are unique (use insert_update in admin2.php to add and update a resource)
 ======================================================================================================
