@@ -229,6 +229,9 @@ class game
 				else
 				{
 					$this->error = 'error_league_scen_not_a_melee';
+					// Add reference to scenario list here anyway. Useful for admins to add scenarios to the settlement league.
+					// Unplayed scenarios will be purged regularly anyway.
+					$scenario->add_by_reference($game_reference, $product_id);
 				}
 			}
 			
