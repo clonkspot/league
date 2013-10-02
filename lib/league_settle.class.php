@@ -25,10 +25,11 @@ class league_settle extends league
 		
 		$players = $game->get_players();
 		//check if there was at least one winner (still alive)
+		// players with a performance score will count as winners
 		$at_least_one_winner = FALSE;
 		foreach($players AS $player)
 		{
-			if($player->is_winner())
+			if($this->is_player_winner($player))
 			{
 				$at_least_one_winner = TRUE;
 				break;
@@ -103,6 +104,12 @@ class league_settle extends league
 		$this->calculate_clan_ranks();
 
 		return TRUE;
+	}
+	
+	function is_player_winner(&$player) // overridden by custom league
+	{
+		// winner-check: In standard settlement leagues, this is the winner flag
+		return $player->is_winner();
 	}
 	
 	function get_time_bonus($rank, $settle_time_bonus_score)

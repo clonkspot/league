@@ -16,6 +16,11 @@ class league
 		return $this->error;
 	}
 	
+	function is_custom_scoring()
+	{
+		return ($this->data['custom_scoring'] == 'Y');
+	}
+	
 	function load_data($id)
 	{
 		global $database;

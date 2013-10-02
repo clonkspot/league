@@ -13,8 +13,14 @@ session_start();
 
 
 require_once('lib/log.class.php');
-$smarty->template_dir = $smarty->template_dir.'admin/';
+
+// Newer versions of smarty seem to turn the template dir into arrays internally
+if (is_array($smarty->template_dir))
+	$smarty->template_dir = $smarty->template_dir[0].'admin/';
+else
+	$smarty->template_dir = $smarty->template_dir.'admin/';
 $smarty->compile_dir = $smarty->compile_dir.'admin/';
+
 require_once('lib/language.class.php');
 require_once('lib/user.class.php');
 $language = new language();
@@ -91,6 +97,7 @@ if($user->is_logged_in() && $user->is_admin())
 			{
 				require_once('lib/league.class.php');
 				require_once('lib/league_settle.class.php');
+				require_once('lib/league_settle_custom.class.php');
 				switch(@$_POST['method']) {
 					case 'add2':
 					{
@@ -126,9 +133,18 @@ if($user->is_logged_in() && $user->is_admin())
 						$league->load_data($_POST['league']['id']);
 						if($league->data['type'] == 'settle')
 						{
-							$league_settle = new league_settle();
-							$league_settle->load_data($_POST['league']['id']);
-							$league_settle->recalculate_all_scores();
+							if($league->is_custom_scoring())
+							{
+								$league_settle = new league_settle_custom();
+								$league_settle->load_data($_POST['league']['id']);
+								$league_settle->recalculate_all_scores();
+							}
+							else
+							{
+								$league_settle = new league_settle();
+								$league_settle->load_data($_POST['league']['id']);
+								$league_settle->recalculate_all_scores();
+							}
 						}
 						break;
 					}					
@@ -364,6 +380,16 @@ if($user->is_logged_in() && $user->is_admin())
 						break;
 					}
 				}
+			}
+			case 'test':
+			{
+				require_once('lib/scenario_user_data.class.php');
+				$test = new scenario_user_data();
+				$test->load_data(13, 1);
+				$log = new log();
+				$log->add('scenario user data test: '.$test->get_data());
+				$test->set(13, 1, 'ANOTHER TEST!"; OR WHAT,,:---\'\'dsd');
+				$test->save();
 			}
 		}
 	}

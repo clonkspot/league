@@ -3,6 +3,7 @@
 include_once('league.class.php');
 include_once('league_melee.class.php');
 include_once('league_settle.class.php');
+include_once('league_settle_custom.class.php');
 
 include_once('scenario.class.php');
 include_once('log.class.php');
@@ -597,6 +598,8 @@ class game
 					$league->load_data($league_id);
 					if($league->data['type'] == 'melee')
 						$league = & new league_melee();
+					elseif ($league->is_custom_scoring()) // custom settle (adventure league)
+						$league = & new league_settle_custom();
 					else //settle
 						$league = & new league_settle();
 					$league->load_data($league_id);
@@ -1879,6 +1882,11 @@ class game
 				//recalculate all scores:
 				$league_settle = new league_settle();
 				$league_settle->load_data($league_id['league_id']);
+				if($league->is_custom_scoring())
+				{
+					$league_settle = new league_settle_custom();
+					$league_settle->load_data($league_id['league_id']);
+				}
 				$league_settle->recalculate_all_scores();
 				$league_settle->calculate_ranks();
 			}
@@ -1987,6 +1995,7 @@ class game
 						$reference->data['[Reference]'][0]['[PlayerInfos]'][0]['[Client]'][0]['[Player]'][$player_id-1]['Flags'] = "Joined|Won";
 					else
 						$reference->data['[Reference]'][0]['[PlayerInfos]'][0]['[Client]'][0]['[Player]'][$player_id-1]['Flags'] = "Joined|Removed";
+					$reference->data['[Reference]'][0]['[PlayerInfos]'][0]['[Client]'][0]['[Player]'][$player_id-1]['LeaguePerformance'] = $player['performance'];
 					
 						
 					$game_player = array();
@@ -1995,6 +2004,9 @@ class game
 					$game_player['status'] = 'joined';
 					$game_player['team_id'] = $team_id;
 					$game_player['player_id'] = $player_id;
+					$game_player['performance'] = $player['performance'];
+					
+					$log->add('game::add. player='.print_r($player,TRUE));
 					$database->insert('lg_game_players',$game_player);	
 						
 					$player_id++;

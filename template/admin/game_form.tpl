@@ -74,6 +74,7 @@
               {section name="clans" loop=5}
                    <td>
                       <input name="players[{$smarty.section.clans.index}][{$smarty.section.players.index}][id]" size="5" value=""></input>
+                      <input name="players[{$smarty.section.clans.index}][{$smarty.section.players.index}][performance]" size="5" value="0"></input>
                       {*<select name="players[{$smarty.section.clans.index}][{$smarty.section.players.index}][id]" size="1">
                            <option value="0">-</option>
                           {foreach from=$users item=player}
