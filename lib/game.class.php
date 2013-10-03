@@ -1443,7 +1443,7 @@ class game
 									$user_id = $player->player_data['user_id'];
 									// Only allow alphanumeric and spaces. The league could handle any string, but sending weird stuff back in the reference might confuse the engine
 									// (e.g., the data for multiple leagues is sent comma-separated)
-									$user_data = preg_replace ("/[^a-zA-Z0-9 ]/", "", $p['LeagueProgressData']);
+									$user_data = preg_replace ("/[^a-zA-Z0-9_ ]/", "", $p['LeagueProgressData']);
 									// we don't want to save empty user data
 									if (!('' === $user_data))
 									{
