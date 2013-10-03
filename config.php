@@ -1,9 +1,9 @@
 <?php
 
-$webroot = 'D:/www/league2/';
+$webroot = '/what/where/Sites/league2/';
 
-require_once('smarty/libs/SmartyBC.class.php');
-$smarty = new SmartyBC();
+require_once($webroot.'smarty/libs/Smarty.class.php');
+$smarty = new Smarty();
 
 $smarty->template_dir = $webroot.'template/';
 $smarty->compile_dir = $webroot.'template_c/';
@@ -12,13 +12,13 @@ $smarty->config_dir = $webroot.'configs/';
 
 unset($webroot);
 
-$database = & new database('127.0.0.1','league2','CC67eWMqKcsHJ8UG','league2');
+$database = & new database('127.0.0.1','league2','league2','league2');
 
-$debug = FALSE;
-$debug_xml_log = FALSE;
-$debug_sql_slow_log = FALSE;
+$debug = TRUE;
+$debug_xml_log = TRUE;
+$debug_sql_slow_log = TRUE;
 $debug_skip_backend_checksum = TRUE;
-$debug_skip_flood_protection = TRUE;
+$debug_skip_flood_protection = FALSE;
 $debug_skip_session_path = TRUE;
 $debug_skip_resource_checksum = TRUE;
 
