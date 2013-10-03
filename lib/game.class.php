@@ -1882,7 +1882,7 @@ class game
 				//recalculate all scores:
 				$league_settle = new league_settle();
 				$league_settle->load_data($league_id['league_id']);
-				if($league->is_custom_scoring())
+				if($league_settle->is_custom_scoring())
 				{
 					$league_settle = new league_settle_custom();
 					$league_settle->load_data($league_id['league_id']);
