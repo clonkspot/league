@@ -1,3 +1,11 @@
+-- Rev 1573 (Adventure league)
+
+CREATE TABLE `lg_scenario_user_data` (
+  `scenario_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `data` varchar(2048) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`scenario_id`,`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- Rev 1471 (Players can rename themselves)
 
