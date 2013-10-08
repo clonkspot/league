@@ -1,11 +1,14 @@
-This is the league server code for a Clonk league. It was initially written for the clonk.de titles and later adopted for OpenClonk.
+This is the league server code for a Clonk league. It was initially
+written for the clonk.de titles and later adopted for OpenClonk.
 
 Prequisites
 ===========
 To run the league, you need:
--A webserver that runs PHP. Don't know which version; but 5.5.3 seems to work
+-A webserver that runs PHP. Don't know which version; but 5.5.3 seems to
+ work
 -A MySQL database
-If you want to try it out locally: XAMPP worked fine for me out of the box on a Windows machine (http://www.apachefriends.org/en/xampp.html).
+ If you want to try it out locally: XAMPP worked fine for me out of the
+ box on a Windows machine (http://www.apachefriends.org/en/xampp.html).
 
 -The smarty template engine: http://www.smarty.net/. Tested under 3.1.14
 
@@ -15,28 +18,52 @@ Installation
 ============
 1. Extract the league code somewhere into your web root. 
 
-2. Create a database for the league (if possible). If you need, you can probably also use a shared database. All league tables are prefixed by "lg_".
+2. Create a database for the league (if possible). If you need, you can
+   probably also use a shared database. All league tables are prefixed
+   by "lg_".
 
 3. Enter values into config.php:
-3.1  $webroot should point to the folder where the league code (i.e., the config.php you are editing) is; including the trailing slash.
-3.2  Update the require_once('smarty/libs/SmartyBC.class.php'); statement to point to where you put the smarty library
-3.3  Insert database credentials into the "$database = & new database"-line
-3.4  Update the $debug-statements to your liking if you want to enable some SQL debugging information.
+3.1  $webroot should point to the folder where the league code (i.e.,
+     the config.php you are editing) is; including the trailing slash.
+3.2  Update the require_once('smarty/libs/SmartyBC.class.php');
+     statement to point to where you put the smarty library.
+3.3  Insert database credentials into the line that says
+     "$database = & new database[...]"
+3.4  Update the $debug-statements to your liking if you want to enable
+     some SQL debugging information.
 
-4. Set up the league schema. Just execute the file "table_structure.sql" on your league database (using phpmysqladmin via your web broweser or the direct mysql interface)
+4. Set up the league schema. Just execute the file "table_structure.sql"
+   on your league database (using phpmysqladmin via your web broweser or
+   the direct mysql interface).
 
-5. Create an admin user; e.g. using the following SQL statement (creates a user named "admin" with password "password"):
-INSERT INTO `lg_users` (`id`, `name`, `password`, `admin`, `operator`) VALUES (1, 'admin', MD5('password'), 1, '');
+5. Create an admin user; e.g. using the following SQL statement (creates
+   a user named "admin" with password "password"):
+INSERT INTO `lg_users` (`id`, `name`, `password`, `admin`, `operator`)
+VALUES (1, 'admin', MD5('password'), 1, '');
 
-6. Grant admin permissions to your newly created user using the following SQL statement:
-INSERT INTO `lg_admin_permissions` (`user_id`, `part`, `method`) VALUES (1, 'clan', ''), (1, 'cuid_ban', ''), (1, 'debug', ''), (1, 'game', ''), (1, 'league', ''), (1, 'log', ''), (1, 'resource', ''), (1, 'scenario', ''), (1, 'test', ''), (1, 'user', '');
+6. Grant admin permissions to your newly created user using the
+   following SQL statement:
+INSERT INTO `lg_admin_permissions` (`user_id`, `part`, `method`) VALUES
+(1, 'clan', ''), (1, 'cuid_ban', ''), (1, 'debug', ''), (1, 'game', ''),
+(1, 'league', ''), (1, 'log', ''), (1, 'resource', ''),
+(1, 'scenario', ''), (1, 'test', ''), (1, 'user', '');
 
-7. Register default languages (English, German) using the following SQL statement:
-INSERT INTO `lg_languages` (`id`, `code`, `name`, `flag`) VALUES (1, 'EN', 'English', 'images/icons/flag_en.gif'), (2, 'DE', 'Deutsch', 'images/icons/flag_de.gif');
+7. Register default languages (English, German) using the following SQL
+   statement:
+INSERT INTO `lg_languages` (`id`, `code`, `name`, `flag`) VALUES
+(1, 'EN', 'English', 'images/icons/flag_en.gif'),
+(2, 'DE', 'Deutsch', 'images/icons/flag_de.gif');
 
-8. Register a game engine (e.g.: OpenClonk) using the following SQL statement:
-INSERT INTO `lg_products` (`id`, `name`, `icon`, `version`, `product_string`, `motd_sid`) VALUES (1, 'OpenClonk', 'oc.png', '5.0.0', 'OC', 0);
+8. Register a game engine (e.g.: OpenClonk) using the following SQL
+   statement:
+INSERT INTO `lg_products`
+(`id`, `name`, `icon`, `version`, `product_string`, `motd_sid`)
+VALUES (1, 'OpenClonk', 'oc.png', '5.0.0', 'OC', 0);
 
-9. Make sure unnecessery files aren't left on the web root: table_structure.sql, table_structure_alter.sql, table_structure_updates.txt. Delete them if you're done installing/updating.
+9. Make sure unnecessery files aren't left on the web root:
+   table_structure.sql, table_structure_alter.sql,
+   table_structure_updates.txt. Delete them if you're done
+   installing/updating.
 
-10. Now you should be able to browse to your league, log in, press "Admin" and set up a league using the builtin admin interface.
+10. Now you should be able to browse to your league, log in, press
+    "Admin" and set up a league using the builtin admin interface.
