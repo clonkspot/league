@@ -233,6 +233,10 @@ $this->strings['filter_Clonk Extreme'] = "Clonk Extreme";
 $this->strings['filter_icon_Clonk Extreme_on'] = "cx_icon_32.png";
 $this->strings['filter_icon_Clonk Extreme_off'] = "cx_icon_32_off.png";
 
+$this->strings['filter_OpenClonk'] = "OpenClonk";
+$this->strings['filter_icon_OpenClonk_on'] = "oc_icon_32.png";
+$this->strings['filter_icon_OpenClonk_off'] = "oc_icon_32_off.png";
+
 $this->strings['filter_icon_all_on'] = "filter_all_on.png";
 $this->strings['filter_icon_all_off'] = "filter_all_off.png";
 
