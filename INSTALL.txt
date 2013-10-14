@@ -51,8 +51,8 @@ INSERT INTO `lg_admin_permissions` (`user_id`, `part`, `method`) VALUES
 7. Register default languages (English, German) using the following SQL
    statement:
 INSERT INTO `lg_languages` (`id`, `code`, `name`, `flag`) VALUES
-(1, 'EN', 'English', 'images/icons/flag_en.gif'),
-(2, 'DE', 'Deutsch', 'images/icons/flag_de.gif');
+(1, 'en', 'English', 'images/icons/flag_en.gif'),
+(2, 'de', 'Deutsch', 'images/icons/flag_de.gif');
 
 8. Register a game engine (e.g.: OpenClonk) using the following SQL
    statement:
