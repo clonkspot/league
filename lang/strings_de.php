@@ -255,33 +255,15 @@ $this->strings['error_user_cuid_already_exists'] = "Für diese CUID existiert ber
 $this->strings['error_invalid_user_name'] = "Ungültiger Benutzername";
 $this->strings['error_webcode_auth_failed'] = "Authentifizierung fehlgeschlagen";
 $this->strings['error_webcode_auth_na'] = "Authentifizierung derzeit nicht verfügbar";
-$this->strings['error_no_csid'] = "CSID fehlt, Verarbeitung nicht möglich";
-$this->strings['error_game_not_found'] = "Spiel nicht gefunden";
-$this->strings['error_game_already_ended'] = "Spiel ist schon beendet";
-$this->strings['error_auid_not_found'] = "Spieler wurde nicht authentifiziert";
-$this->strings['error_user_already_joined'] = "Spieler ist diesem Spiel bereits beigetreten";
-$this->strings['error_scenario_not_found'] = "Szenario nicht gefunden";
 $this->strings['error_no_winner'] = "Auswertung fehlgeschlagen. Es gab keine(n) Gewinner";
 $this->strings['error_no_looser'] = "Auswertung fehlgeschlagen. Es gab keine(n) Verlierer";
 $this->strings['error_wrong_league_type'] = "Unpassende Liga";
 $this->strings['error_password_repeat'] = "Falsche Passwort-Wiederholung";
-$this->strings['error_too_many_gamestarts'] = "Zu viele Versuche, ein Spiel zu starten";
 $this->strings['error_game_too_short'] = "Spieldauer zu kurz";
-$this->strings['error_wrong_checksum'] = "Falsche Prüfsumme";
-$this->strings['error_wrong_resource_checksum'] = "Falsche Ressourcen-Prüfsumme";
 $this->strings['error_user_banned'] = "Benutzer gebannt";
 $this->strings['error_max_user_count'] = "Maximale Anzahl an Spielern erreicht";
-$this->strings['error_invalid_product_id'] = "Ungültiges Produkt oder Version";
 $this->strings['error_no_frame_count'] = "Frameanzahl fehlt";
-$this->strings['error_wrong_host_ip'] = "Falsche/geänderte Host-IP";
 $this->strings['error_search_term_too_short'] = "Suchbegriff ist zu kurz und wird ignoriert!";
-
-$this->strings['error_league_scen_not_a_melee'] = "Szenario ist in dieser Version in keiner Liga eingetragen. Nur Melees können in der offenen Liga gespielt werden";
-$this->strings['error_league_scen_not_found'] = "Kein Liga-Szenario und keine offene Liga aktiv";
-$this->strings['error_league_scen_could_not_be_added'] = "Szenario konnte nicht zur Liga hinzugefügt werden";
-
-$this->strings['error_settle_no_official_server'] = "Siedlungs-Ligaspiele können nur auf einem offiziellen Server gespielt werden";
-$this->strings['error_settle_old_engine'] = "Siedlungs-Ligaspiele können nur mit der aktuellsten Spielversion gespielt werden";
 
 $this->strings['error_rename_same_name'] = "konnte nicht umbenannt werden. Nutzer mit diesem Namen existiert bereits";
 
@@ -292,9 +274,7 @@ $this->strings['error_clan_invalid_name'] = "Ungültiger Teamname";
 $this->strings['error_clan_already_exists'] = "Team mit diesem Namen oder Tag existiert bereits";
 
 $this->strings['error_game_no_settle'] = "Keine Siedlungsrunde";
-$this->strings['error_game_no_league'] = "Kein Ligaspiel";
-$this->strings['error_game_record_too_large'] = "Aufnahme zu groß";
-$this->strings['error_game_record_complete'] = "Aufnahme bereits komplett";
+
 
 $this->strings['error_abuse'] = "Diese Funktion ist aufgrund Missbrauch bis auf weiteres deaktiviert.";
 ?>
