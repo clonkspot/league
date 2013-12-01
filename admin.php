@@ -20,7 +20,6 @@ if (is_array($smarty->template_dir))
 else
 	$smarty->template_dir = $smarty->template_dir.'admin/';
 $smarty->compile_dir = $smarty->compile_dir.'admin/';
-
 require_once('lib/language.class.php');
 require_once('lib/user.class.php');
 $language = new language();
@@ -147,7 +146,22 @@ if($user->is_logged_in() && $user->is_admin())
 							}
 						}
 						break;
-					}					
+					}
+					case 'restore_all_player_scores':
+					{
+						$league = new league();
+						$league->load_data($_POST['league']['id']);
+						if($league->data['type'] == 'settle')
+						{
+							if($league->is_custom_scoring())
+							{
+								$league_settle = new league_settle_custom();
+								$league_settle->load_data($_POST['league']['id']);
+								$league_settle->restore_all_player_scores();
+							}
+						}
+						break;
+					}
 				}
 				switch(@$_REQUEST['method']) {
 					case 'list':
@@ -380,16 +394,6 @@ if($user->is_logged_in() && $user->is_admin())
 						break;
 					}
 				}
-			}
-			case 'test':
-			{
-				require_once('lib/scenario_user_data.class.php');
-				$test = new scenario_user_data();
-				$test->load_data(13, 1);
-				$log = new log();
-				$log->add('scenario user data test: '.$test->get_data());
-				$test->set(13, 1, 'ANOTHER TEST!"; OR WHAT,,:---\'\'dsd');
-				$test->save();
 			}
 		}
 	}

@@ -85,7 +85,7 @@
                   <td>
                     {foreach from=$player.scores item=score name="score"}
                         <a href="?part=league&method=ranking&league[id]={$score.league_id}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
-                        <span class="{if $team.team_status == 'won' && $game.status=='ended'}scorewon{elseif $team.team_status == 'lost' && $game.status=='ended'}scorelost{else}score{/if}">{if $score.score > 0}+{/if}{$score.score}{if $game.type=='settle' && $score.score} ({$l->s('rank')} {$score.settle_rank}){/if}</span>
+                        <span class="{if $team.team_status == 'won' && $game.status=='ended'}scorewon{elseif $team.team_status == 'lost' && $game.status=='ended'}scorelost{else}score{/if}">{if $score.score > 0}+{/if}{$score.score}{if $game.type=='settle' && $score.score && $score.settle_rank} ({$l->s('rank')} {$score.settle_rank}){/if}</span>
                         {if !$smarty.foreach.score.last && $smarty.foreach.score.total>1} | {/if}
                     {/foreach}
                   </td>

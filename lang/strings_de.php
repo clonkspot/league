@@ -103,6 +103,7 @@ $this->strings['trend_up'] = "Trend aufwärts";
 $this->strings['trend_down'] = "Trend abwärts";
 $this->strings['calculate_ranks'] = "Ränge neu berechnen";
 $this->strings['calculate_scores'] = "Punkte neu berechnen";
+$this->strings['restore_all_player_scores'] = "Spielerpunkte wiederherstellen";
 $this->strings['league_playing_time'] = "Gesamtspielzeit";
 $this->strings['custom_scoring'] = "Wertung durch Szenario";
 $this->strings['bonus'] = "Bonus";

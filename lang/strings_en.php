@@ -100,6 +100,7 @@ $this->strings['trend_up'] = "Trend Up";
 $this->strings['trend_down'] = "Trend Down";
 $this->strings['calculate_ranks'] = "Recalculate Ranks";
 $this->strings['calculate_scores'] = "Recalculate Scores";
+$this->strings['restore_all_player_scores'] = "Restore all player scores";
 $this->strings['league_playing_time'] = "Total Playing Time";
 $this->strings['custom_scoring'] = "Scoring by scenario";
 $this->strings['bonus'] = "Bonus";

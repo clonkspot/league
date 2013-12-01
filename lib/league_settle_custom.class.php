@@ -69,22 +69,25 @@ class league_settle_custom extends league_settle
 		// Clear previous ranks of this scenario
 		$database->query("UPDATE lg_game_scores AS gs
 			JOIN lg_games as g ON gs.game_id = g.id
-			SET gs.settle_rank = 0
+			SET gs.settle_rank = 0, g.no_settle_rank = 1, g.settle_rank = 0, g.settle_score = NULL
 			WHERE gs.league_id = '".$this->data['id']."'
 				AND g.scenario_id = '".$scenario_id."'");
 		// Get all last games of players in this league (could also do MAX(gs.score) to get the game with the highest score here)
 		// Note that MAX(gs.game_id) is the last game started, but might not be the last game ended if people play multiple games simultaneously. Well, whatever...
-		$all_score_data = $database->get_array("SELECT gs.player_id, gs.score, MAX(gs.game_id)
-				FROM lg_game_scores AS gs
-				LEFT JOIN lg_games AS g ON g.id = gs.game_id
+		$all_score_data = $database->get_array("
+			SELECT gs.player_id, gs.score, gs.game_id FROM
+				(SELECT gs.player_id, gs.score, gs.game_id
+					FROM lg_game_scores AS gs
+					LEFT JOIN lg_games AS g ON g.id = gs.game_id
+					WHERE g.scenario_id = '".$scenario_id."'
+					AND g.status='ended' AND g.is_revoked=0
+					ORDER BY gs.game_id DESC) AS gs
 				LEFT JOIN lg_game_players AS gp ON gp.game_id = gs.game_id AND gs.player_id = gp.player_id
 				LEFT JOIN lg_game_leagues AS gl ON gl.game_id = gs.game_id AND gl.league_id = '".$this->data['id']."'
-				WHERE g.scenario_id = '".$scenario_id."'
-				AND g.status='ended' AND g.is_revoked=0
 				GROUP BY gp.user_id
 				ORDER BY gs.score DESC");
-		//$log = new log();
-		//$log->add("all_score_data=".print_r($all_score_data,TRUE));
+		$log = new log();
+		$log->add("all_score_data=".print_r($all_score_data,TRUE));
 		// Now assign ranks
 		// If multiple users have the same score, they will get the same rank for this scenario
 		$rank = 1; $n_same_rank = 0;
@@ -106,7 +109,7 @@ class league_settle_custom extends league_settle
 			$database->query("UPDATE lg_game_scores AS gs
 				SET gs.settle_rank = '".$rank."'
 				WHERE gs.league_id = '".$this->data['id']."'
-				AND gs.game_id = '".$score_data['MAX(gs.game_id)']."'
+				AND gs.game_id = '".$score_data['game_id']."'
 				AND gs.player_id = '".$database->escape($score_data['player_id'])."'");
 		}
 		return TRUE;
@@ -135,7 +138,7 @@ class league_settle_custom extends league_settle
 	{
 		global $database;
 		$log = new log();
-		$log->add('recalc all scores in league '.$this->data['id']);
+		$log->add('custom settle league: recalc all scores in league '.$this->data['id']);
 		// iterate over all scenarios in the league and recalculate their ranks
 		$all_scenarios = $database->get_array("SELECT DISTINCT scenario_id FROM lg_league_scenarios WHERE league_id = '".$this->data['id']."'");
 		foreach ($all_scenarios as $scenario) $this->recalculate_scenario_ranks($scenario['scenario_id']);
@@ -147,6 +150,42 @@ class league_settle_custom extends league_settle
 				WHERE gs.settle_rank != 0
 					AND gs.league_id = '".$this->data['id']."'");
 		foreach ($all_users as $user) $this->recalculate_user_score($user['user_id']);
+		return TRUE;
+	}
+	
+	// restore scores from performances
+	function restore_all_player_scores()
+	{
+		// Go over all games ever played in this league and fix them
+		// This might be a bit slow :o
+		$log = new log();
+		$log->add('custom settle league: restore evaluation data in league '.$this->data['id'].'.');
+		// First clear any settle_rank / settle_score / no_settle_rank in lg_games, since they're not used in this league type
+		global $database;
+		$database->query("UPDATE lg_games AS g 
+			JOIN lg_game_leagues AS gl ON gl.game_id = g.id
+			SET g.no_settle_rank = 1, g.settle_rank = 0, g.settle_score = 0
+			WHERE gl.league_id = '".$this->data['id']."'");
+		// Now restore all player scores from lg_game_players into lg_game_scores
+		$all_game_players = $database->get_array("SELECT * FROM lg_game_players AS gp
+			LEFT JOIN lg_game_leagues AS gl ON gl.game_id = gp.game_id
+			WHERE gl.league_id = '".$this->data['id']."'");
+		$log->add('custom settle league: restoring '.count($all_game_players).' players...');
+		foreach ($all_game_players as $game_player)
+		{
+			$player_score_data = array();
+			$player_score_data['game_id'] = $game_player['game_id'];
+			$player_score_data['player_id'] = $game_player['player_id'];
+			$player_score_data['league_id'] = $this->data['id'];
+			$player_score_data['old_player_score'] = 0; // how to get? it's somewhere in the reference...
+			$player_score_data['score'] = $game_player['performance'];
+			$player_score_data['settle_rank'] = 0; // not known yet
+			//$log->add("update: player_score_data=".print_r($player_score_data,TRUE));
+			$database->insert_update('lg_game_scores', $player_score_data);
+		}
+		$log->add('custom settle league: evaluation data restore done.');
+		// Finally, update all scores
+		$this->recalculate_all_scores();
 		return TRUE;
 	}
 	

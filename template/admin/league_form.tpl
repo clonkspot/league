@@ -202,6 +202,11 @@
         <input type="hidden" name="league[id]" value="{$league.id}">
         <input type="submit" value="{$l->s('calculate_scores')}">
     </form>
+    <form method="post" action="?part=league">
+        <input type="hidden" name="method" value="restore_all_player_scores">
+        <input type="hidden" name="league[id]" value="{$league.id}">
+        <input type="submit" value="{$l->s('restore_all_player_scores')}">
+    </form>
     </td></tr>
 {/if}
 </table>
