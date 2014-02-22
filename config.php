@@ -13,7 +13,7 @@ $smarty->config_dir = $webroot.'configs/';
 
 unset($webroot);
 
-//$database = & new database('127.0.0.1','db1144497-league','krUz19Pak','db1144497-lg');
+//$database = & new database('127.0.0.1','db1144497-league',geheim,geheim);
 $database = & new database('127.0.0.1','league2','CC67eWMqKcsHJ8UG','league2');
 
 $debug = FALSE;
