@@ -1,7 +1,6 @@
 <?php
 
 //general:
-$this->strings['clonk'] = "Clonk";
 $this->strings['league'] = "League";
 $this->strings['leagues'] = "Leagues";
 $this->strings['rankings'] = "Rankings";
