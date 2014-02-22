@@ -320,65 +320,6 @@ class user
 			 AND is_deleted = 0");
 	}
 	
-	function edit($data)
-	{
-		global $database;
-	
-		if($data['password'])
-		{
-			if($data['password'] != $data['password2'])
-			{
-				global $message_box;
-				global $language;
-				$message_box->add_error($language->s('error_password_repeat'));
-				unset($data['password']);
-			}
-			else if(!$this->check_password($data['password']))
-			{
-				$log = new log();
-				$log->add_user_error("user ".$this->data['name'].": edit password: new password too short");
-				unset($data['password']);
-			}
-			else
-				$data['password'] = md5($data['password']);
-		}
-		else
-			unset($data['password']);
-			
-		if($data['name'] != $this->data['name'])
-		{
-			// check timing (don't bother with an error, it shouldn't be accessible anyway)
-			if($this->data['date_last_rename'] + 2*30*24*60*60 < time())
-			{
-				if($this->rename($this->data['id'], $data['name']))
-				{
-					$rename_successful = TRUE;
-				}
-			}
-		}
-
-		$update_data = array();
-		$update_data['id'] = $this->data['id'];
-		$update_data['real_name'] = $data['real_name'];
-		
-		if ($rename_successful &&
-		   !in_array($this->data['name'], array_map(trim, preg_split('/,/', $this->data['old_names'])))) {
-			if($this->data['old_names'] != '')
-				$update_data['old_names'] = $this->data['old_names'] . ", " . $this->data['name'];
-			else
-				$update_data['old_names'] = $this->data['name'];
-		}
-		
-		$update_data['email'] = $data['email'];
-		if(isset($data['password']))
-			$update_data['password'] = $data['password'];		
-		if($rename_successful)
-			$update_data['date_last_rename'] = time();
-		
-		$database->update('lg_users',$update_data);
-		$this->load_data($this->data['id']);
-	}
-	
 	function change_password($new_password)
 	{
 		if(!$this->check_password($new_password))
@@ -413,37 +354,6 @@ class user
 			}
 		}	
 		return $score_data;
-	}
-	
-	function show_edit()
-	{
-		global $smarty;
-		global $user;
-		
-		$smarty->assign("user",$this->data);
-		
-		$a = $this->get_scores_data($this->data['id'], $user->get_operator_leagues());
-		$a = $this->add_rank_and_league_data($a);
-		$smarty->assign("scores", $a);
-				
-		global $database;
-		if(!$this->data['clan_id'])
-		{
-			//get clans:
-			$a = $database->get_array("SELECT * FROM lg_clans 
-				WHERE join_disabled = 'N'
-				ORDER BY name");
-			$smarty->assign("clans",$a);
-		}
-		else
-		{
-			//get clan:
-			$clan = new clan();
-			$clan->load_data($this->data['clan_id']);
-			$clan_data = $clan->data;
-			$clan_data['users'] = $clan->get_users();
-			$smarty->assign("clan",$clan_data);
-		}
 	}
 	
 	function get_scores_data($user_id, $force_leagues = array())

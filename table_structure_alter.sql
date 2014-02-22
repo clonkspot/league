@@ -1,3 +1,7 @@
+-- OC pre deployment (Players cannot rename themselves)
+
+ALTER TABLE  `lg_users` DROP COLUMN `date_last_rename`;
+
 -- Rev 1573 (Adventure league)
 
 CREATE TABLE `lg_scenario_user_data` (

@@ -141,7 +141,6 @@ $this->strings['date_last_game'] = "Last Game";
 $this->strings['inactivity_malus'] = "Inactivity-Malus";
 $this->strings['in'] = "in";
 $this->strings['days'] = "days";
-$this->strings['rename_limit'] = "Maximum one name change every two months!";
 $this->strings['scenario_data'] = "Scenario data";
 
 //teams/clans:

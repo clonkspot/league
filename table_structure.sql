@@ -507,7 +507,6 @@ CREATE TABLE IF NOT EXISTS `lg_users` (
   `date_created` int(10) unsigned NOT NULL DEFAULT '0',
   `date_last_login` int(10) unsigned NOT NULL DEFAULT '0',
   `date_last_game` int(10) unsigned NOT NULL DEFAULT '0',
-  `date_last_rename` int(10) unsigned NOT NULL DEFAULT '0',
   `email` varchar(45) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `picture` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `games_melee_won` int(10) unsigned NOT NULL DEFAULT '0',

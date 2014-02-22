@@ -245,11 +245,6 @@ switch(@$_REQUEST['part']) {
 		if($user->is_logged_in())
 		{
 			switch(@$_REQUEST['method']) {
-				case 'edit':
-				{
-					$user->show_edit();
-					break;
-				}
 				case 'logout':
 				{
 					$user->logout();
@@ -270,22 +265,7 @@ switch(@$_REQUEST['part']) {
 				{
 					$message_box->add_error($language->s('error_abuse'));				
 					//$user->set_score($_REQUEST['user']['id'], $_REQUEST['league']['id'], 0);
-					$user->show_edit();
 					break;
-				}
-			}
-			switch(@$_POST['method']) {
-				case 'edit2':
-				{
-					$user->edit($_POST['user']);
-					$user->show_edit();
-					break;	
-				}
-				case 'delete2':
-				{
-					//
-					//$user->delete($_REQUEST['scenario']['id']);
-					break;	
 				}
 			}
 		}
