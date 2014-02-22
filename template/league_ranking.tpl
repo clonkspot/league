@@ -8,8 +8,8 @@
     <a href="?part=league&method={if $clan_ranking}clan_{/if}ranking&league[id]={$lg.id}">{if $league.id==$lg.id}<img src="{$lg.filter_icon_on}" title="{$lg.name}"  alt="{$lg.name}">{else}<img src="{$lg.filter_icon_off}" title="{$lg.name}" alt="{$lg.name}">{/if}</a>
   {/foreach}
   <img class="vrbar" src="images/vr_bar.gif">
-  <a href="?part=league&method=ranking&league[id]={$smarty.request.league.id}">{if $clan_ranking}<img src="images/icons/filter_player_off.gif" title="{$l->s('filter_player_ranking')}">{else}<img src="images/icons/filter_player.gif" title="{$l->s('filter_player_ranking')}">{/if}</a>
-  <a href="?part=league&method=clan_ranking&league[id]={$smarty.request.league.id}">{if $clan_ranking}<img src="images/icons/filter_team.gif" title="{$l->s('filter_clan_ranking')}">{else}<img src="images/icons/filter_team_off.gif" title="{$l->s('filter_clan_ranking')}">{/if}</a>
+  <a href="?part=league&method=ranking&league[id]={$smarty.request.league.id}">{if $clan_ranking}<img src="images/icons/filter_player_off.png" title="{$l->s('filter_player_ranking')}">{else}<img src="images/icons/filter_player.png" title="{$l->s('filter_player_ranking')}">{/if}</a>
+  <a href="?part=league&method=clan_ranking&league[id]={$smarty.request.league.id}">{if $clan_ranking}<img src="images/icons/filter_team.png" title="{$l->s('filter_clan_ranking')}">{else}<img src="images/icons/filter_team_off.png" title="{$l->s('filter_clan_ranking')}">{/if}</a>
 </div>
 
 {if $clan_ranking}

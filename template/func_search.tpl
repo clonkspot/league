@@ -4,9 +4,9 @@
   <input type="text" class="search" name="filter[search][]" value="{$smarty.request.filter.search.0|escape}">
   <input class="searchbutton" type="image" 
     {if $smarty.request.filter.search.0}
-        src="images/icons/filter_search.gif"
+        src="images/icons/filter_search.png"
     {else}
-        src="images/icons/filter_search_off.gif"
+        src="images/icons/filter_search_off.png"
     {/if}
   title="{$l->s('search')}">
 </form>
