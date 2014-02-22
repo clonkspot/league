@@ -1,16 +1,8 @@
-<div class="filter">
-  {foreach from=$products item=product}
-      {include file="../func_filter.tpl" link="?part=league&method=list" name="p.name" value=$product.name text=$product.name}
-  {/foreach}
-  {include file="../func_filter.tpl" link="?part=league&method=list" name="p.name" value="" text=$l->s('products')}
-</div>
-
 {include file="../func_header_line.tpl" func="leagues" page_link="?part=league&method=list"}
 <a href="?part=league&method=add">{$l->s('add')}</a><br><br>
 
 <table>
         <tr class="th">
-            <td></td>
             {include file="../func_tableheader.tpl" link="?part=league&method=list" value="name"}
             {include file="../func_tableheader.tpl" link="?part=league&method=list" value="description"}
             {include file="../func_tableheader.tpl" link="?part=league&method=list" value="type"}
@@ -21,7 +13,6 @@
         </tr>
     {foreach item=league from=$leagues name="league"}
         <tr>
-            <td><img src="{$league.product_icon}" alt="{$league.product_name}"></td>
             <td><a href="?part=league&method=edit&league[id]={$league.id}">{$league.name}</a></td>
             <td>{$league.description}</td>
             <td>{$league.type}</td>

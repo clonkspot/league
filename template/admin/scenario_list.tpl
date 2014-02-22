@@ -1,9 +1,4 @@
 <div class="filter">
-  {foreach from=$products item=product}
-      {include file="../func_filter.tpl" link="?part=scenario&method=list" name="product_name" value=$product.name text=$product.name}
-  {/foreach}
-  {include file="../func_filter.tpl" link="?part=scenario&method=list" name="product_name" value=""}
-  <img class="vrbar" src="images/vr_bar.gif">
   {include file="../func_search.tpl" link="?part=scenario&method=list"}
   {include file="../func_filter.tpl" link="?part=scenario&method=list" name="search" value="" text=$l->s('search')}
 </div>
@@ -18,7 +13,6 @@
 
 <table>
         <tr class="th">
-            <td></td>
             {include file="../func_tableheader.tpl" link="?part=scenario&method=list" value="name"}
             {include file="../func_tableheader.tpl" link="?part=scenario&method=list" value="active"}
             {include file="../func_tableheader.tpl" link="?part=scenario&method=list" value="type"}
@@ -29,7 +23,6 @@
         </tr>
     {foreach item=scenario from=$scenarios name="scenario"}
         <tr>
-            <td><img src="{$scenario.product_icon}" alt="{$scenario.product_name}"></td>
             <td>
                 {*{if $scenario.icon_number >= 0 && $scenario.icon_number != ''}<img src="images/icons/scenarios/{$scenario.icon_number}.png">{/if}*}
                 <a href="?part=scenario&method=edit&scenario[id]={$scenario.id}">{$scenario.name|escape}</a>

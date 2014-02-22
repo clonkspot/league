@@ -1,9 +1,4 @@
 <div class="filter">
-  {foreach from=$products item=product}
-      {include file="func_filter.tpl" link="?part=game&method=list" name="p.name" value=$product.name text=$product.name}
-  {/foreach}
-  {include file="func_filter.tpl" link="?part=game&method=list" name="p.name" value="" text=$l->s('products')}
-  <img class="vrbar" src="images/vr_bar.gif">
   {*{include file="func_filter.tpl" link="?part=game&method=list" name="g.type" value="melee"}
   {include file="func_filter.tpl" link="?part=game&method=list" name="g.type" value="noleague"}
   {include file="func_filter.tpl" link="?part=game&method=list" name="g.type" value="" text=$l->s('leagues')}
@@ -32,7 +27,6 @@
 
 <table>
         <tr class="th">
-            <td></td>
             {include file="func_tableheader.tpl" link="?part=game&method=list" value="g.type" text=$l->s('leagues')}
             {include file="func_tableheader.tpl" link="?part=game&method=list" value="g.status" text=$l->s('status')}
             {include file="func_tableheader.tpl" link="?part=game&method=list" value="scenario_name" text=$l->s('scenario')}

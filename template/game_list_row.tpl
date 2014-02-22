@@ -1,6 +1,5 @@
 {*first part of game-list-row*}
 {strip}
-          <td><img src="{$game.product_icon}" title="{$game.product_name}"></td>
             <td>
                 {if $game.leagues}
                   {foreach from=$game.leagues item=league}

@@ -1,9 +1,4 @@
 <div class="filter">
-  {foreach from=$products item=product}
-      {include file="func_filter.tpl" link="?part=scenario&method=list" name="product_name" value=$product.name text=$product.name}
-  {/foreach}
-  {include file="func_filter.tpl" link="?part=scenario&method=list" name="product_name" value=""}
-  <img class="vrbar" src="images/vr_bar.gif">
   {foreach from=$leagues item=league}
       {include file="func_filter.tpl" link="?part=scenario&method=list" name="league_id" value=$league.id text=$league.name icon_on=$league.filter_icon_on icon_off=$league.filter_icon_off}
   {/foreach}
@@ -17,7 +12,6 @@
 
 <table>
         <tr class="th">
-            <td></td>
             {include file="func_tableheader.tpl" link="?part=scenario&method=list" value="leagues"}
             {include file="func_tableheader.tpl" link="?part=scenario&method=list" value="name"}
             {*{include file="func_tableheader.tpl" link="?part=scenario&method=list" value="active"}*}
@@ -28,7 +22,6 @@
         </tr>
     {foreach item=scenario from=$scenarios name="scenario"}
         <tr>
-            <td><img src="{$scenario.product_icon}" alt="{$scenario.product_name}"></td>
             <td>
             	{foreach from=$leagues item=league}
             		{if $u->check_operator_permission("scenario", "league_toggle", $league.id)}
