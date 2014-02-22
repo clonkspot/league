@@ -12,10 +12,10 @@
                 {if $game.status == 'running'}
                     <img src="images/icons/status_running_16.gif" title="{$l->s('running')}">
                     {if $game.is_join_allowed}
-                        <a href="clonk://clonk.de:84/league2/league.php?action=query&game_id={$game.id}"><img src="images/icons/status_runtimejoin_16.gif" title="{$l->s('is_join_allowed')}"></a>
+                    <img src="images/icons/status_runtimejoin_16.gif" title="{$l->s('is_join_allowed')}">
                     {/if}
                 {elseif $game.status == 'lobby'}
-                    <a href="clonk://clonk.de:84/league2/league.php?action=query&game_id={$game.id}"><img src="images/icons/status_lobby_16.gif" title="{$l->s('lobby')}"></a>
+                    <img src="images/icons/status_lobby_16.gif" title="{$l->s('lobby')}">
                 {/if}
                 {if $game.is_official_server}<img src="images/icons/official_server_16.png" title="{$l->s('official_server')}">{/if}
                 {if $game.is_password_needed}<img src="images/icons/password_needed_16.png" title="{$l->s('password_needed')}">{/if}
