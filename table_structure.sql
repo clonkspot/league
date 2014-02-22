@@ -120,7 +120,6 @@ CREATE TABLE IF NOT EXISTS `lg_games` (
   `product_id` int(10) unsigned NOT NULL DEFAULT '0',
   `scenario_title` varchar(45) COLLATE latin1_general_ci NOT NULL DEFAULT '' COMMENT 'just for noleague-games',
   `is_password_needed` tinyint(1) NOT NULL DEFAULT '0',
-  `is_fair_crew_strength` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `is_join_allowed` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `date_started` int(10) unsigned NOT NULL DEFAULT '0',
   `duration` int(10) unsigned NOT NULL DEFAULT '0',

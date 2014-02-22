@@ -115,7 +115,6 @@ $this->strings['autocreated'] = "automatisch erstellt";
 $this->strings['running'] = "Spiel läuft";
 $this->strings['lobby'] = "Lobby";
 $this->strings['password_needed'] = "Passwort benötigt";
-$this->strings['fair_crew_strength'] = "Faire Crew aktiviert";
 $this->strings['is_join_allowed'] = "Laufzeitbeitritt erlaubt";
 $this->strings['players'] = "Spieler";
 $this->strings['teams'] = "Teams";
