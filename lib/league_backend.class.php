@@ -78,7 +78,7 @@ class league_backend
 	function get_agent_product()
 	{
 		// TODO Should probably do this by user agent...
-		return "Clonk Rage";
+		return "OpenClonk";
 	}
 	
 	function get_version()
