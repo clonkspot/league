@@ -1,7 +1,5 @@
 {include file="func_header_line.tpl" func="profile"}
 
-{include file="user_form.tpl"}
-
 {include file="func_header_line.tpl" func="clan"}
 
 <br>

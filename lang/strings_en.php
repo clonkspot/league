@@ -173,9 +173,9 @@ $this->strings['rename'] = "rename";
 $this->strings['renamed'] = "renamed";
 
 //login:
-$this->strings['name_or_userid'] = "League-Username or User-Id";
-$this->strings['password_or_webcode'] = "League-Password or Webcode";
-$this->strings['new_username'] = "New League-Username";
+$this->strings['login_notice'] = 'Use your user credentials from the OpenClonk forum to login. <a href="http://forum.openclonk.org/user_register.pl">Not registered yet?</a>';
+$this->strings['user_name'] = "Username";
+$this->strings['user_password'] = "Password";
 $this->strings['new_user'] = "New League-Account";
 
 //bans:

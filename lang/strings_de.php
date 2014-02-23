@@ -176,9 +176,9 @@ $this->strings['rename'] = "Umbenennen";
 $this->strings['renamed'] = "umbenannt";
 
 //login:
-$this->strings['name_or_userid'] = "Liga-Benutzername oder User-Id";
-$this->strings['password_or_webcode'] = "Liga-Passwort oder Webcode";
-$this->strings['new_username'] = "Neuer Liga-Benutzername";
+$this->strings['login_notice'] = 'Benutze deine Logindaten vom OpenClonk Forum um dich einzuloggen. <a href="http://forum.openclonk.org/user_register.pl">Bist du noch nicht registriert?</a>';
+$this->strings['user_name'] = "Benutzername";
+$this->strings['user_password'] = "Passwort";
 $this->strings['new_user'] = "Neues Liga-Benutzerkonto";
 
 //bans:
