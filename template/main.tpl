@@ -13,6 +13,8 @@
 </head>
 <body>
 
+{fetch file='../www/header/header.html'}
+
 <div id='wrapper'>
 <div id='content'>
 
@@ -92,6 +94,8 @@
     | <a href='/league2/index.php?lang=en'><img src='/deco/dco_en.gif' alt='English'></a> ]
 </div>
 </div>
+
+{fetch file='../www/header/botter.html'}
 
 </body>
 </html>

@@ -60,16 +60,10 @@ INSERT INTO `lg_products`
 (`id`, `name`, `icon`, `version`, `product_string`, `motd_sid`)
 VALUES (1, 'OpenClonk', 'oc.png', '5.0.0', 'OC', 0);
 
-9. Update some game engine strings and icons in lang/strings_de.php and
-   lang/strings_en.php. E.g. for OpenClonk:
-$this->strings['filter_OpenClonk'] = "OpenClonk";
-$this->strings['filter_icon_OpenClonk_on'] = "oc_icon_32.png";
-$this->strings['filter_icon_OpenClonk_off'] = "oc_icon_32_off.png";
-
-10. Make sure unnecessery files aren't left on the web root:
+9. Make sure unnecessery files aren't left on the web root:
    table_structure.sql, table_structure_alter.sql,
    table_structure_updates.txt. Delete them if you're done
    installing/updating.
 
-11. Now you should be able to browse to your league, log in, press
+10. Now you should be able to browse to your league, log in, press
     "Admin" and set up a league using the builtin admin interface.
