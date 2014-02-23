@@ -1,75 +1,114 @@
+html {
+    font-family: Verdana,'Trebuchet MS',Arial,Sans-serif;
+    font-size: 13px;
+    line-height: 1.5em;
+}
+
 p.center {
 	text-align: center;
 }
 
-/* League2 */
-div.filter
-{
-	border-style:none;
-	margin: 3px 5px 3px 0px;
-	padding: 2px 5Px;
-	font-size: 10px;
+#no_nav_body {
+    padding: 0px 38px;
+    margin: 0px;
 }
 
-div.pages, div.filterstatus, div.messagebox
+a {
+    color: #069;
+    text-decoration: none;
+}
+
+a:hover { 
+	color: #CC6600;
+	text-decoration:none;
+}
+
+.navbar ul {
+    border-radius: 10px;
+    background-color: #333;
+    box-shadow: 0px 0px 2px #999;
+    overflow: hidden;
+    color: #DDD;
+    text-align: center;
+    font-size: 13px;
+    list-style: none outside none;
+    padding: 4px;
+}
+
+.navbar ul li {
+    display: inline;
+}
+
+.navbar ul li a {
+    padding: 6px 10px;
+    text-decoration: none;
+    color: #CCC;
+}
+
+
+.navbar ul li a:hover {
+    background-color: #444;
+}
+
+
+/* League2 */
+
+div.filter
 {
-	border-style:solid;
-	border-color:grey;
-	border-width:1px;
-	margin: 3px 0px 3px 0px;
-	height:15px;
-	padding: 5px 5px;
-	background-color: #EEEEEE;
-	background-image:url("images/bg_gray.gif");
-	vertical-align:middle;
-	clear:left;
+	margin: 3px 5px;
+	padding: 2px 5px;
 }
 
 div.messagebox
 {
-	font-weight:bold;
-	border-color: Red;
+	padding: 5px;
+	clear:left;
+	border: 1 px solid red;
 }
 
 table {
 	border-collapse:collapse;
+    width: 100%;
+    font-size: 12px;
+	margin-top: 6px;
+}
+
+table.simple {
+	width: auto;
 }
 
 th {
-	margin: 10px 0 10px 0;
-	padding: 4px;
-	color: white;
 	white-space:nowrap;
+    padding-left: 8px;
 }
 
-tr 
-{
-	border-style:solid;
-	border-width:1px;
-	border-color:Gray;
-	background-color:EEEEEE;
-}
 
 tr.th 
 {
-	background-color: navy;
 	background-image: url("images/bg_bar.gif");
 	text-align:left;
-	vertical-align:middle;
-	border-color:Black;
+	background-color: #DDD8C3;
+	line-height: 27px;
+	font-size: 12px;
+	font-weight: bold;
 }
 
 
-th a:link, th a:visited, th a:active, th a:hover { 
-	color: white;
+
+th a, th a:link, th a:visited { 
+	color: black;
 	text-decoration:none;
 } 
 
+th a:hover { 
+	color: #CC6600;
+	text-decoration:none;
+}
 
 td 
 {
 	padding: 2px;	
-	padding-right:8px;
+	padding-right:6px;
 }
 
 img.vrbar 
@@ -117,13 +156,10 @@ form.search
 input.search
 {
 	width:10em;
-	vertical-align:middle;
+    margin-top: 6px;
+    vertical-align: top;
 }
 
-input.searchbutton
-{
-	vertical-align:middle;
-}
 
 span.revoked
 {
@@ -135,11 +171,11 @@ tr.revoked, div.revoked
 {
 	color:#888888;
 }
-tr.revoked a:visited, th a:active, th a:hover
+tr.revoked a:visited
 {
 	color:#888888;
 }
-tr.revoked span.scorewon a:visited, th a:active, th a:hover
+tr.revoked span.scorewon a:visited
 {
 	color: #4477DD;
 }

@@ -2,14 +2,8 @@
 <html>
 <head>
     <meta http-equiv='content-type' content='text/html; charset=iso-8859-1'>
-    <title>Clonk Liga</title>
+    <title>OpenClonk League</title>
     <link rel="stylesheet" type="text/css" href="league.css">
-    {literal}<!--[if lt IE 7]>
-    <style type='text/css'>
-      div#wrapper { float: left; width: 100%; }
-      div#navbar { float: left; margin-left: -100%; }
-    </style>
-    <![endif]-->{/literal}
 </head>
 <body>
 
@@ -90,8 +84,8 @@
 
 <div id='navbar'>
 <div class='languages'>
-    [ <a href='/league2/index.php?lang=de'><img src='/deco/dco_de.gif' alt='Deutsch'></a>
-    | <a href='/league2/index.php?lang=en'><img src='/deco/dco_en.gif' alt='English'></a> ]
+    [ <a href='?lang=de'><img src='images/de.png' alt='Deutsch'></a>
+    | <a href='?lang=en'><img src='images/us.png' alt='English'></a> ]
 </div>
 </div>
 

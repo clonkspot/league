@@ -7,11 +7,11 @@ title="{if $smarty.request.sort.dir == 'desc'}{$l->s('sort_down')}{else}{$l->s('
 {if $text}{$text|escape}{else}{$l->s($value)}{/if}
 
 {if ($smarty.request.sort.dir == 'desc' && $smarty.request.sort.col==$value) || ($smarty.request.sort.col=='' && $default_sort_col==$value && $default_sort_dir=='desc')}
-    <img src="images/sort_down.gif" border="0" height="11" width="9">
+    <img src="images/sort_down.gif" border="0">
 {elseif $smarty.request.sort.dir == 'asc' && $smarty.request.sort.col==$value || ($smarty.request.sort.col=='' && $default_sort_col==$value && $default_sort_dir=='asc')}
-    <img src="images/sort_up.gif" border="0" height="11" width="9">
+    <img src="images/sort_up.gif" border="0">
 {else}
-    <img src="images/sort_off.gif" border="0" height="11" width="9">
+    <img src="images/sort_off.gif" border="0">
 {/if}
 </a>
 </th>                                                 
