@@ -1,0 +1,16 @@
+CR League Todo
+==============
+
+Fix:
+ - 15f32f9 change hardcoded link to clonk.de forum to hardcoded link to openclonk FAQ
+ - 7abea47 remove hardcoded clonk.de link for runtime join/direct join from browser (openclonk does not register an url protocol for itself)
+ - 78e9496 replace clonk.de icons with openclonk icons, remove clonk.de league icons
+ - 5e6c9cb change login texts (only the texts, not the functionality). I'll leave this to you, Sven
+ - 48f4aac correctly include the website header
+ - 81458da openclonk stylesheet
+ - e7d6f3a add oc favicon
+
+Revert:
+ - 1c24854 internationalization: send unlocalized string placeholders in communication with the engine
+ - a41d9df replace some references of Clonk Rage with references to OpenClonk
+ - fd4029a remove fair strength attribute (obsolete with openclonk)
