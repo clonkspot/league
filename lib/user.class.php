@@ -4,6 +4,7 @@ require_once('league.class.php');
 require_once('league_melee.class.php');
 
 require_once('clan.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/../auth/mwf_auth.php');
 
 class user
 {
@@ -59,12 +60,13 @@ class user
 		}
 	}
 	
-	/** user-login. if $new_name is set, $name is a CUID, 
+	/** user-login. if user with $name does not exist
 	 * and $password a valid webcode, a new account will be created
-	 * @param $name can be username or cuid
-	 * @param $new_name new nickname when a new account is created
+	 * For OpenClonk: "webcode" means "forum password for user $name" here
+	 * CUID is the forum username
+	 * @param $name must be username
 	 */
-	function login($name, $password, $new_name = NULL)
+	function login($name, $password)
 	{	
 		global $database;
 		global $message_box;
@@ -72,24 +74,12 @@ class user
 		
 		$log = new log();
 		
-		if(is_numeric($name))
-		{
-			//$name is cuid:
-			$a = $database->get_array("SELECT u.cuid, id, password, IF(cb.cuid IS NULL,0,1) AS is_banned, cb.reason 
-				FROM lg_users AS u
-				LEFT JOIN lg_cuid_bans AS cb ON cb.cuid = u.cuid AND cb.date_until > ".time()."
-				WHERE u.cuid = '".$database->escape($name)."'
-				 AND u.is_deleted = 0");
-		}
-		else
-		{
-			//$name id username
-			$a = $database->get_array("SELECT u.cuid, id, password, IF(cb.cuid IS NULL,0,1) AS is_banned, cb.reason 
-				FROM lg_users AS u
-				LEFT JOIN lg_cuid_bans AS cb ON cb.cuid = u.cuid AND cb.date_until > ".time()."
-				WHERE u.name = '".$database->escape($name)."'
-				 AND u.is_deleted = 0");
-		}
+		//$name id username
+		$a = $database->get_array("SELECT u.cuid, id, password, IF(cb.cuid IS NULL,0,1) AS is_banned, cb.reason 
+			FROM lg_users AS u
+			LEFT JOIN lg_cuid_bans AS cb ON cb.cuid = u.cuid AND cb.date_until > ".time()."
+			WHERE u.name = '".$database->escape($name)."'
+			 AND u.is_deleted = 0");
 		
 		//check for ban:
 		if($a[0]['is_banned'] == 1)
@@ -102,61 +92,45 @@ class user
 			return FALSE;
 		}
 		
-		
-		if($a[0]['id'] > 0 && md5($password) == $a[0]['password'])
+		// Does this account exist?
+		if($a[0]['id'] > 0)
 		{
-			$return = TRUE;
-			//$log->add("DEBUG: user found ".print_r($a[0],true));
-		}
-		else if($a[0]['id'] > 0 && $a[0]['password'] == '')
-		{
-			//pasword was reset -> check webcode again and set webcode as password, if correct:
-			if($this->check_webcode($a[0]['cuid'], $password))
+			// user exists
+			if(md5($password) == $a[0]['password'])
 			{
+				// password OK
+			}
+			else if($a[0]['id'] > 0 && $a[0]['password'] == '')
+			{
+				//pasword was reset -> check webcode again and set webcode as password, if correct:
+				if(!$this->check_webcode($a[0]['cuid'], $password)) return FALSE; // has it's own error handling
+				// webcode OK; update password to webcode
 				$database->query("UPDATE lg_users SET password = '".$database->escape(md5($password))."'
 					WHERE id = '".$a[0]['id']."'");
-				$return = TRUE;
 			}
-			//$log->add("DEBUG: user found: no password: ".print_r($a[0],true));
-		}
-		else
-		{
-			//password was wrong, but account exists:
-			//(for example: login with CUID/Webcode, but webcode!=password -> no new account, but failure
-			//$message_box->add_error($language->s('error_login_failed')); //sent later on
-			//$log->add("DEBUG: user found, but wrong password ".print_r($a[0],true));
-			$return = FALSE;
-		}
-		
-		if(TRUE == $return)
-		{
+			else
+			{
+				//password was wrong, but account exists:
+				//(for example: login with CUID/Webcode, but webcode!=password -> no new account, but failure
+				$message_box->add_error($language->s('error_login_failed'));
+				return FALSE;
+			}
+			// login OK
 			$_SESSION['user_id'] = $a[0]['id'];
 			$_SESSION['logged_in'] = true;
 			$this->load_data($a[0]['id']);
 			
 			$this->data['date_last_login'] = time();
 			$this->save();
-			//$log->add("DEBUG: user logged in = TRUE ".print_r($a[0],true));
 			return TRUE;
 		}
 		else
 		{
-			//$log->add("DEBUG: user: new account".print_r($a[0],true));
+			// user does not exist
 			//auto-create account on first login with WEBCODE
-			if($this->check_webcode($name,$password)) //has it's own error handling
-			{
-				if($new_name && is_numeric($name))
-				{
-					//$log->add("DEBUG: user new account: new name is numeric, webcode is OK ".print_r($a[0],true));
-					if($this->create($new_name, $password, $name))
-						return $this->login($name, $password);
-				}
-		
-				$message_box->add_error($language->s('error_login_failed'));
-				
-			}
-				//$log->add("DEBUG: user  new account: something was wrong: $name, $new_name, ".print_r($a[0],true));
-			return FALSE;
+			if(!$this->check_webcode($name,$password)) return FALSE; // has it's own error handling
+			if(!$this->create($name, $password, $name)) return FALSE; // has it's own error handling
+			return $this->login($name, $password);
 		}
 	}
 	
@@ -254,7 +228,7 @@ class user
 		}
 		
 		//check username:
-		//forbid numeric usernames (numeric values are interpreted as CUIDs)
+		//forbid numeric usernames (numeric values are interpreted as CUIDs) (not really any more. but maybe there's still places in the code...)
 		if(false == $this->check_name($name))
 		{
 			$log->add_user_error("user $name could not be created: invalid username");
@@ -391,44 +365,33 @@ class user
 
 		$log = new log();
 
-		if(strlen($cuid) != 8 || preg_match("/[^0-9]/", $cuid) || 
-			strlen($webcode) != 8 || preg_match("/[^0-9A-Z]/", $webcode))
+		$registered = FALSE;
+		
+		try
 		{
-			$log->add_user_error("invalid cuid and/or webcode format");
-			$this->error = 'error_webcode_auth_failed';
-			$message_box->add_error($language->s("error_webcode_auth_failed"));
+			// authenticate
+			$user = new MwfUser($cuid);
+			if($user->authenticate($webcode))
+			{
+				$registered = TRUE;
+				// login success: update information
+				// TODO: email / admin status couild be synced from forum here
+				//$user_email = $user->get_info()['email'];
+				//$is_league_admin = in_array('League Moderators',$user->get_groups());
+			}
+		}
+		catch(Exception $e)
+		{
+			$log->add_user_error("cuid: $cuid - authentification-script could not be reached");
+			$this->error = 'error_webcode_auth_na';
+			$message_box->add_error($language->s("error_webcode_auth_na"));
 			return FALSE;
 		}
-
-		$registered = FALSE;
-		$cacheKey = "reg_${cuid}_$webcode";
-		$cached = apc_fetch($cacheKey);
-
-		if($cached === 1) $registered = TRUE;
-		elseif($cached === 0) $registered = FALSE;
-		else // FALSE
-		{
-			$webcode_hash = md5($webcode);
-			//"@" wichtig, da sonst URL in Fehlermeldung/Warning ausgegeben werden könnte
-			$query = ""; // Contact RedWolf Design if you would like to perform authenticatd CUID/WebCode checks
-			$fd = @fopen("", "rb");
-			if(!$fd) //URL konnte nicht erreicht werden
-			{
-				$log->add_user_error("cuid: $cuid - authentification-script could not be reached");
-				$this->error = 'error_webcode_auth_na';
-				$message_box->add_error($language->s("error_webcode_auth_na"));
-				return FALSE;
-			}
-			$result = stream_get_contents($fd);
-			fclose($fd);
-			preg_match_all("/(\w+)=(.*)/", $result, $matches);
-			$results = array_combine($matches[1], $matches[2]);
-			$registered = $results['success'] && preg_match("/\bce\b|\bcr\b/", $results['products']);
-			apc_store($cacheKey, $registered ? 1 : 0, 86400);
-		}
-
+		
 		if($registered)
-		return TRUE;
+		{
+			return TRUE;
+		}
 		else
 		{
 			$log->add_user_error("wrong webcode for $cuid");
@@ -437,8 +400,6 @@ class user
 			return FALSE;
 		}
 	}
-	
-	
 	
 	function check_password($password)
 	{

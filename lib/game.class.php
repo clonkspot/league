@@ -1659,7 +1659,7 @@ class game
 		if(!$game_reference)
 			$game_reference = &$this->reference;
 		$goals = $this->get_goals($game_reference);
-		if(in_array("MELE",$goals) || in_array("MEL2",$goals)
+		if(in_array("MELE",$goals) || in_array("MEL2",$goals) || in_array("Goal_Melee",$goals)
 			|| $game_reference->data['[Reference]'][0]['[Teams]'][0]['Active']!='false')
 			return true;
 		else
