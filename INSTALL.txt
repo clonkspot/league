@@ -37,9 +37,9 @@ Installation
    the direct mysql interface).
 
 5. Create an admin user; e.g. using the following SQL statement (creates
-   a user named "admin" with password "password"):
-INSERT INTO `lg_users` (`id`, `name`, `password`, `admin`, `operator`)
-VALUES (1, 'admin', MD5('password'), 1, '');
+   a user named "admin" connected to forum account "forumname"):
+INSERT INTO `lg_users` (`id`, `name`, `password`, `admin`, `operator`, `cuid`)
+VALUES (1, 'admin', '', 1, '', 'forumname');
 
 6. Grant admin permissions to your newly created user using the
    following SQL statement:

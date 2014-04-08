@@ -71,7 +71,7 @@ class clan
 		$log = new log();
 		$log->add("clan created: ".$data['name']);
 		$data['date_created'] = time();
-		$data['password'] = md5($data['password']);
+		$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 		unset($data['password2']);
 		$data['founder_user_id'] = $user->data['id'];
 		$this->data['id'] = $database->insert('lg_clans', $data);
@@ -144,7 +144,7 @@ class clan
 				unset($data['password']);
 			}
 			else
-				$data['password'] = md5($data['password']);
+				$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 		}
 		else
 			unset($data['password']);
@@ -265,7 +265,7 @@ class clan
 		if($this->data['join_disabled'] == 'Y')
 			return false;
 		
-		if($this->data['password'] == md5($password))
+		if(password_verify($password, $this->data['password']))
 			return true;
 			
 		

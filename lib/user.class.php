@@ -96,7 +96,7 @@ class user
 		if($a[0]['id'] > 0)
 		{
 			// user exists
-			if(md5($password) == $a[0]['password'])
+			if(password_verify($password, $a[0]['password']))
 			{
 				// password OK
 			}
@@ -105,7 +105,7 @@ class user
 				//pasword was reset -> check webcode again and set webcode as password, if correct:
 				if(!$this->check_webcode($a[0]['cuid'], $password)) return FALSE; // has it's own error handling
 				// webcode OK; update password to webcode
-				$database->query("UPDATE lg_users SET password = '".$database->escape(md5($password))."'
+				$database->query("UPDATE lg_users SET password = '".$database->escape(password_hash($password, PASSWORD_DEFAULT))."'
 					WHERE id = '".$a[0]['id']."'");
 			}
 			else
@@ -252,7 +252,7 @@ class user
 		$user['date_created'] = time();
 		$user['date_last_login'] = time();
 		$user['name'] = $name;
-		$user['password'] = md5($password);
+		$user['password'] = password_hash($password, PASSWORD_DEFAULT);
 		$user['cuid'] = $cuid;
 		$this->data['id'] = $database->insert('lg_users', $user);
 		$this->load_data($this->data['id']);
@@ -304,7 +304,7 @@ class user
 		}
 		
 		$data['id'] = $this->data['id'];
-		$data['password'] = md5($new_password);
+		$data['password'] = password_hash($new_password, PASSWORD_DEFAULT);
 		global $database;
 		$database->update('lg_users',$data);
 		return true;
@@ -586,7 +586,7 @@ class user
 		$name = preg_replace("/(\[.*\])|(\{.*\})/","",$name);
 		
 		//filter invalid chars:
-		$name = preg_replace("/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖÙÚÛÜİßàáâãäåæçèéêëìíîïğñòóôõöøùúûüışÿ\ \.\-\_]*/","",$name);
+		$name = preg_replace("/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÃ€ÃÃ‚ÃƒÃ„Ã…Ã†Ã‡ÃˆÃ‰ÃŠÃ‹ÃŒÃÃÃÃÃ‘Ã’Ã“Ã”Ã•Ã–Ã™ÃšÃ›ÃœÃÃŸÃ Ã¡Ã¢Ã£Ã¤Ã¥Ã¦Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã°Ã±Ã²Ã³Ã´ÃµÃ¶Ã¸Ã¹ÃºÃ»Ã¼Ã½Ã¾Ã¿\ \.\-\_]*/","",$name);
 		
 		$name = rtrim($name);
 		$name = ltrim($name);
@@ -622,7 +622,7 @@ class user
 	function check_name($name)
 	{
 		//make a valid username:
-		if(preg_match("/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZËÌÍÎÏåæçèéêëìíîïñòóô\ \.\-\_]+/",$name))
+		if(preg_match("/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÃ‹ÃŒÃÃÃÃ¥Ã¦Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã±Ã²Ã³Ã´\ \.\-\_]+/",$name))
 			return false;
 			
 		//no numeric names:
