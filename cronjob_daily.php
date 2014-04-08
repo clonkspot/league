@@ -14,7 +14,7 @@ $debug_sql_slow_log = FALSE; //cronjob can be slow?
 
 $log = new log();
 
-if(!($_REQUEST['password'] == '' || !isset($_SERVER['REMOTE_USER'])))
+if(!($_REQUEST['password'] == $cronjob_password || !isset($_SERVER['REMOTE_USER'])))
 {
 	$log->add("daily cronjob: no access for ".$_SERVER["REMOTE_ADDR"]);
 	exit;

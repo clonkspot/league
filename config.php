@@ -27,4 +27,6 @@ $debug_skip_resource_checksum = TRUE;
 $cfg_official_server = array('1.2.3.4','1.2.3.4');
 $cfg_settle_on_official_server_only = false;
 $cfg_settle_with_latest_engine_only = false;
+
+$cronjob_password = '';
 ?>
