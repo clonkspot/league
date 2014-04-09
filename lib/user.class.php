@@ -102,11 +102,9 @@ class user
 			}
 			else if($a[0]['id'] > 0 && $a[0]['password'] == '')
 			{
-				//pasword was reset -> check webcode again and set webcode as password, if correct:
-				if(!$this->check_webcode($a[0]['cuid'], $password)) return FALSE; // has it's own error handling
-				// webcode OK; update password to webcode
-				$database->query("UPDATE lg_users SET password = '".$database->escape(password_hash($password, PASSWORD_DEFAULT))."'
-					WHERE id = '".$a[0]['id']."'");
+				// no league password set: That means cuid/webcode pair should be used for authentification
+				if(!$this->check_webcode($a[0]['cuid'], $password)) return FALSE; // has its own error handling
+				// webcode OK.
 			}
 			else
 			{
@@ -129,7 +127,7 @@ class user
 			// user does not exist
 			//auto-create account on first login with WEBCODE
 			if(!$this->check_webcode($name,$password)) return FALSE; // has it's own error handling
-			if(!$this->create($name, $password, $name)) return FALSE; // has it's own error handling
+			if(!$this->create($name, NULL, $name)) return FALSE; // has it's own error handling
 			return $this->login($name, $password);
 		}
 	}
@@ -238,12 +236,15 @@ class user
 		}
 		
 		
-		//check password (TODO: check for secure password?)
-		if(!$this->check_password($password))
+		// if a custom password is to be set, check password (TODO: check for secure password?)
+		if ($password != NULL)
 		{
-			$log->add_user_error("user $name could not be created: password too short");
-			$this->error = 'error_password_too_short';
-			return FALSE;
+			if(!$this->check_password($password))
+			{
+				$log->add_user_error("user $name could not be created: password too short");
+				$this->error = 'error_password_too_short';
+				return FALSE;
+			}
 		}
 		
 		
@@ -252,7 +253,15 @@ class user
 		$user['date_created'] = time();
 		$user['date_last_login'] = time();
 		$user['name'] = $name;
-		$user['password'] = password_hash($password, PASSWORD_DEFAULT);
+		if ($password == NULL)
+		{
+			// empty password in league: this means cuid/webcode is used for authentification (i.e. the default for all users)
+			$user['password'] = '';
+		}
+		else
+		{
+			$user['password'] = password_hash($password, PASSWORD_DEFAULT);
+		}
 		$user['cuid'] = $cuid;
 		$this->data['id'] = $database->insert('lg_users', $user);
 		$this->load_data($this->data['id']);
@@ -375,7 +384,7 @@ class user
 			{
 				$registered = TRUE;
 				// login success: update information
-				// TODO: email / admin status couild be synced from forum here
+				// TODO: admin status couild be synced from forum here
 				//$user_email = $user->get_info()['email'];
 				//$is_league_admin = in_array('League Moderators',$user->get_groups());
 			}
