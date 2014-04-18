@@ -7,7 +7,8 @@
 </head>
 <body>
 
-{fetch file='../www/header/header.html'}
+{config_load "main.conf"}
+{fetch file=#header#}
 
 <div id='wrapper'>
 <div id='content'>
@@ -89,7 +90,7 @@
 </div>
 </div>
 
-{fetch file='../www/header/botter.html'}
+{fetch file=#footer#}
 
 </body>
 </html>
