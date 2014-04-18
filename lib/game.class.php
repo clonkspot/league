@@ -92,7 +92,7 @@ class game
 			if($a[0]['c'] >= $max_game_count)
 			{
 				$this->error = 'error_too_many_gamestarts';
-				$log = & new log;
+				$log = new log;
 				$log->add_user_error("tried to start a game, but too many games in the last few minutes: host-ip: ".$_SERVER['REMOTE_ADDR']);
 				return 0;
 			}
@@ -114,14 +114,14 @@ class game
 
 		//add the game to all fitting leagues for now
 		$game_data['type'] = 'noleague';
-		$scenario = & new scenario();
-		$league = & new league();
+		$scenario = new scenario();
+		$league = new league();
 		$leagues_to_add = array();
 		
 		$product_id = $this->get_product_id_from_reference($game_reference);
 		if(false == $product_id)
 		{
-			$log = & new log();
+			$log = new log();
 			$log->add_user_error("reference has invalid product-id. version in reference invalid? reference: ".$game_reference->get_ini());
 			$this->error = 'error_invalid_product_id';
 			return 0;
@@ -285,7 +285,7 @@ class game
 		}
 		
 		
-		$log = & new log;
+		$log = new log;
 		$log->add_game_start("Host-IP: ".$_SERVER['REMOTE_ADDR'],$csid);
 		//print_a(array(""=>$game_data['reference']));
 		
@@ -411,7 +411,7 @@ class game
 	
 	function end(&$game_reference, $timeout = false)
 	{
-		$log = & new log;
+		$log = new log;
 		$return_value = TRUE; //return-value
 		$csid = $game_reference->data['[Request]'][0]['CSID'];
 		
@@ -577,7 +577,7 @@ class game
 		}
 		if(count($league_ids)) //this is also somehow an implicit check if the game is a league-game
 		{
-			$scenario = & new scenario();
+			$scenario = new scenario();
 			//adding the scenario is done in game::create() if necessary...
 			if($scenario->load_data($this->data['scenario_id']))
 			{
@@ -588,14 +588,14 @@ class game
 				
 				foreach($league_ids AS $league_id)
 				{
-					$league = & new league();
+					$league = new league();
 					$league->load_data($league_id);
 					if($league->data['type'] == 'melee')
-						$league = & new league_melee();
+						$league = new league_melee();
 					elseif ($league->is_custom_scoring()) // custom settle (adventure league)
-						$league = & new league_settle_custom();
+						$league = new league_settle_custom();
 					else //settle
-						$league = & new league_settle();
+						$league = new league_settle();
 					$league->load_data($league_id);
 					
 					
@@ -611,7 +611,7 @@ class game
 				if(FALSE == $at_least_one_league_without_error)
 				{
 					//this case normally should not be used. there should be no evaluation-errors.
-					$log = & new log();
+					$log = new log();
 					$log->add_error("game: (id: ".$this->data['id'].") end: evaluation errors in all leagues (leagues set: league-ids: ".implode(";",$league_ids)."): last error: $league_error");
 					$this->error = $league_error;
 					//do not exit here...count game as non-league-game...but return FALSE in the end.
@@ -623,7 +623,7 @@ class game
 			{
 				//error: scenario not found...so log error and don't do any league-stuff
 				//this should only_ happen if the scenario is deleted while playing...
-				$log = & new log();
+				$log = new log();
 				$log->add_error("game: (id: ".$this->data['id'].") end: scenario (id: ".$this->data['scenario_id'].") not found (was deleted?), but leagues set: league-ids: ".implode(";",$league_ids));
 				$this->error = 'error_scenario_not_found';
 				//do not exit here...count game as non-league-game...but return FALSE in the end.
@@ -1135,7 +1135,7 @@ class game
 	
 	function join_player(&$reference)
 	{
-		$log = & new log();
+		$log = new log();
 		
 		if(!$this->data['id'])
 		{
@@ -1264,7 +1264,7 @@ class game
 		{
 			foreach($a AS $p)
 			{
-				$player = & new game_player();
+				$player = new game_player();
 				$player->load_data($p['player_id'], $this->data['id']);
 				$players[] = $player;
 			}
@@ -1286,7 +1286,7 @@ class game
 		{
 			foreach($a AS $t)
 			{
-				$team = & new game_team();
+				$team = new game_team();
 				$team->load_data($t['team_id'], $this->data['id']);
 				$teams[] = $team;
 			}

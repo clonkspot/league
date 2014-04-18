@@ -57,7 +57,7 @@ class league_melee extends league
 		if(0 == count($winner_teams) || 0 == count($looser_teams))
 		{
 			$team_debug_info = var_export($teams,TRUE);
-			$log = & new log();
+			$log = new log();
 			if(count($winner_teams))
 			{
 				$log->add_error("game: (id: ".$game->data['id'].") end: no looser-team -> delete game-league-data (leagues set: league-id: ".$this->data['id']." - reference: ".$game->reference->get_ini()
@@ -132,7 +132,7 @@ class league_melee extends league
 								-$game_score / 2,
 								$this->data['bonus_max']),
 							$score->data['bonus_account']));
-						$log = & new log();
+						$log = new log();
 						$log->add(
 							"game id=".$game->data['id'].
 							", lid=".$this->data['id'].

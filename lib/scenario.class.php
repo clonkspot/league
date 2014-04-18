@@ -160,7 +160,7 @@ class scenario
 		$version_data['date_created'] = time(); //a new one
 		$database->insert('lg_scenario_versions',$version_data);
 		
-		$log = & new log();
+		$log = new log();
 		$log->add("Scenario ID ".$this->data['id']." got new version CRC ".$version_data['hash']." SHA ".$version_data['hash_sha']);
 		return true;
 	}	
@@ -200,7 +200,7 @@ class scenario
 		$data['product_id'] = $product_id;
 		if(false == $product_id)
 		{
-			$log = & new log();
+			$log = new log();
 			$log->add_user_error("game with scenario $title has invalid product-id. version in reference invalid? reference: ".$reference->get_ini());
 			return false;
 		}	
@@ -216,7 +216,7 @@ class scenario
 		$this->data = $data;
 		$this->data['id'] = $database->insert('lg_scenarios',$data);
 		
-		$log = & new log();
+		$log = new log();
 		$log->add("Scenario $title added to database (id: ".$this->data['id']." type: ".$data['type'].")");
 		
 		$this->add_version_by_reference($reference);
