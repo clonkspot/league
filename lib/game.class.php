@@ -2296,10 +2296,14 @@ class game
 		
 		$order = "";
 		
-		if($sort['dir']!='desc')
+		if(!isset($sort['dir']) || $sort['dir']!='desc')
 			$sort['dir'] = 'asc';
 		
-		if($sort['col'] == 'settle_rank')
+		if(!isset($sort['col']))
+		{
+		      $sort['col'] = '';
+		}
+		elseif($sort['col'] == 'settle_rank')
 		{
 			$order = "no_settle_rank ".$sort['dir'].", ".$sort['col']." ".$sort['dir'];			
 		}
