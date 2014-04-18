@@ -216,13 +216,13 @@ $this->strings['filter_noleague'] = "no league";
 $this->strings['filter_player_ranking'] = "player-ranking";
 $this->strings['filter_clan_ranking'] = "team-ranking";
 
-$this->strings['filter_icon_melee_on'] = "type_melee.png";
-$this->strings['filter_icon_melee_off'] = "type_melee_off.png";
+$this->strings['filter_icon_melee_on'] = "type_melee.gif";
+$this->strings['filter_icon_melee_off'] = "type_melee_off.gif";
 
-$this->strings['filter_icon_lobby_on'] = "status_lobby.png";
-$this->strings['filter_icon_lobby_off'] = "status_lobby_off.png";
-$this->strings['filter_icon_running_on'] = "status_running.png";
-$this->strings['filter_icon_running_off'] = "status_running_off.png";
+$this->strings['filter_icon_lobby_on'] = "status_lobby.gif";
+$this->strings['filter_icon_lobby_off'] = "status_lobby_off.gif";
+$this->strings['filter_icon_running_on'] = "status_running.gif";
+$this->strings['filter_icon_running_off'] = "status_running_off.gif";
 
 $this->strings['filter_Clonk Rage'] = "Clonk Rage";
 $this->strings['filter_icon_Clonk Rage_on'] = "cr_icon_32.png";
