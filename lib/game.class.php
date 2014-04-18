@@ -2339,6 +2339,7 @@ class game
 		}
 		
 		// 2. FROM / JOIN
+		$sql_from = "";
 		if(false == $search_filter_used)
 		{
 			$sql_from .= "
@@ -2380,6 +2381,7 @@ class game
 		$sql_where =" WHERE $where";
 		
 		// 4. ORDER BY
+		$sql_order = "";
 		if($order=="") //default
 			$sql_order .=" ORDER BY date_created desc";
 		elseif($sort['col']=="date_created")
@@ -2390,7 +2392,7 @@ class game
 			$sql_order .=" ORDER BY $order, date_created desc";
 			
 		// 5. LIMIT
-		$sql_limit .=" LIMIT $limit_start, $per_page";
+		$sql_limit =" LIMIT $limit_start, $per_page";
 		
 		// 6. Wrap the whole query into another query
 		if(!$direct_scenario_name_lookup)
