@@ -16,8 +16,8 @@ class news_statistics
 	{
 		global $database;
 		//save values for news-statistics:
-		//oc-version
-		$database->query("INSERT INTO lg_news_statistics SET k = 'oc_version', v = (SELECT version FROM lg_products WHERE name = 'OpenClonk')
+		//cr-version
+		$database->query("INSERT INTO lg_news_statistics SET k = 'cr_version', v = (SELECT version FROM lg_products WHERE name = 'Clonk Rage')
 		ON DUPLICATE KEY UPDATE v = VALUES(v)");
 		//running games:
 		$database->query("INSERT INTO lg_news_statistics SET k = 'games_running', v = (SELECT COUNT(id) FROM lg_games WHERE status='lobby' OR status='running')

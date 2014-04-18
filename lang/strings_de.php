@@ -225,6 +225,14 @@ $this->strings['filter_icon_lobby_off'] = "status_lobby_off.png";
 $this->strings['filter_icon_running_on'] = "status_running.png";
 $this->strings['filter_icon_running_off'] = "status_running_off.png";
 
+$this->strings['filter_Clonk Rage'] = "Clonk Rage";
+$this->strings['filter_icon_Clonk Rage_on'] = "cr_icon_32.png";
+$this->strings['filter_icon_Clonk Rage_off'] = "cr_icon_32_off.png";
+
+$this->strings['filter_Clonk Extreme'] = "Clonk Extreme";
+$this->strings['filter_icon_Clonk Extreme_on'] = "cx_icon_32.png";
+$this->strings['filter_icon_Clonk Extreme_off'] = "cx_icon_32_off.png";
+
 $this->strings['filter_OpenClonk'] = "OpenClonk";
 $this->strings['filter_icon_OpenClonk_on'] = "oc_icon_32.png";
 $this->strings['filter_icon_OpenClonk_off'] = "oc_icon_32_off.png";
