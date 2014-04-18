@@ -212,7 +212,7 @@ class language
 	
 	function get_http_header_languages()
 	{
-		$languages = split(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		$languages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 		for($i=0;$i<count($languages);$i++)
 		{
 			if(is_string(substr($languages[$i],0,2)))

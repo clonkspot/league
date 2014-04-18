@@ -179,7 +179,7 @@ class game
 							WHERE version LIKE '".$database->escape($reference_version)."%'");
 						
 						//get build out of version string like 4,9,10,0,317
-						$build = split(',',$a[0]['version']);
+						$build = explode(',',$a[0]['version']);
 						if(count($build)>0)
 							$build = $build[count($build)-1];
 							
