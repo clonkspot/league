@@ -29,6 +29,7 @@
                 {/if}
                 {if $game.is_official_server}<img src="images/icons/official_server_16.png" title="{$l->s('official_server')}">{/if}
                 {if $game.is_password_needed}<img src="images/icons/password_needed_16.png" title="{$l->s('password_needed')}">{/if}
+                {if $game.is_fair_crew_strength}<img src="images/icons/fair_crew_strength_16.png" title="{$l->s('fair_crew_strength')}">{/if}
 
 				{if $u->check_operator_permission("game","download_record", $leagues) && !$game.is_revoked }
 					{include file="admin/game_download_record.tpl"}

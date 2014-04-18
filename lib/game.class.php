@@ -255,6 +255,8 @@ class game
 		//additional game-flags:
 		if($game_reference->data['[Reference]'][0]['PasswordNeeded'] == 'true')
 			$game_data['is_password_needed'] = 1;
+		if($game_reference->data['[Reference]'][0]['UseFairCrew'] == 'true')
+			$game_data['is_fair_crew_strength'] = 1;
 		if($game_reference->data['[Reference]'][0]['JoinAllowed'] == 'true')
 			$game_data['is_join_allowed'] = 1;
 		if($game_reference->data['[Reference]'][0]['OfficialServer'] == 'true')
@@ -377,6 +379,10 @@ class game
 			$this->data['is_password_needed'] = 1;
 		else
 			$this->data['is_password_needed'] = 0;
+		if($this->reference->data['[Reference]'][0]['UseFairCrew'] == 'true')
+			$this->data['is_fair_crew_strength'] = 1;
+		else
+			$this->data['is_fair_crew_strength'] = 0;
 		if($this->reference->data['[Reference]'][0]['JoinAllowed'] != 'false')
 			$this->data['is_join_allowed'] = 1;
 		else

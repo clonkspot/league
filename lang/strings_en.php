@@ -112,6 +112,7 @@ $this->strings['autocreated'] = "auto-created";
 $this->strings['running'] = "Game running";
 $this->strings['lobby'] = "Lobby";
 $this->strings['password_needed'] = "Password required";
+$this->strings['fair_crew_strength'] = "Uses fair crew";
 $this->strings['is_join_allowed'] = "Runtime join allowed";
 $this->strings['players'] = "Players";
 $this->strings['teams'] = "Teams";

@@ -1,10 +1,6 @@
--- 
+-- OC pre deployment (Players cannot rename themselves)
 
-ALTER TABLE `lg_games` DROP COLUMN `is_fair_crew_strength`;
-
--- 914ce569d431800795c546db7aa9fd9f1f6c1dc6
-
-ALTER TABLE `lg_users` DROP COLUMN `date_last_rename`;
+ALTER TABLE  `lg_users` DROP COLUMN `date_last_rename`;
 
 -- Rev 1573 (Adventure league)
 
