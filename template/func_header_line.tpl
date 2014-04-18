@@ -5,7 +5,7 @@
 
 <div class="filterstatus">
 {$l->s($func)}
-{if $smarty.request.filter|@count && !($smarty.request.filter|@count==1 && $smarty.request.filter.search|@count && $smarty.request.filter.search.0=="")}
+{if isset($smarty.request.filter) && $smarty.request.filter|@count && !($smarty.request.filter|@count==1 && $smarty.request.filter.search|@count && $smarty.request.filter.search.0=="")}
  -
 {assign var=notused value=$smarty.request.filter|@ksort} {* sort array *}
 {/if}
