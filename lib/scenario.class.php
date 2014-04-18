@@ -549,7 +549,7 @@ class scenario
 		foreach($a as &$scenario) {
 		
 			// Replace league list string with data about the mentioned leagues
-			$league_ids = split(',', $scenario["leagues"]);
+			$league_ids = explode(',', $scenario["leagues"]);
 			$league_data = array();
 			foreach($leagues as $ld) {
 				if(in_array($ld['id'], $league_ids)) {
