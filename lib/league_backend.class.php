@@ -153,7 +153,7 @@ class league_backend
 		if($user->is_banned($cuid) 
 			&& (FALSE==$user->is_league_only_banned($cuid)||$game_reference->data['[Reference]'][0]['LeagueAddress']))
 		{
-			$response = & new game_reference();
+			$response = new game_reference();
 			$log = new log();
 			$log->add_game_start("error: ".$language->s('error_user_banned'),0);
 			$response->data['[Response]'][0]['Status'] = 'Failure';
@@ -163,10 +163,10 @@ class league_backend
 		}
 		
 		$log = new log();
-		$game = & new game();
+		$game = new game();
 		$game_id = $game->create($game_reference);
 		
-		$response = & new game_reference();
+		$response = new game_reference();
 		if($game_id)
 		{
 			$response->data['[Response]'][0]['Status'] = 'Success';
@@ -211,8 +211,8 @@ class league_backend
 	
 	function update_game(&$game_reference)
 	{
-		$game = & new game();
-		$response = & new game_reference();
+		$game = new game();
+		$response = new game_reference();
 		global $language;
 		
 		if($game->update($game_reference))
@@ -233,9 +233,9 @@ class league_backend
 	
 	function report_disconnect(&$game_reference)
 	{
-		$game = & new game();
+		$game = new game();
 		$game->report_disconnect($game_reference);
-		$response = & new game_reference();
+		$response = new game_reference();
 
 		//always success:
 		$response->data['[Response]'][0]['Status'] = 'Success';
@@ -244,8 +244,8 @@ class league_backend
 	
 	function end_game(&$game_reference)
 	{
-		$game = & new game();
-		$response = & new game_reference();
+		$game = new game();
+		$response = new game_reference();
 		global $language;
 		
 		if($game->end($game_reference))
@@ -315,7 +315,7 @@ class league_backend
 		
 		if($a[0])
 		{
-			$reference = & new game_reference();
+			$reference = new game_reference();
 			$reference->set_serialized_data($a[0]['reference']);
 			
 			$game->data['id'] = $a[0]['id']; //needed to get the league-names. a bit of a hack, but there is no need to load all the game-data...performance...
@@ -335,14 +335,14 @@ class league_backend
 		$success = false;
 		$status_register = false;
 		
-		$auth_user = & new user();
+		$auth_user = new user();
 		
 		$name = remove_quotes($game_reference->data['[Request]'][0]['Account']);
 		$new_name = remove_quotes($game_reference->data['[Request]'][0]['NewAccount']);
 		$password = remove_quotes($game_reference->data['[Request]'][0]['Password']);
 		$new_password = remove_quotes($game_reference->data['[Request]'][0]['NewPassword']);
 		
-		$response = & new game_reference();
+		$response = new game_reference();
 		
 		if($auth_user->login($name, $password))
 		{
@@ -462,7 +462,7 @@ class league_backend
 	function join(&$game_reference)
 	{
 		global $language;
-		$response = & new game_reference();
+		$response = new game_reference();
 		$log = new log();
 		$csid = $game_reference->data['[Request]'][0]['CSID'];
 		if(!$csid)
@@ -475,7 +475,7 @@ class league_backend
 			return;
 		}		
 		
-		$game = & new game();
+		$game = new game();
 		$game->load_data_by_csid($csid);
 		
 		if($game->join_player($game_reference))
@@ -514,7 +514,7 @@ class league_backend
 		$log = new log();        
         $log->add_game_start("checksum error!",0);
 		global $language;
-        $response = & new game_reference();
+        $response = new game_reference();
         $response->data['[Response]'][0]['Status'] = 'Failure';
         $response->data['[Response]'][0]['Message'] =  $language->get_placeholder('error_wrong_checksum');
         
@@ -525,7 +525,7 @@ class league_backend
 	{
 		global $language;
 		
-		$response = & new game_reference();
+		$response = new game_reference();
 		
 		$game = new game();
 		if(false == $game->load_data($game_id))

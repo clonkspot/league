@@ -34,7 +34,7 @@ $language = new language();
 $language->load_stringtable();
 
 
-$league_backend = & new league_backend();
+$league_backend = new league_backend();
 
 //$post_data = $GLOBALS['HTTP_RAW_POST_DATA'];
 

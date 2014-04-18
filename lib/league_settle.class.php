@@ -37,7 +37,7 @@ class league_settle extends league
 		}
 		if(FALSE == $at_least_one_winner)
 		{
-			$log = & new log();
+			$log = new log();
 
 			$log->add_error("settle-game: (id: ".$game->data['id'].") end: no winner -> delete game-league-data (leagues set: league-id: ".$this->data['id']." ");//- reference: ".$game->reference->get_ini());
 			$this->error = 'error_no_winner';
@@ -214,7 +214,7 @@ class league_settle extends league
 				$rank_buffer++;
 			$last_frame = $game_new['frame'];
 			
-			$score = & new score();
+			$score = new score();
 			$score->load_data($game_new['user_id'],$this->data['id']);
 			
 			//get the old rank:
@@ -326,7 +326,7 @@ class league_settle extends league
 					$rank_buffer++;
 				$last_frame = $game_new['frame'];
 					
-				$score = & new score();
+				$score = new score();
 				$score->load_data($game_new['user_id'],$this->data['id']);
 				$game_score = $scenario->data['settle_base_score'] + $this->get_time_bonus($current_rank,$scenario->data['settle_time_bonus_score']);
 				$score->data['score'] += $game_score;
