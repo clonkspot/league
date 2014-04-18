@@ -174,7 +174,7 @@ $this->strings['rename'] = "rename";
 $this->strings['renamed'] = "renamed";
 
 //login:
-$this->strings['login_notice'] = 'Use your user credentials from the OpenClonk forum to login. <a href="http://forum.openclonk.org/user_register.pl">Not registered yet?</a>';
+$this->strings['login_notice'] = 'Use your user credentials from the Clonkspot forum to login. <a href="https://clonkspot.org/forum/user_register.pl">Not registered yet?</a>';
 $this->strings['user_name'] = "Username";
 $this->strings['user_password'] = "Password";
 $this->strings['new_user'] = "New League-Account";
