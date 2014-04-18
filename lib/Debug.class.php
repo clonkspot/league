@@ -100,7 +100,7 @@
 
 
 
-if (USE_DEBUGLIB) {
+if (defined('USE_DEBUGLIB')) {
     
     # This file must be the first include on your page.
     
