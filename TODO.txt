@@ -9,8 +9,3 @@ Fix:
  - 48f4aac correctly include the website header
  - 81458da openclonk stylesheet
  - e7d6f3a add oc favicon
-
-Revert:
- - 1c24854 internationalization: send unlocalized string placeholders in communication with the engine
- - a41d9df replace some references of Clonk Rage with references to OpenClonk
- - fd4029a remove fair strength attribute (obsolete with openclonk)
