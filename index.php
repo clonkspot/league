@@ -293,7 +293,7 @@ switch(@$_REQUEST['part']) {
 				{
 					require_once('lib/game.class.php');
 					$game = new game();
-					$game->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+					$game->show_list(@$_REQUEST['filter'], @$_REQUEST['page'], @$_REQUEST['sort']);
 					$_REQUEST['part']='game';
 					$_REQUEST['method']='list';
 				}
