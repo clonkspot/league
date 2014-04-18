@@ -4,7 +4,6 @@ require_once('league.class.php');
 require_once('league_melee.class.php');
 
 require_once('clan.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/../auth/mwf_auth.php');
 
 class user
 {

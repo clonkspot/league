@@ -3,6 +3,9 @@
 $webroot = 'D:/www/league2/';
 //$webroot = '/is/htdocs/wp1144497_5BDDWAFPQY/openclonk/league/';
 
+// MwfAuth path
+require_once($_SERVER['DOCUMENT_ROOT'].'/../auth/mwf_auth.php');
+
 require_once('smarty/libs/SmartyBC.class.php');
 $smarty = new SmartyBC();
 
