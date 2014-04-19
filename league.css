@@ -109,6 +109,8 @@ td
 {
 	padding: 2px;	
 	padding-right:6px;
+	background-color: #F3F3F3;
+	border: 1px solid white;
 }
 
 img.vrbar 
@@ -178,4 +180,8 @@ tr.revoked a:visited
 tr.revoked span.scorewon a:visited
 {
 	color: #4477DD;
+}
+
+div.languages {
+	clear: both;
 }

@@ -2,7 +2,6 @@
 
 <table>
         <tr class="th">
-            <td></td>
             {include file="func_tableheader.tpl" link="?part=league&method=list" value="name"}
             {include file="func_tableheader.tpl" link="?part=league&method=list" value="description"}
             {include file="func_tableheader.tpl" link="?part=league&method=list" value="type"}
@@ -11,8 +10,7 @@
         </tr>
     {foreach item=league from=$leagues name="league"}
         <tr {if !$league.is_current}class="revoked"{/if}>
-            <td><a href="?part=league&method=ranking&league[id]={$league.id}"><img src="{$league.filter_icon_on}" alt=""></a></td>
-            <td><a href="?part=league&method=ranking&league[id]={$league.id}">{$league.name}</a></td>
+            <td><a href="?part=league&method=ranking&league[id]={$league.id}"><img src="{$league.icon}" alt=""> {$league.name}</a></td>
             <td>{$league.description}</td>
             <td>{$l->s($league.type)}{if $league.scenario_restriction == 'N'}, {$l->s('open_league')}{/if}</td>
             <td>{$league.date_end|date_format:"%d.%m.%y"}</td>
