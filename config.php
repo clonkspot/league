@@ -32,4 +32,6 @@ $cfg_settle_on_official_server_only = false;
 $cfg_settle_with_latest_engine_only = false;
 
 $cronjob_password = '';
+
+//$smarty->assign("helplink",'http://wiki.openclonk.org/w/FAQ');
 ?>
