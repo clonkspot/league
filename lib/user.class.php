@@ -72,6 +72,7 @@ class user
 		global $language;
 		
 		$log = new log();
+		$forum_user = NULL;
 		
 		//$name id username
 		$a = $database->get_array("SELECT u.cuid, id, password, IF(cb.cuid IS NULL,0,1) AS is_banned, cb.reason 
@@ -102,7 +103,7 @@ class user
 			else if($a[0]['id'] > 0 && $a[0]['password'] == '')
 			{
 				// no league password set: That means cuid/webcode pair should be used for authentification
-				if(!$this->check_webcode($a[0]['cuid'], $password)) return FALSE; // has its own error handling
+				if(!$this->check_webcode($a[0]['cuid'], $password, $forum_user)) return FALSE; // has its own error handling
 				// webcode OK.
 			}
 			else
@@ -118,6 +119,10 @@ class user
 			$this->load_data($a[0]['id']);
 			
 			$this->data['date_last_login'] = time();
+			
+			// On every successful logon with webcode (forum password): Update information from forum data
+			if ($forum_user != NULL) $this->update_data_from_forum($forum_user);
+			
 			$this->save();
 			return TRUE;
 		}
@@ -125,7 +130,7 @@ class user
 		{
 			// user does not exist
 			//auto-create account on first login with WEBCODE
-			if(!$this->check_webcode($name,$password)) return FALSE; // has it's own error handling
+			if(!$this->check_webcode($name,$password,$forum_user)) return FALSE; // has it's own error handling
 			if(!$this->create($name, NULL, $name)) return FALSE; // has it's own error handling
 			return $this->login($name, $password);
 		}
@@ -366,7 +371,7 @@ class user
 	}
 	
 	
-	function check_webcode($cuid, $webcode)
+	function check_webcode($cuid, $webcode, &$forum_user)
 	{
 		global $message_box;
 		global $language;
@@ -378,14 +383,10 @@ class user
 		try
 		{
 			// authenticate
-			$user = new MwfUser($cuid);
-			if($user->authenticate($webcode))
+			$forum_user = new MwfUser($cuid);
+			if($forum_user->authenticate($webcode))
 			{
 				$registered = TRUE;
-				// login success: update information
-				// TODO: admin status couild be synced from forum here
-				//$user_email = $user->get_info()['email'];
-				//$is_league_admin = in_array('League Moderators',$user->get_groups());
 			}
 		}
 		catch(Exception $e)
@@ -407,6 +408,24 @@ class user
 			$message_box->add_error($language->s("error_webcode_auth_failed"));
 			return FALSE;
 		}
+	}
+	
+	function update_data_from_forum($forum_user)
+	{
+		// Sync email and admin status from forum information
+		// Since we only have one group, all League Moderators are admins with full privileges
+		$is_league_admin = in_array('League Moderators',$forum_user->get_groups());
+		$user_info = $forum_user->get_info();
+		$this->data['email'] = $user_info['email'];
+		if ($this->data['admin'] && !$is_league_admin)
+		{
+			$this->unmake_admin();
+		}
+		elseif (!$this->data['admin'] && $is_league_admin)
+		{
+			$this->make_admin();
+		}
+		return TRUE;
 	}
 	
 	function check_password($password)
@@ -500,6 +519,46 @@ class user
 				return FALSE;
 		}
 
+		return TRUE;
+	}
+	
+	function make_admin()
+	{
+		global $database;
+		// Set admin flag
+		$this->data['admin'] = 1;
+		// Insert individual admin privileges
+		$methods = array('clan', 'cuid_ban', 'debug', 'game', 'league', 'log', 'resource', 'scenario', 'test', 'user');
+		$sql = '';
+		foreach($methods as $method)
+		{
+			if ($sql=='')
+			{
+				$sql = 'INSERT IGNORE INTO lg_admin_permissions(user_id, part, method) VALUES ';
+			}
+			else
+			{
+				$sql.=',';
+			}
+			$sql.="('".$this->data['id']."','".$method."','')";
+		}
+		if ($sql!='') $database->query($sql);
+		$this->save();
+		$log = new log();
+		$log->add("user ".$this->data['name']." (".$this->data['id'].") made to admin.");
+		return TRUE;
+	}
+	
+	function unmake_admin()
+	{
+		global $database;
+		// Unset admin flag
+		$this->data['admin'] = 0;
+		// Remove individual admin privileges
+		$database->delete_where("lg_admin_permissions", "user_id = '".$database->escape($this->data['id'])."'");
+		$this->save();
+		$log = new log();
+		$log->add("user ".$this->data['name']." (".$this->data['id'].") admin privileges removed.");
 		return TRUE;
 	}
 
