@@ -51,15 +51,19 @@ class scenario
 		$this->versions= $a;
 	}	
 	
-	function load_data_by_hash($hash,$hash_sha)
+	function load_data_by_hash($hash,$hash_sha,$filename)
 	{
 		global $database;
 		$a = $database->get_array("SELECT scenario_id, hash_sha FROM lg_scenario_versions 
 			WHERE hash = '".$database->escape($hash)."'");
-		//print_a($a);echo "$hash_sha <hr>";
 		if(strtolower($hash_sha) != strtolower($a[0]['hash_sha']) || !$hash_sha)
-			return false;
-			
+		{
+			// Hash check failed. For pre-release league testing, allow sha "any" to match only on filename.
+			$a = $database->get_array("SELECT scenario_id FROM lg_scenario_versions 
+				WHERE hash_sha = 'any' AND filename = '".$database->escape($filename)."'");
+			if (count($a) < 1 || !$a[0]['scenario_id'])
+				return false;
+		}
 		return $this->load_data($a[0]['scenario_id']);
 	}
 	

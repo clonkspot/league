@@ -132,7 +132,7 @@ class game
 		if($game_reference->data['[Reference]'][0]['LeagueAddress'])
 		{
 			$leagues_data = NULL;
-			if($scenario->load_data_by_hash($game_reference->data['[Reference]'][0]['[Scenario]'][0]['FileCRC'],$game_reference->data['[Reference]'][0]['[Scenario]'][0]['FileSHA']))
+			if($scenario->load_data_by_hash($game_reference->data['[Reference]'][0]['[Scenario]'][0]['FileCRC'],$game_reference->data['[Reference]'][0]['[Scenario]'][0]['FileSHA'], $scenario->get_filename_from_reference($game_reference)))
 				$leagues_data = $league->get_active_leagues_by_scenario($product_id, $scenario->data['id']);
 			//scenario found by hash: add to fitting leagues
 			if($scenario->is_active() && is_array($leagues_data))
