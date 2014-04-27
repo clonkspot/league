@@ -2100,7 +2100,7 @@ class game
 		//$log = new log();
 		//$log->add("stream: game_id:".$this->data['id']." filename:".$this->data['record_filename']);		
 		
-		$f = fopen("records/".$this->data['record_filename'], "ab+");
+		$f = fopen($record_folder.$this->data['record_filename'], "ab+");
 		fseek($f, $pos);
 		fwrite($f, $raw_data);
 		fclose($f);
