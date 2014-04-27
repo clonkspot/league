@@ -14,6 +14,8 @@ $smarty->compile_dir = $webroot.'template_c/';
 $smarty->cache_dir = $webroot.'cache/';
 $smarty->config_dir = $webroot.'configs/';
 
+$record_folder = $webroot."records/";
+
 unset($webroot);
 
 //$database = new database('127.0.0.1','db1144497-league',geheim,geheim);
