@@ -6,7 +6,6 @@ class language
 {
 	var $data;
 	var $strings;
-	var $engine_placeholder_strings;
 	
 	function load_data($code)
 	{
@@ -109,8 +108,6 @@ class language
 	
 	function load_stringtable()
 	{
-		include_once('lang/engine_placeholder_strings.php');
-	
 		//get new lang and set it to session
 		if(isset($_REQUEST['lang']))
 			$_SESSION['lang'] = $_REQUEST['lang'];
@@ -140,7 +137,6 @@ class language
 				}
 			}
 		}
-		
 		
 		if(!$lang)
 			$lang = 'de'; //DEFAULT if nothing else fits...
@@ -179,23 +175,6 @@ class language
 				$trace[1]["file"].".".$trace[1]["line"]);
 			return false;
 		}
-	}
-
-	function get_placeholder($code, $logerror = true)
-	{
-		$result = $code;
-		if(isset($this->engine_placeholder_strings[$code])) {
-			$result = $this->engine_placeholder_strings[$code];
-		}
-		else if(true == $logerror)
-		{
-			$log = new log();
-			$trace = debug_backtrace(false);
-			$log->add_error("string $code not found, from ".
-				$trace[0]["file"].".".$trace[0]["line"].", ".
-				$trace[1]["file"].".".$trace[1]["line"]);
-		}
-		return $result;
 	}
 	
 	function get_strings()

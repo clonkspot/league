@@ -157,7 +157,7 @@ class league_backend
 			$log = new log();
 			$log->add_game_start("error: ".$language->s('error_user_banned'),0);
 			$response->data['[Response]'][0]['Status'] = 'Failure';
-			$response->data['[Response]'][0]['Message'] =  $language->get_placeholder('error_user_banned'); 			
+			$response->data['[Response]'][0]['Message'] =  $language->s('error_user_banned'); 			
 			$this->send_response($response);
 			return FALSE;
 		}
@@ -193,7 +193,7 @@ class league_backend
 			else
 			{
 				if($game_reference->data['[Reference]'][0]['LeagueAddress']) // should be a league-game -> error
-					$response->data['[Response]'][0]['Message'] =  $language->get_placeholder($game->get_error()); 
+					$response->data['[Response]'][0]['Message'] =  $language->s($game->get_error()); 
 			}
 			
 			//temporarly disabled because of engine-desync-bug
@@ -204,7 +204,7 @@ class league_backend
 			//log error:
 			$log->add_game_start("error: ".$language->s($game->get_error()),0);
 			$response->data['[Response]'][0]['Status'] = 'Failure';
-			$response->data['[Response]'][0]['Message'] =  $language->get_placeholder($game->get_error()); 
+			$response->data['[Response]'][0]['Message'] =  $language->s($game->get_error()); 
 		}
 		$this->send_response($response);
 	}
@@ -225,7 +225,7 @@ class league_backend
 		else
 		{
 			$response->data['[Response]'][0]['Status'] = 'Failure';
-			$response->data['[Response]'][0]['Message'] =  $language->get_placeholder($game->get_error());
+			$response->data['[Response]'][0]['Message'] =  $language->s($game->get_error());
 		}
 		$this->send_response($response);
 		
@@ -269,9 +269,12 @@ class league_backend
 		else
 		{
 			$response->data['[Response]'][0]['Status'] = 'Failure';
-			$response->data['[Response]'][0]['Message'] =  $language->get_placeholder($game->get_error()); 
+			$response->data['[Response]'][0]['Message'] =  $language->s($game->get_error()); 
 		}
 		$this->send_response($response);
+		
+		
+
 	}
 	
 	function send_game_list($product_string = NULL)
@@ -367,7 +370,7 @@ class league_backend
 					}
 					else
 					{
-						$response->data['[Response]'][0]['Message'] = $language->get_placeholder($auth_user->get_error()); 
+						$response->data['[Response]'][0]['Message'] = $language->s($auth_user->get_error()); 
 					}
 				}
 				elseif(!$new_name && TRUE == $auth_user->check_account_exists($cuid) && $auth_user->check_webcode($cuid, $password))
@@ -377,15 +380,15 @@ class league_backend
 				}
 				else if($auth_user->get_error() != NULL)
 				{
-					$response->data['[Response]'][0]['Message'] =  $language->get_placeholder($auth_user->get_error()); 
+					$response->data['[Response]'][0]['Message'] =  $language->s($auth_user->get_error()); 
 				}
 			}
 			else
 			{
 				if($auth_user->get_error())
-					$response->data['[Response]'][0]['Message'] =  $language->get_placeholder($auth_user->get_error());
+					$response->data['[Response]'][0]['Message'] =  $language->s($auth_user->get_error());
 				else	
-					$response->data['[Response]'][0]['Message'] =  $language->get_placeholder('error_login_failed');	
+					$response->data['[Response]'][0]['Message'] =  $language->s('error_login_failed');	
 			}
 		}
 		
@@ -394,7 +397,7 @@ class league_backend
 		{
 			if(!$auth_user->change_password($new_password))
 			{
-				$response->data['[Response]'][0]['Message'] =  $language->get_placeholder($auth_user->get_error());
+				$response->data['[Response]'][0]['Message'] =  $language->s($auth_user->get_error());
 				$success = false;
 			}
 		}
@@ -469,7 +472,7 @@ class league_backend
 		{
 			//no csid -> error
 			$log->add_error("game: join: no csid found: ".$game_reference->get_ini());
-			$response->data['[Response]'][0]['Message'] =  $language->get_placeholder('error_no_csid'); 
+			$response->data['[Response]'][0]['Message'] =  $language->s('error_no_csid'); 
 			$response->data['[Response]'][0]['Status'] = 'Failure';
 			$this->send_response($response);
 			return;
@@ -502,7 +505,7 @@ class league_backend
 		{
 			//failure:
 			$response->data['[Response]'][0]['Status'] = 'Failure';
-			$response->data['[Response]'][0]['Message'] =  $language->get_placeholder($game->get_error()); 
+			$response->data['[Response]'][0]['Message'] =  $language->s($game->get_error()); 
 		}
 		
 		$this->send_response($response);
@@ -516,7 +519,7 @@ class league_backend
 		global $language;
         $response = new game_reference();
         $response->data['[Response]'][0]['Status'] = 'Failure';
-        $response->data['[Response]'][0]['Message'] =  $language->get_placeholder('error_wrong_checksum');
+        $response->data['[Response]'][0]['Message'] =  $language->s('error_wrong_checksum');
         
 		$this->send_response($response);        
     }
@@ -531,7 +534,7 @@ class league_backend
 		if(false == $game->load_data($game_id))
 		{
 			$response->data['[Response]'][0]['Status'] = 'Failure';	
-			$response->data['[Response]'][0]['Message'] =  $language->get_placeholder('error_game_not_found');
+			$response->data['[Response]'][0]['Message'] =  $language->s('error_game_not_found');
 			$this->send_response($response); 
 			return;
 		}
@@ -539,7 +542,7 @@ class league_backend
 		if(false == $game->recieve_record_stream($pos, $end, $raw_data))
 		{
 			$response->data['[Response]'][0]['Status'] = 'Failure';	
-			$response->data['[Response]'][0]['Message'] =  $language->get_placeholder($game->get_error());	
+			$response->data['[Response]'][0]['Message'] =  $language->s($game->get_error());	
 		}
 		else
 		{

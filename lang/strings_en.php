@@ -242,15 +242,33 @@ $this->strings['error_user_cuid_already_exists'] = "There is already an account 
 $this->strings['error_invalid_user_name'] = "Invalid username";
 $this->strings['error_webcode_auth_failed'] = "Authentification failed";
 $this->strings['error_webcode_auth_na'] = "Authentification not available at the moment";
+$this->strings['error_no_csid'] = "CSID is missing";
+$this->strings['error_game_not_found'] = "Game not found";
+$this->strings['error_game_already_ended'] = "Game already ended";
+$this->strings['error_auid_not_found'] = "Player is not authentificated";
+$this->strings['error_user_already_joined'] = "Player already joined this game";
+$this->strings['error_scenario_not_found'] = "Scenario not found";
 $this->strings['error_no_winner'] = "Evaluation aborted. There were no winner(s)";
 $this->strings['error_no_looser'] = "Evaluation aborted. There were no looser(s)";
 $this->strings['error_wrong_league_type'] = "Wrong league-type";
 $this->strings['error_password_repeat'] = "Wrong password-repeat";
+$this->strings['error_too_many_gamestarts'] = "Too many attempts to start a game";
 $this->strings['error_game_too_short'] = "Game too short";
+$this->strings['error_wrong_checksum'] = "Wrong checksum";
+$this->strings['error_wrong_resource_checksum'] = "Wrong resource checksum";
 $this->strings['error_user_banned'] = "User banned";
 $this->strings['error_max_user_count'] = "Maximum user count reached";
+$this->strings['error_invalid_product_id'] = "Invalid product or version";
 $this->strings['error_no_frame_count'] = "Current frame count is missing";
+$this->strings['error_wrong_host_ip'] = "Wrong/changed host ip";
 $this->strings['error_search_term_too_short'] = "Search term ist too short and will be ignored.";
+
+$this->strings['error_league_scen_not_a_melee'] = "this scenario version is not registered in any league. Only melees can be played in the open league";
+$this->strings['error_league_scen_not_found'] = "scenario not found and no open league active";
+$this->strings['error_league_scen_could_not_be_added'] = "scenario could not be added";
+
+$this->strings['error_settle_no_official_server'] = "Settle league games can only be played on official a server";
+$this->strings['error_settle_old_engine'] = "Settle league games can only be played using the latest game version";
 
 $this->strings['error_rename_same_name'] = "could not be renamed. User with the same name already exists";
 
@@ -261,6 +279,9 @@ $this->strings['error_clan_invalid_name'] = "Invalid Teamname";
 $this->strings['error_clan_already_exists'] = "Team with this name or tag already exists";
 
 $this->strings['error_game_no_settle'] = "Not a settle game";
+$this->strings['error_game_no_league'] = "Not a league game";
+$this->strings['error_game_record_too_large'] = "Record is too large";
+$this->strings['error_game_record_complete'] = "Record is already complete";
 
 $this->strings['error_abuse'] = "This functionality has been abused and has been deactivated for now.";
 ?>
