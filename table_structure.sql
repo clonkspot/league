@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `lg_clans` (
   `name` varchar(45) NOT NULL DEFAULT '',
   `link` varchar(100) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `tag` varchar(5) NOT NULL DEFAULT '',
-  `password` varchar(100) NOT NULL DEFAULT '',
+  `password` varchar(255) NOT NULL DEFAULT '',
   `date_created` int(10) unsigned NOT NULL DEFAULT '0',
   `join_disabled` enum('Y','N') NOT NULL DEFAULT 'N',
   `description` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
@@ -501,7 +501,7 @@ CREATE TABLE IF NOT EXISTS `lg_strings` (
 CREATE TABLE IF NOT EXISTS `lg_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) COLLATE latin1_general_ci NOT NULL DEFAULT '',
-  `password` varchar(100) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `password` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `real_name` varchar(45) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `date_created` int(10) unsigned NOT NULL DEFAULT '0',
   `date_last_login` int(10) unsigned NOT NULL DEFAULT '0',
