@@ -307,6 +307,12 @@ class user
 			 AND is_deleted = 0");
 	}
 	
+	function edit($data)
+	{
+		// at the moment, no league-specific fields can be edited
+		return true;
+	}
+	
 	function change_password($new_password)
 	{
 		if(!$this->check_password($new_password))
@@ -341,6 +347,37 @@ class user
 			}
 		}	
 		return $score_data;
+	}
+	
+	function show_edit()
+	{
+		global $smarty;
+		global $user;
+		
+		$smarty->assign("user",$this->data);
+		
+		$a = $this->get_scores_data($this->data['id'], $user->get_operator_leagues());
+		$a = $this->add_rank_and_league_data($a);
+		$smarty->assign("scores", $a);
+				
+		global $database;
+		if(!$this->data['clan_id'])
+		{
+			//get clans:
+			$a = $database->get_array("SELECT * FROM lg_clans 
+				WHERE join_disabled = 'N'
+				ORDER BY name");
+			$smarty->assign("clans",$a);
+		}
+		else
+		{
+			//get clan:
+			$clan = new clan();
+			$clan->load_data($this->data['clan_id']);
+			$clan_data = $clan->data;
+			$clan_data['users'] = $clan->get_users();
+			$smarty->assign("clan",$clan_data);
+		}
 	}
 	
 	function get_scores_data($user_id, $force_leagues = array())
