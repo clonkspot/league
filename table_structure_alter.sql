@@ -1,4 +1,9 @@
--- OC pre deployment (Players cannot rename themselves)
+--
+
+ALTER TABLE `lg_users` CHANGE `password` `password` VARCHAR( 100 ) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '';
+ALTER TABLE `lg_clans` CHANGE `password` `password` VARCHAR( 100 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+
+-- 
 
 ALTER TABLE  `lg_users` DROP COLUMN `date_last_rename`;
 
