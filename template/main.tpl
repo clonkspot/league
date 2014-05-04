@@ -84,13 +84,6 @@
 </div>
 </div>
 
-<div id='navbar'>
-<div class='languages'>
-    [ <a href='?lang=de'><img src='images/de.png' alt='Deutsch'></a>
-    | <a href='?lang=en'><img src='images/us.png' alt='English'></a> ]
-</div>
-</div>
-
 {fetch file=#footer#}
 
 </body>

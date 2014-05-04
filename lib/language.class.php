@@ -108,12 +108,8 @@ class language
 	
 	function load_stringtable()
 	{
-		//get new lang and set it to session
-		if(isset($_REQUEST['lang']))
-			$_SESSION['lang'] = $_REQUEST['lang'];
-			
-		if(isset($_SESSION['lang']))
-			$lang = $_SESSION['lang'];
+		if(isset($_COOKIE['language']))
+			$lang = $_COOKIE['language'];
 		else
 		{
 			//check all Accept-Language-values from the http-header
