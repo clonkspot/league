@@ -8,9 +8,9 @@
     {$game.scenario_name|escape}
 {/if}
 <br><b>{$l->s('date_start')}:</b> {$game.date_created|date_format:"%d.%m.%y - %H:%M:%S"}
-<br><b>{$l->s('duration')}: {include file="game_duration.tpl"}
+<br><b>{$l->s('duration')}:</b> {include file="game_duration.tpl"}
 {if $game.type == 'settle'}
-  <br><b>{$l->s('duration_equivalent')}:
+  <br><b>{$l->s('duration_equivalent')}:</b>
                 {assign var="duration" value=$game.frame/36}
                 {*hacked time myself because smarty-date_format returns 01:xx:xx if the hours should be 0...*}
                 {assign var="hours" value=$duration/3600}{assign var="hours" value=$hours|string_format:"%02d"}
