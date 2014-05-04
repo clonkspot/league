@@ -4,6 +4,15 @@ html {
     line-height: 1.5em;
 }
 
+body {
+    width: 90%;
+    min-width: 1006px;
+}
+
+#wrapper, #navbar {
+    padding: 0 1em;
+}
+
 p.center {
 	text-align: center;
 }
