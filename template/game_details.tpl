@@ -115,4 +115,5 @@
 <!--<br>
 <pre>{$game_reference|escape}</pre>-->
 </div>
+<div style="clear:both"></div>
 {if $game.is_revoked}</div>{/if}
