@@ -7,7 +7,7 @@
 </head>
 <body>
 
-{config_load "main.conf"}
+{config_load "main-{$l->get_current_language_code()}.conf"}
 {fetch file=#header#}
 
 <div id='wrapper'>
