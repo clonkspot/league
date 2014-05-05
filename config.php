@@ -35,5 +35,8 @@ $cfg_settle_with_latest_engine_only = false;
 
 $cronjob_password = '';
 
+// Name of the mwf login cookie.
+$mwf_cookie = NULL;
+
 //$smarty->assign("helplink",'http://wiki.openclonk.org/w/FAQ');
 ?>

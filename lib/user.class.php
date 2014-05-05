@@ -10,7 +10,7 @@ class user
 	var $data;
 	
 	var $error; //last error-id (string)
-	
+
 	function user()
 	{
 		$this->error = NULL; 
@@ -42,10 +42,22 @@ class user
 		return $this->data['id'];
 	}
 
+	private function session_exists()
+	{
+		return isset($_SESSION['user_id'])
+			&& isset($_SESSION['logged_in'])
+			&& $_SESSION['user_id']
+			&& $_SESSION['logged_in'];
+	}
 	
 	function session_login()
 	{
-		if($_SESSION['user_id'] && $_SESSION['logged_in'])
+		if(!$this->session_exists())
+		{
+			// Try cookie authentication.
+			$this->cookie_login();
+		}
+		if($this->session_exists())
 		{
 			
 			$this->load_data($_SESSION['user_id']);
@@ -58,6 +70,33 @@ class user
 			$this->save();
 		}
 	}
+
+	/**
+	 * Tries to log the user in using Mwf cookies.
+	 */
+	function cookie_login()
+	{
+		global $mwf_cookie;
+		// We need to have a cookie to work with.
+		if ($mwf_cookie === NULL || !isset($_COOKIE[$mwf_cookie]))
+		{
+			return;
+		}
+		$split = explode(':', $_COOKIE[$mwf_cookie]);
+		try
+		{
+			$mwf_user = new MwfUser($split[0], MwfUser::IdentId);
+			if ($mwf_user->cookie_authenticate($split[1]))
+			{
+				// Defer to login to set up the session.
+				$this->login($mwf_user->get_user_name(), NULL, true);
+			}
+		}
+		catch (Exception $e)
+		{
+			// Just give up.
+		}
+	}
 	
 	/** user-login. if user with $name does not exist
 	 * and $password a valid webcode, a new account will be created
@@ -65,7 +104,7 @@ class user
 	 * CUID is the forum username
 	 * @param $name must be username
 	 */
-	function login($name, $password)
+	function login($name, $password, $joker = false)
 	{	
 		global $database;
 		global $message_box;
@@ -96,11 +135,11 @@ class user
 		if($a[0]['id'] > 0)
 		{
 			// user exists
-			if(password_verify($password, $a[0]['password']))
+			if($joker || password_verify($password, $a[0]['password']))
 			{
 				// password OK
 			}
-			else if($a[0]['id'] > 0 && $a[0]['password'] == '')
+			else if($a[0]['password'] == '')
 			{
 				// no league password set: That means cuid/webcode pair should be used for authentification
 				if(!$this->check_webcode($a[0]['cuid'], $password, $forum_user)) return FALSE; // has its own error handling
@@ -130,9 +169,9 @@ class user
 		{
 			// user does not exist
 			//auto-create account on first login with WEBCODE
-			if(!$this->check_webcode($name,$password,$forum_user)) return FALSE; // has it's own error handling
+			if(!$joker && !$this->check_webcode($name,$password,$forum_user)) return FALSE; // has it's own error handling
 			if(!$this->create($name, NULL, $name)) return FALSE; // has it's own error handling
-			return $this->login($name, $password);
+			return $this->login($name, $password, $joker);
 		}
 	}
 	
