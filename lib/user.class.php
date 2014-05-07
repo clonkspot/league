@@ -74,7 +74,7 @@ class user
 	/**
 	 * Tries to log the user in using Mwf cookies.
 	 */
-	function cookie_login()
+	private function cookie_login()
 	{
 		global $mwf_cookie;
 		// We need to have a cookie to work with.
@@ -90,6 +90,7 @@ class user
 			{
 				// Defer to login to set up the session.
 				$this->login($mwf_user->get_user_name(), NULL, true);
+				$_SESSION['logged_in_via_cookie'] = true;
 			}
 		}
 		catch (Exception $e)
@@ -188,9 +189,16 @@ class user
 		return FALSE;	
 	}
 	
-	function is_logged_in()
+	public function is_logged_in()
 	{
-		return $_SESSION['logged_in'];
+		$key = 'logged_in';
+		return isset($_SESSION[$key]) && $_SESSION[$key];
+	}
+
+	public function is_logged_in_via_cookie()
+	{
+		$key = 'logged_in_via_cookie';
+		return isset($_SESSION[$key]) && $_SESSION[$key];
 	}
 	
 	function is_banned($cuid)
