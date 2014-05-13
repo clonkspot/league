@@ -41,8 +41,10 @@ Installation
 INSERT INTO `lg_users` (`id`, `name`, `password`, `admin`, `operator`, `cuid`)
 VALUES (1, 'admin', '', 1, '', 'forumname');
 
-6. Grant admin permissions to your newly created user using the
-   following SQL statement:
+6. If you use mwForum users: Put the forum user into a group named
+  "League Moderators"
+  If you do not use mwForum users, grant admin permissions to your newly
+  created user using the following SQL statement:
 INSERT INTO `lg_admin_permissions` (`user_id`, `part`, `method`) VALUES
 (1, 'clan', ''), (1, 'cuid_ban', ''), (1, 'debug', ''), (1, 'game', ''),
 (1, 'league', ''), (1, 'log', ''), (1, 'resource', ''),
@@ -60,10 +62,22 @@ INSERT INTO `lg_products`
 (`id`, `name`, `icon`, `version`, `product_string`, `motd_sid`)
 VALUES (1, 'OpenClonk', 'oc.png', '5.0.0', 'OC', 0);
 
-9. Make sure unnecessery files aren't left on the web root:
+9. Define ranges for rank symbols. E.g. for clonk.de rank style:
+INSERT INTO `lg_rank_symbols` VALUES
+(1,'images/icons/rank_1.png',1,1,NULL,NULL),
+(2,'images/icons/rank_2.png',2,2,NULL,NULL),
+(3,'images/icons/rank_3.png',3,3,NULL,NULL),
+(4,'images/icons/rank_4.png',4,6,NULL,NULL),
+(5,'images/icons/rank_5.png',7,10,NULL,NULL),
+(6,'images/icons/rank_6.png',11,20,NULL,NULL),
+(7,'images/icons/rank_7.png',NULL,NULL,300,999999),
+(8,'images/icons/rank_8.png',NULL,NULL,200,299),
+(9,'images/icons/rank_9.png',NULL,NULL,100,199);
+
+10. Make sure unnecessery files aren't left on the web root:
    table_structure.sql, table_structure_alter.sql,
    table_structure_updates.txt. Delete them if you're done
    installing/updating.
 
-10. Now you should be able to browse to your league, log in, press
+11. Now you should be able to browse to your league, log in, press
     "Admin" and set up a league using the builtin admin interface.
