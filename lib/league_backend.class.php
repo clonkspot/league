@@ -18,7 +18,8 @@ class league_backend
 		$game_reference = new game_reference();
 		$game_reference->parse_ini($raw_data);
 		
-		switch($game_reference->data['[Request]'][0]['Action']) {
+		$action = isset($game_reference->data['[Request]']) ? $game_reference->data['[Request]'][0]['Action'] : NULL;
+		switch($action) {
 		    case 'Start':
 		    {
 				$this->start_game($game_reference);
@@ -52,7 +53,7 @@ class league_backend
 			case 'Query':
 			default:
 			{
-				if($_REQUEST['action'] == 'query' && $_REQUEST['product_id'])
+				if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'query' && isset($_REQUEST['product_id']))
 					$this->send_game_list($_REQUEST['product_id']);
 				else
 					$this->send_game_list();
@@ -65,7 +66,7 @@ class league_backend
 		$debug_counter->increment('recieve_reference',$duration);
 		
 		//do game-end-debug-counters in $this->end_game()
-		$debug_counter->increment('action_'.strtolower($game_reference->data['[Request]'][0]['Action']),$duration);
+		$debug_counter->increment('action_'.strtolower($action),$duration);
 	}
 	
 	function send_version()
