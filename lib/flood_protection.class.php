@@ -32,7 +32,7 @@ class flood_protection
 		$floodKey = "league:flood:".$floodKey.":".$_SERVER['REMOTE_ADDR'];
 		$floodVal = $this->get($floodKey);
 	
-		if ($floodVal === FALSE) { 
+		if (!$floodVal) { 
 			$floodStart = $floodNow; 
 			$floodNum = 1; 
 		}
