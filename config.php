@@ -21,6 +21,11 @@ unset($webroot);
 //$database = new database('127.0.0.1','db1144497-league',geheim,geheim);
 $database = new database('127.0.0.1','league2','CC67eWMqKcsHJ8UG','league2');
 
+// Redis as an alternative to apc for flood protection.
+//require 'Predis/Autoloader.php';
+//Predis\Autoloader::register();
+//$redis = new Predis\Client();
+
 $debug = FALSE;
 $debug_xml_log = FALSE;
 $debug_sql_slow_log = FALSE;

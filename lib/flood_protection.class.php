@@ -1,14 +1,36 @@
 <?php
 
+require_once 'config.php';
+
 class flood_protection
 {
+	// Tries to get the value for $key via redis or apc.
+	private function get($key) {
+		global $redis;
+		if (isset($redis)) {
+			return $redis->get($key);
+		} else {
+			return apc_fetch($floodKey);
+		}
+	}
+
+	// Sets the $value for $key with the given $expiry in seconds.
+	private function set($key, $value, $expiry) {
+		global $redis;
+		if (isset($redis)) {
+			$redis->setex($key, $expiry, $value);
+		} else {
+			return apc_fetch($floodKey);
+			apc_store($key, $value, $expiry);
+		}
+	}
 
 	//string is just for display
 	function check_exit($floodKey, $floodMax, $floodSeconds, $string="")
 	{
 		$floodNow = time();
-		$floodKey = "flood_".$floodKey."_".$_SERVER[REMOTE_ADDR];
-		$floodVal = apc_fetch($floodKey);
+		$floodKey = "league:flood:".$floodKey.":".$_SERVER['REMOTE_ADDR'];
+		$floodVal = $this->get($floodKey);
 	
 		if ($floodVal === FALSE) { 
 			$floodStart = $floodNow; 
@@ -26,7 +48,7 @@ class flood_protection
 		}
 		else 
 		//use max to prevent an entry getting stored with value 0 (=forever)
-			apc_store($floodKey, "$floodStart:$floodNum", max(1,$floodSeconds - ($floodNow - $floodStart)));
+			$this->set($floodKey, "$floodStart:$floodNum", max(1,$floodSeconds - ($floodNow - $floodStart)));
 				
 		return true;
 	}
