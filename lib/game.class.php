@@ -2186,14 +2186,14 @@ class game
 		$join = "";
 		
 		//replace some stuff:
-		if(is_array($filter['g.status']) && 
+		if(isset($filter['g.status']) && is_array($filter['g.status']) && 
 			(FALSE !== $key = array_search('lobby',$filter['g.status'])))
 		{
 			$filter['g.status'][]='created';
 		}
 		
 		//filter by user-id:
-		if(is_array($filter['user_name']))
+		if(isset($filter['user_name']) && is_array($filter['user_name']))
 		{
 			$join .=  "
 				JOIN lg_game_players gp ON gp.game_id = g.id
@@ -2250,7 +2250,7 @@ class game
 		}
 		
 		//do some special stuff for league_id:
-		if(is_array($filter['league_id']))
+		if(isset($filter['league_id']) && is_array($filter['league_id']))
 		{
 			
 			$league_ids = array();
@@ -2281,7 +2281,7 @@ class game
 		}
 		
 		//filter by product:
-		if(is_array($filter['p.name']))
+		if(isset($filter['p.name']) && is_array($filter['p.name']))
 		{
 			//get product-id
 			$a = $database->query("SELECT id FROM lg_products WHERE name = '".$database->escape($filter['p.name'][0])."'");
