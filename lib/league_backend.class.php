@@ -344,10 +344,11 @@ class league_backend
 		$new_name = remove_quotes($game_reference->data['[Request]'][0]['NewAccount']);
 		$password = remove_quotes($game_reference->data['[Request]'][0]['Password']);
 		$new_password = remove_quotes($game_reference->data['[Request]'][0]['NewPassword']);
+		$generate_login_token = ($game_reference->data['[Request]'][0]['RememberLogin'] == 'true');
 		
 		$response = new game_reference();
 		
-		if($auth_user->login($name, $password))
+		if($auth_user->login($name, $password, true, $generate_login_token))
 		{
 			//success:
 			$success = true;
@@ -433,6 +434,10 @@ class league_backend
 			
 			$response->data['[Response]'][0]['AUID'] = $auid;
 			$response->data['[Response]'][0]['FBID'] = $fbid;
+			if ($generate_login_token)
+			{
+				$response->data['[Response]'][0]['LoginToken'] = $auth_user->data['login_token'];
+			}
 			
 			//add user to players-table (for no specific game for now)
 			$game = new game();

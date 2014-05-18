@@ -1,3 +1,7 @@
+-- Enable login tokens for backend login
+
+ALTER TABLE `lg_users` ADD `login_token` varchar(32) COLLATE latin1_general_ci DEFAULT NULL;
+
 --
 
 ALTER TABLE `lg_users` CHANGE `password` `password` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '';

@@ -519,6 +519,7 @@ CREATE TABLE IF NOT EXISTS `lg_users` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `clan_id` int(10) unsigned DEFAULT NULL,
   `old_names` varchar(255) COLLATE latin1_general_ci NOT NULL,
+  `login_token` varchar(32) COLLATE latin1_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `clan_id` (`clan_id`)

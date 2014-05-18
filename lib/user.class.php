@@ -65,7 +65,7 @@ class user
 	 * CUID is the forum username
 	 * @param $name must be username
 	 */
-	function login($name, $password)
+	function login($name, $password, $allow_token_login = false, $generate_login_token = false)
 	{	
 		global $database;
 		global $message_box;
@@ -75,7 +75,7 @@ class user
 		$forum_user = NULL;
 		
 		//$name id username
-		$a = $database->get_array("SELECT u.cuid, id, password, IF(cb.cuid IS NULL,0,1) AS is_banned, cb.reason 
+		$a = $database->get_array("SELECT u.cuid, id, password, login_token, IF(cb.cuid IS NULL,0,1) AS is_banned, cb.reason 
 			FROM lg_users AS u
 			LEFT JOIN lg_cuid_bans AS cb ON cb.cuid = u.cuid AND cb.date_until > ".time()."
 			WHERE u.name = '".$database->escape($name)."'
@@ -100,6 +100,10 @@ class user
 			{
 				// password OK
 			}
+			else if ($allow_token_login && $a[0]['login_token'] == $password)
+			{
+				// login token OK
+			}
 			else if($a[0]['id'] > 0 && $a[0]['password'] == '')
 			{
 				// no league password set: That means cuid/webcode pair should be used for authentification
@@ -119,6 +123,18 @@ class user
 			$this->load_data($a[0]['id']);
 			
 			$this->data['date_last_login'] = time();
+			
+			// generate a login token if desired
+			if ($generate_login_token)
+			{
+				if (!isset($this->data['login_token']) || $this->data['login_token'] == '')
+					$this->data['login_token'] = md5(uniqid(rand(),true).$password);
+			}
+			elseif ($allow_token_login)
+			{
+				// backend login and user unchecked token generation? Clear login token then.
+				$this->data['login_token'] = NULL;
+			}
 			
 			// On every successful logon with webcode (forum password): Update information from forum data
 			if ($forum_user != NULL) $this->update_data_from_forum($forum_user);
