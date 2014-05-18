@@ -45,7 +45,7 @@ fclose($inputSocket);
 
 
 //to debug with test_client.php:
-if(!$GLOBALS['HTTP_RAW_POST_DATA'] && $_REQUEST['r'])
+if(!isset($GLOBALS['HTTP_RAW_POST_DATA']) && isset($_REQUEST['r']))
 	$post_data = $_REQUEST['r'];
 
 global $debug_req;
@@ -55,8 +55,9 @@ if(isset($debug_req))
 	//because it is double-escaped for no obvious reason...?! (TODO)
 //	$post_data = stripslashes(stripslashes($post_data));
 	
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : NULL;
 //to get a single reference by link:
-if($_REQUEST['action'] == 'query' && $_REQUEST['game_id'])
+if($action == 'query' && isset($_REQUEST['game_id']))
 {
 	$league_backend->send_game_reference($_REQUEST['game_id']);
 	$duration = microtime_float() - $profiling_start_time;
@@ -64,14 +65,14 @@ if($_REQUEST['action'] == 'query' && $_REQUEST['game_id'])
 	$debug_counter->increment('send_game_reference',$duration);	
 }
 //action=query & product_id is dispatched in recieve_reference
-elseif($_REQUEST['action'] == 'version')
+elseif($action == 'version')
 {
 	$league_backend->send_version();
 	$duration = microtime_float() - $profiling_start_time;
 	$debug_counter = new debug_counter();
 	$debug_counter->increment('version',$duration);		
 }
-elseif($_REQUEST['action'] == 'news_statistics')
+elseif($action == 'news_statistics')
 {
 	require_once('lib/news_statistics.class.php');
 	$news_statistics = new news_statistics();
@@ -80,7 +81,7 @@ elseif($_REQUEST['action'] == 'news_statistics')
 	$debug_counter = new debug_counter();
 	$debug_counter->increment('news_statistics',$duration);		
 }
-elseif($_REQUEST['action'] == 'stream_record')
+elseif($action == 'stream_record')
 {
 	$league_backend->recieve_record_stream($_REQUEST['game_id'], $_REQUEST['pos'],  $_REQUEST['end'], $post_data);
 	$duration = microtime_float() - $profiling_start_time;
