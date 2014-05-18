@@ -13,6 +13,8 @@ $smarty->template_dir = $webroot.'template/';
 $smarty->compile_dir = $webroot.'template_c/';
 $smarty->cache_dir = $webroot.'cache/';
 $smarty->config_dir = $webroot.'configs/';
+// Always disable notices for templates as there are just too many to be useful.
+$smarty->error_reporting = error_reporting() ^ E_NOTICE;
 
 $record_folder = $webroot."records/";
 
