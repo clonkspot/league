@@ -45,21 +45,26 @@ if($user->is_logged_in() && $user->is_admin())
 
 $message_box = new message_box();
 
+$method = isset($_REQUEST['method']) ? $_REQUEST['method'] : '';
 //default:
-if($_REQUEST['part'] == "")
+if(isset($_REQUEST['part']))
 {
-	$_REQUEST['part'] = "game";
-	$_REQUEST['method'] = "list";
+	$part = $_REQUEST['part'];
+}
+else
+{
+	$part = "game";
+	$method = "list";
 }
 
 
 
-switch(@$_REQUEST['part']) {
+switch($part) {
 	
 	case 'league':
 	{
 		require_once('lib/league.class.php');
-		switch(@$_REQUEST['method']) {
+		switch($method) {
 			case 'list':
 			{
 				$league = new league();
@@ -84,7 +89,7 @@ switch(@$_REQUEST['part']) {
 	case 'game':
 	{
 		require_once('lib/game.class.php');
-		switch(@$_REQUEST['method']) {
+		switch($method) {
 			case 'list':
 			{
 				$game = new game();
@@ -112,7 +117,7 @@ switch(@$_REQUEST['part']) {
 	case 'scenario':
 	{
 		require_once('lib/scenario.class.php');
-		switch(@$_REQUEST['method']) {
+		switch($method) {
 			case 'list':
 			{
 				$game = new scenario();
@@ -139,7 +144,7 @@ switch(@$_REQUEST['part']) {
 		$clan = new clan();
 		if($user->is_logged_in())
 		{
-			switch(@$_POST['method']) {
+			switch($method) {
 				case 'add':
 				{
 					$clan->show_add();
@@ -226,7 +231,7 @@ switch(@$_REQUEST['part']) {
 				}
 			}
 		}
-		switch(@$_REQUEST['method']) {
+		switch($method) {
 			case 'list':
 			{
 				$clan->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
@@ -244,7 +249,7 @@ switch(@$_REQUEST['part']) {
 	{
 		if($user->is_logged_in())
 		{
-			switch(@$_REQUEST['method']) {
+			switch($method) {
 				case 'edit':
 				{
 					$user->show_edit();
@@ -256,8 +261,8 @@ switch(@$_REQUEST['part']) {
 					require_once('lib/league.class.php');
 					$league = new league();
 					$league->show_list();
-					$_REQUEST['part']='league';
-					$_REQUEST['method']='list';
+					$part='league';
+					$method='list';
 					break;
 				}
 				case 'set_score':
@@ -274,7 +279,7 @@ switch(@$_REQUEST['part']) {
 					break;
 				}
 			}
-			switch(@$_POST['method']) {
+			switch($method) {
 				case 'edit2':
 				{
 					$user->edit($_POST['user']);
@@ -289,7 +294,7 @@ switch(@$_REQUEST['part']) {
 				}
 			}
 		}
-		switch(@$_REQUEST['method']) {
+		switch($method) {
 			case 'details':
 			{
 				$user->show_details($_REQUEST['user']['id']);
@@ -305,7 +310,7 @@ switch(@$_REQUEST['part']) {
 	}
 	case 'login':
 	{
-		switch(@$_REQUEST['method']) {
+		switch($method) {
 			case 'login':
 			{
 				$user->login($_REQUEST['login_name'],$_REQUEST['login_password'],@$_REQUEST['login_new_name']);
@@ -314,8 +319,8 @@ switch(@$_REQUEST['part']) {
 					require_once('lib/game.class.php');
 					$game = new game();
 					$game->show_list(@$_REQUEST['filter'], @$_REQUEST['page'], @$_REQUEST['sort']);
-					$_REQUEST['part']='game';
-					$_REQUEST['method']='list';
+					$part='game';
+					$method='list';
 				}
 				elseif($_REQUEST['login_name'] && is_numeric($_REQUEST['login_name'])
 					&& false == $user->cuid_user_exists($_REQUEST['login_name'])
@@ -323,13 +328,13 @@ switch(@$_REQUEST['part']) {
 					&& $user->get_error() != 'error_webcode_auth_failed')
 				{
 					//it's a CUID - ask for a nickname to create a new account
-					$_REQUEST['part']='login';
-					$_REQUEST['method']='new_user';
+					$part='login';
+					$method='new_user';
 				}
 				else
 				{
-					$_REQUEST['part']='login';
-					$_REQUEST['method']='error';
+					$part='login';
+					$method='error';
 				}
 				break;
 			}
@@ -343,8 +348,8 @@ $smarty->assign("user_logged_in_via_cookie",$user->is_logged_in_via_cookie());
 $smarty->assign("user_is_admin",$user->is_admin());
 $smarty->assign("u",$user);
 
-$smarty->assign("part", $_REQUEST['part']);
-$smarty->assign("method", $_REQUEST['method']);
+$smarty->assign("part", $part);
+$smarty->assign("method", $method);
 
 //$smarty->assign("s",$language->get_strings());
 $smarty->assign("languages",$language->get_languages());
@@ -374,7 +379,7 @@ print_a($game);*/
 
 $duration = microtime_float() - $profiling_start_time;
 $debug_counter = new debug_counter();
-$debug_counter->increment("site_".$_REQUEST['part']."_".$_REQUEST['method'],$duration);
+$debug_counter->increment("site_".$part."_".$_REQUEST['method'],$duration);
 $debug_counter->increment("site",$duration);
 
 
