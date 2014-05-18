@@ -45,7 +45,13 @@ if($user->is_logged_in() && $user->is_admin())
 
 $message_box = new message_box();
 
-$method = isset($_REQUEST['method']) ? $_REQUEST['method'] : '';
+// Returns the given $_REQUEST parameter or a default value.
+function param($key, $default = NULL)
+{
+	return isset($_REQUEST[$key]) ? $_REQUEST[$key] : $default;
+}
+
+$method = param('method');
 //default:
 if(isset($_REQUEST['part']))
 {
@@ -68,19 +74,19 @@ switch($part) {
 			case 'list':
 			{
 				$league = new league();
-				$league->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+				$league->show_list(param('filter'), param('page'), param('sort'));
 				break;	
 			}
 			case 'ranking':
 			{
 				$league = new league();
-				$league->show_ranking($_REQUEST['league']['id'],$_REQUEST['filter'],$_REQUEST['page'], $_REQUEST['sort'], $_REQUEST['highlight']);
+				$league->show_ranking(param('league')['id'],param('filter'),param('page'), param('sort'), param('highlight'));
 				break;
 			}
 			case 'clan_ranking':
 			{
 				$league = new league();
-				$league->show_clan_ranking($_REQUEST['league']['id'],$_REQUEST['filter'],$_REQUEST['page'], $_REQUEST['sort'], $_REQUEST['highlight']);
+				$league->show_clan_ranking(param('league')['id'],param('filter'),param('page'), param('sort'), param('highlight'));
 				break;
 			}
 		}
@@ -93,13 +99,13 @@ switch($part) {
 			case 'list':
 			{
 				$game = new game();
-				$game->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+				$game->show_list(param('filter'), param('page'), param('sort'));
 				break;	
 			}
 			case 'details':
 			{
 				$game = new game();
-				$game->show_details($_REQUEST['game']['id']);
+				$game->show_details(param('game')['id']);
 				break;
 			}
 			case 'revoke':
@@ -121,15 +127,15 @@ switch($part) {
 			case 'list':
 			{
 				$game = new scenario();
-				$game->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+				$game->show_list(param('filter'), param('page'), param('sort'));
 				break;	
 			}
 			case 'toggle_league':
 			{
 				$scenario = new scenario();
-				if($scenario->load_data($_REQUEST['scenario']))
+				if($scenario->load_data(param('scenario')))
 				{
-					$scenario->operator_toggle_league($user, $_REQUEST['league']);
+					$scenario->operator_toggle_league($user, param('league'));
 				}
 				$game = new scenario();
 				$game->show_list();
@@ -154,7 +160,7 @@ switch($part) {
 				{
 					if(false == $user->get_clan_id())
 						$clan->create($_POST['clan'], $user);
-					$clan->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+					$clan->show_list(param('filter'), param('page'), param('sort'));
 					break;
 				}
 				case 'edit':
@@ -184,7 +190,7 @@ switch($part) {
 							$clan->kick($_POST['user']['id']);
 						}
 					}
-					$clan->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+					$clan->show_list(param('filter'), param('page'), param('sort'));
 					break;	
 				}
 				case 'transfer_founder':
@@ -196,7 +202,7 @@ switch($part) {
 							$clan->transfer_founder($_POST['user']['id']);
 						}
 					}
-					$clan->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+					$clan->show_list(param('filter'), param('page'), param('sort'));
 					break;	
 				}
 				case 'delete2':
@@ -206,7 +212,7 @@ switch($part) {
 						if($clan->data['founder_user_id'] == $user->data['id'])
 							$clan->delete($_POST['clan']['id']);
 					}
-					$clan->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+					$clan->show_list(param('filter'), param('page'), param('sort'));
 					break;	
 				}
 				case 'join':
@@ -220,13 +226,13 @@ switch($part) {
 					{
 						$message_box->add_error($language->s('error_clan_none_selected'));
 					}
-					$clan->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+					$clan->show_list(param('filter'), param('page'), param('sort'));
 					break;	
 				}
 				case 'leave':
 				{
 					$user->leave_clan();
-					$clan->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+					$clan->show_list(param('filter'), param('page'), param('sort'));
 					break;	
 				}
 			}
@@ -234,12 +240,12 @@ switch($part) {
 		switch($method) {
 			case 'list':
 			{
-				$clan->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+				$clan->show_list(param('filter'), param('page'), param('sort'));
 				break;
 			}
 			case 'details':
 			{
-				$clan->show_details($_REQUEST['clan']['id']);
+				$clan->show_details(param('clan')['id']);
 				break;
 			}
 		}
@@ -267,14 +273,14 @@ switch($part) {
 				}
 				case 'set_score':
 				{
-					$user->set_score($_REQUEST['user']['id'], $_REQUEST['league']['id'], $_REQUEST['score']);
-					$user->show_details($_REQUEST['user']['id']);
+					$user->set_score(param('user')['id'], param('league')['id'], param('score'));
+					$user->show_details(param('user')['id']);
 					break;
 				}
 				case 'suicide':
 				{
 					$message_box->add_error($language->s('error_abuse'));				
-					//$user->set_score($_REQUEST['user']['id'], $_REQUEST['league']['id'], 0);
+					//$user->set_score(param('user')['id'], param('league')['id'], 0);
 					$user->show_edit();
 					break;
 				}
@@ -289,7 +295,7 @@ switch($part) {
 				case 'delete2':
 				{
 					//
-					//$user->delete($_REQUEST['scenario']['id']);
+					//$user->delete(param('scenario')['id']);
 					break;	
 				}
 			}
@@ -297,12 +303,12 @@ switch($part) {
 		switch($method) {
 			case 'details':
 			{
-				$user->show_details($_REQUEST['user']['id']);
+				$user->show_details(param('user')['id']);
 				break;
 			}
 			case 'list':
 			{
-				$user->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
+				$user->show_list(param('filter'), param('page'), param('sort'));
 				break;
 			}
 		}
@@ -313,16 +319,16 @@ switch($part) {
 		switch($method) {
 			case 'login':
 			{
-				$user->login($_REQUEST['login_name'],$_REQUEST['login_password'],@$_REQUEST['login_new_name']);
+				$user->login(param('login_name'),param('login_password'),param('login_new_name'));
 				if($user->is_logged_in())
 				{
 					require_once('lib/game.class.php');
 					$game = new game();
-					$game->show_list(@$_REQUEST['filter'], @$_REQUEST['page'], @$_REQUEST['sort']);
+					$game->show_list(param('filter'), param('page'), param('sort'));
 					$part='game';
 					$method='list';
 				}
-				elseif($_REQUEST['login_name'] && is_numeric($_REQUEST['login_name'])
+				elseif(isset($_REQUEST['login_name']) && is_numeric($_REQUEST['login_name'])
 					&& false == $user->cuid_user_exists($_REQUEST['login_name'])
 					&& $user->get_error() != 'error_webcode_auth_na'
 					&& $user->get_error() != 'error_webcode_auth_failed')
@@ -379,7 +385,7 @@ print_a($game);*/
 
 $duration = microtime_float() - $profiling_start_time;
 $debug_counter = new debug_counter();
-$debug_counter->increment("site_".$part."_".$_REQUEST['method'],$duration);
+$debug_counter->increment("site_".$part."_".$method,$duration);
 $debug_counter->increment("site",$duration);
 
 
