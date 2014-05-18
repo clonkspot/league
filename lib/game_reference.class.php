@@ -36,6 +36,10 @@ class game_reference
 	
 	function parse_line($line)
 	{
+		// Skip completely empty lines immediately.
+		if(!$line)
+			return;
+
 		$tab_count = 0;
 		while($line[0] == " " && $line[1] == " ") //2 whitespaces instead of a \t
 		{
