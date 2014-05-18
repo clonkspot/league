@@ -88,13 +88,7 @@ class league_backend
 		$a = $database->get_array("SELECT version FROM lg_products
 			WHERE name = '".$database->escape($this->get_agent_product())."'");
 			
-		//HACK for 238 -> 239-Update
-		$hit = array();
-		preg_match('/\[(...)\]/',$_SERVER['HTTP_USER_AGENT'], $hit);
-		if($hit[1] > 200 && $hit[1] < 239)
-			return '4,9,6,6,239';
-		else
-			return $a[0]['version'];
+		return $a[0]['version'];
 	}
 	
 	function get_motd()
