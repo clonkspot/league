@@ -5,8 +5,6 @@ $profiling_start_time = microtime_float();
 
 require_once('config.php');
 
-if(FALSE == $debug_skip_session_path)
-	session_save_path("/var/session/league2");
 session_start();
 
 require_once('lib/language.class.php');

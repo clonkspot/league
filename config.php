@@ -33,7 +33,6 @@ $debug_xml_log = FALSE;
 $debug_sql_slow_log = FALSE;
 $debug_skip_backend_checksum = TRUE;
 $debug_skip_flood_protection = TRUE;
-$debug_skip_session_path = TRUE;
 $debug_skip_resource_checksum = TRUE;
 
 $cfg_official_server = array('1.2.3.4','1.2.3.4');

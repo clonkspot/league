@@ -4,8 +4,6 @@ require_once('lib/Debug.class.php');
 require_once('lib/database.class.php');
 require_once('config.php');
 
-if(FALSE == $debug_skip_session_path)
-	session_save_path("/var/session/league2");
 session_start();
 
 //error_reporting(E_ALL);
