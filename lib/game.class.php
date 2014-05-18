@@ -2228,7 +2228,7 @@ class game
 		$search_filter_used = false;
 
 	
-		if(is_array($filter['search']) && $filter['search'][0])
+		if(isset($filter['search']) && is_array($filter['search']) && $filter['search'][0])
 		{
 			//use flood_protection to prevent too many searches in a short time (like pressing enter multiple times)
 			$flood_protection = new flood_protection();
