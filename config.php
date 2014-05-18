@@ -31,7 +31,6 @@ $database = new database('127.0.0.1','league2','CC67eWMqKcsHJ8UG','league2');
 $debug = FALSE;
 $debug_xml_log = FALSE;
 $debug_sql_slow_log = FALSE;
-$debug_skip_backend_checksum = TRUE;
 $debug_skip_flood_protection = TRUE;
 $debug_skip_resource_checksum = TRUE;
 

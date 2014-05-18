@@ -90,18 +90,7 @@ elseif($action == 'stream_record')
 }
 else
 {
-	global $debug_skip_reference_hashcheck;
-	if(isset($debug_skip_backend_checksum) && $debug_skip_backend_checksum == TRUE) //deactivate checksum-check for local tests
-		$league_backend->recieve_reference($post_data);
-	else
-	{		
-	    # Require a successful checksum test for every complex query
-	    if($post_data == "" or TRUE)
-		    $league_backend->recieve_reference($post_data);
-	    else
-	    	$league_backend->checksum_error();
-	}
-
+	$league_backend->recieve_reference($post_data);
 }
 
 // Send buffered output
