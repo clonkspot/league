@@ -1,7 +1,5 @@
 <?php
 
-require_once 'config.php';
-
 class flood_protection
 {
 	// Tries to get the value for $key via redis or apc.
