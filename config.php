@@ -7,6 +7,7 @@ $webroot = 'D:/www/league2/';
 require_once($_SERVER['DOCUMENT_ROOT'].'/../auth/mwf_auth.php');
 
 require_once('smarty/libs/SmartyBC.class.php');
+SmartyBC::$_CHARSET = 'ISO-8859-1';
 $smarty = new SmartyBC();
 
 $smarty->template_dir = $webroot.'template/';
