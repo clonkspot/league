@@ -2106,6 +2106,7 @@ class game
 		//$log = new log();
 		//$log->add("stream: game_id:".$this->data['id']." filename:".$this->data['record_filename']);		
 		
+		global $record_folder;
 		$f = fopen($record_folder.$this->data['record_filename'], "ab+");
 		fseek($f, $pos);
 		fwrite($f, $raw_data);
@@ -2114,7 +2115,7 @@ class game
 		if('none' == $this->data['record_status'])
 		{	
 			//it is a new file:
-			chmod("records/".$this->data['record_filename'],0660); //rw-rw----
+			chmod($record_folder.$this->data['record_filename'],0660); //rw-rw----
 		}
 		
 		if(1 == $end) //that hast been the last chunk
