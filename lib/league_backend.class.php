@@ -176,13 +176,10 @@ class league_backend
 				$response->data['[Response]'][0]['League'] = $game->get_league_names_string();
 			
 				//add steaming-url for all league games:
-				
-				//if('settle' == $game->data['type'])
-				//{
-					$response->data['[Response]'][0]['StreamTo'] = 
-						remove_quotes($game->reference->data['[Reference]'][0]['LeagueAddress'])
-						."?action=stream_record&game_id=".$game->data['id']."&";
-				//}
+				$url = parse_url(remove_quotes($game->reference->data['[Reference]'][0]['LeagueAddress']));
+				$response->data['[Response]'][0]['StreamTo'] = 
+					"$url[host]:$url[port]" . (isset($url['path']) ? $url['path'] : '/')
+					."?action=stream_record&game_id=".$game->data['id']."&";
 				
 				if('settle' == $game->data['type'])
 				{	
