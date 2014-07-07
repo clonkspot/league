@@ -716,11 +716,6 @@ class user
 			$user->data['name'] = $name;
 		$user->save();
 
-		// clear out caches where the old name might still be present
-		$database->query("DELETE FROM ghtml
-							USING lg_game_players gp JOIN lg_game_list_html ghtml ON ghtml.game_id = gp.game_id
-							WHERE gp.user_id = '".$database->escape($id)."'");
-		
 		$message_box->add_info("$old_name ".$language->s('renamed').": $name");
 
 		$log->add("user: $old_name (id=$id) ".$language->s('renamed').": $name");
