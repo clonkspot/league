@@ -15,6 +15,7 @@ include_once('table_filter.class.php');
 
 include_once('resource.class.php');
 
+include_once('game_list_html_cache.class.php');
 include_once('flood_protection.class.php'); //used to limit game-list-search-requests
 
 class game
@@ -407,11 +408,8 @@ class game
 		//do this for league- and for noleague-games...:
 		$this->get_and_update_teams_from_game_reference();
 		
-		
-		//clear game-list-html-cache:
-		global $database; //TODO: is updat faster than delete when table becomes large???
-		$database->delete_where('lg_game_list_html',"game_id = '".$database->escape($this->data['id'])."'");
-
+		$cache = create_game_list_html_cache();
+		$cache->del($this->data['id']);
 		return $this->save();
 	}
 	
@@ -1076,7 +1074,6 @@ class game
 		$this->delete_league_data();
 		$database->delete_where('lg_game_players', "game_id = ".$this->data['id']);
 		$database->delete_where('lg_game_teams', "game_id = ".$this->data['id']);
-		$database->delete_where('lg_game_list_html', "game_id = ".$this->data['id']);
 		$database->delete_where('lg_game_reference', "game_id = ".$this->data['id']);
 		$database->delete_where('lg_game_reference_cache', "game_id = ".$this->data['id']);
 		$database->delete('lg_games', $this->data['id']);
@@ -1224,13 +1221,14 @@ class game
 		//delete player- and team-data:
 		if(is_array($a))
 		{
+			$cache = create_game_list_html_cache();
 			foreach($a AS $g)
 			{
 				$database->delete_where('lg_game_players', "game_id = ".$g['id']);
 				$database->delete_where('lg_game_teams', "game_id = ".$g['id']);
-				$database->delete_where('lg_game_list_html', "game_id = ".$g['id']);
 				$database->delete_where('lg_game_reference', "game_id = ".$g['id']);
 				$database->delete_where('lg_game_reference_cache', "game_id = ".$g['id']);
+				$cache->del($g['id']);
 			}
 		}
 	}
@@ -1898,9 +1896,9 @@ class game
 			}
 		}
 
-		
 		//TODO remove game-list-row from cache only if the template is changed...
-		$database->delete_where("lg_game_list_html", "game_id = '".$database->escape($this->data['id'])."'");
+		$cache = create_game_list_html_cache();
+		$cache->del($this->data['id']);
 	}
 	
 	
@@ -2326,7 +2324,7 @@ class game
 		
 		// Start building SQL clause
 		// 1. SELECT
-		$sql_select = "SELECT g.*, ghtml.game_list_html, ghtml.game_list_html_2, p.name AS product_name, p.icon AS product_icon, sc.type AS scenario_type, sc.name_sid ";
+		$sql_select = "SELECT g.*, p.name AS product_name, p.icon AS product_icon, sc.type AS scenario_type, sc.name_sid ";
 
 		
 		//fetch player-count only if it is needed
@@ -2385,8 +2383,7 @@ class game
 		// filters must not use these, while sorts can!
 		$sql_from_add = "
 			LEFT JOIN lg_scenarios AS sc ON g.scenario_id = sc.id 
-			LEFT JOIN lg_products AS p ON g.product_id = p.id 
-			LEFT JOIN lg_game_list_html ghtml ON g.id = ghtml.game_id AND ghtml.language_id = '".$database->escape($language->get_current_language_id())."' ";
+			LEFT JOIN lg_products AS p ON g.product_id = p.id";
 		
 		// 3. WHERE
 		$sql_where =" WHERE $where";
@@ -2422,12 +2419,20 @@ class game
 		// get results and total possible count
 		$a = $database->get_array($wrap_front . $sql_select . $sql_from . $sql_from_add . $sql_where . $sql_order . $sql_limit . $wrap_end);
 		$a2 = $database->get_array("SELECT COUNT(*) AS count " . $sql_from . $sql_where);
+
+		$cache = create_game_list_html_cache();
 		
 		if(!is_array($a))
 			$a = NULL;
 		for($i=0;$i<count($a);$i++)
 		{
-			if($a[$i]['game_list_html'])
+			$language_id = $language->get_current_language_id();
+			$game_id = $a[$i]['id'];
+
+			// Try to get the entries from cache.
+ 			$a[$i] = array_merge($a[$i], $cache->get($game_id));
+
+			if($a[$i]['game_list_html'] !== NULL && $a[$i]['game_list_html_2'] !== NULL)
 				//already saved, continue
 				continue;
 			
@@ -2445,21 +2450,13 @@ class game
 			$this->data = $a[$i];
 			$a[$i]['teams'] = $this->get_team_data();
 			
-			
 			//create and save html
 			$smarty->assign("l",$language);
 			$smarty->assign("game",$a[$i]);
 			$a[$i]['game_list_html'] = $smarty->fetch("game_list_row.tpl");
 			$a[$i]['game_list_html_2'] = $smarty->fetch("game_list_row_2.tpl");
-						
-			//save: quick and dirty:
-			$g_html = array();
-			$g_html['game_id'] = $a[$i]['id'];
-			$g_html['game_list_html'] = $a[$i]['game_list_html'];
-			$g_html['game_list_html_2'] = $a[$i]['game_list_html_2'];
-			$g_html['language_id'] = $language->get_current_language_id();
-			//use insert_update, because of multithreading, there could be concurrent inserts throwing errors (at least, that's what i think/hope the reason for the duplicate-key-errors is)
-			$database->insert_update('lg_game_list_html',$g_html);
+
+			$cache->set($game_id, $a[$i]);
 		}	
 		
 		$smarty->assign("games",$a);
