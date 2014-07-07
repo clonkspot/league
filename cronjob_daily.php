@@ -100,10 +100,6 @@ $game = new game();
 $game->delete_old_noleague_games();
 
 
-//delete game-list-html-cache
-$database->query("TRUNCATE lg_game_list_html");
-
-
 //delete clans < 3 members:
 require_once('lib/clan.class.php');
 $clan = new clan();
@@ -111,7 +107,7 @@ $clan->delete_small_clans();
 
 
 //optimize some table where large deletions could have occured (cache tables)
-$database->query("OPTIMIZE TABLE lg_game_list_html, lg_game_reference_cache");
+$database->query("OPTIMIZE TABLE lg_game_reference_cache");
 
 //large table, needed to do this every day?:
 //$database->query("OPTIMIZE TABLE lg_game_reference");
