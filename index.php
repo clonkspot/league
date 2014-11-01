@@ -29,7 +29,7 @@ $user->session_login();
 
 //flood protection: limit request per hour
 require_once('lib/flood_protection.class.php');
-if (!$debug_skip_flood_protection && !$user->is_admin() && count($user->get_operator_leagues()) == 0) {
+if (!$debug_skip_flood_protection && !$user->is_logged_in()) {
 	$flood_protection = new flood_protection();
 	$flood_protection->check_exit("website",40,3600,"website"); //max. 40 request/hour
 }
