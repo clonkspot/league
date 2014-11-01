@@ -41,6 +41,7 @@ class flood_protection
 	
 		if ($floodNum > $floodMax && $floodVal != FALSE) 
 		{
+			http_response_code(429); // Too Many Requests
 			exit("Flood protection, max. of $floodMax $string requests per $floodSeconds second(s) reached");
 			return false; //not used, because of exit
 		}
