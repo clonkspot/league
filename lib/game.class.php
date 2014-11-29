@@ -296,6 +296,11 @@ class game
 		$this->insert_league_names($game_reference);
 		$this->data['reference'] = $game_reference->get_serialized_data();
 		$this->save();
+
+		global $redis;
+		if (isset($redis)) {
+		      $redis->publish('league:game:create', $this->data['id']);
+		}
 		
 		//called in save():
 		//$this->cache_reference();
@@ -410,7 +415,14 @@ class game
 		
 		$cache = create_game_list_html_cache();
 		$cache->del($this->data['id']);
-		return $this->save();
+		$result = $this->save();
+
+		global $redis;
+		if (isset($redis)) {
+		      $redis->publish('league:game:update', $this->data['id']);
+		}
+
+		return $result;
 	}
 	
 	function end(&$game_reference, $timeout = false)
@@ -642,6 +654,10 @@ class game
 		
 		//$log->add_game_info("game ended",$csid);
 		
+		global $redis;
+		if (isset($redis)) {
+		      $redis->publish('league:game:end', $this->data['id']);
+		}
 		
 		//WARNING: DO NOT USE $this->save(); AFTER evaluation as evaluation might change game-data in the tables
 		//(it does for settle-scores for example)
@@ -1085,6 +1101,12 @@ class game
 		$database->delete_where('lg_game_reference', "game_id = ".$this->data['id']);
 		$database->delete_where('lg_game_reference_cache', "game_id = ".$this->data['id']);
 		$database->delete('lg_games', $this->data['id']);
+
+		global $redis;
+		if (isset($redis)) {
+		      $redis->publish('league:game:delete', $this->data['id']);
+		}
+		
 	}
 	
 	//player did not joined a game:
