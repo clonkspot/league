@@ -754,6 +754,7 @@ class game
 	function save()
 	{
 		global $database;
+		global $redis;
 		
 		// Reference is saved into seperate table
 		$g_ref = array();
@@ -767,8 +768,15 @@ class game
 		$database->update('lg_games',$this->data);
 	
 		$database->update_where('lg_game_reference',"game_id = '".$database->escape($this->data['id'])."'", $g_ref);
-		$this->data['reference'] = $g_ref['reference'];
+
+		if (isset($redis)) {
+		      // Cache game and reference as JSON in Redis. Games expire after 10 minutes.
+		      $id = $this->data['id'];
+		      $redis->setex("league:game:$id", 600, json_encode($this->data));
+		      $redis->setex("league:game_reference:$id", 600, json_encode($this->reference->data));
+		}
 		
+		$this->data['reference'] = $g_ref['reference'];
 		$this->cache_reference();
 		return true;
 	}
