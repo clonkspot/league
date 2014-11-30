@@ -787,9 +787,15 @@ class game
 
 		if (isset($redis)) {
 		      // Cache game and reference as JSON in Redis. Games expire after 10 minutes.
-		      $id = $this->data['id'];
-		      $redis->setex("league:game:$id", 600, json_encode($this->data));
-		      $redis->setex("league:game_reference:$id", 600, json_encode($this->reference->data));
+		      $redis->pipeline(function($pipe) {
+			    $id = $this->data['id'];
+			    $pipe->setex("league:game:$id", 600, json_encode($this->data));
+			    $pipe->setex("league:game_reference:$id", 600, json_encode($this->reference->data));
+			    if ($this->data['status'] != 'ended')
+				  $pipe->sadd('league:active_games', $id);
+			    else
+				  $pipe->srem('league:active_games', $id);
+		      });
 		}
 		
 		$this->data['reference'] = $g_ref['reference'];
@@ -1104,7 +1110,10 @@ class game
 
 		global $redis;
 		if (isset($redis)) {
-		      $redis->publish('league:game:delete', $this->data['id']);
+		      $redis->pipeline(function($pipe) {
+			    $pipe->srem('league:active_games', $this->data['id']);
+			    $pipe->publish('league:game:delete', $this->data['id']);
+		      });
 		}
 		
 	}
