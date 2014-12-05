@@ -790,7 +790,7 @@ class game
 		      $redis->pipeline(function($pipe) {
 			    $id = $this->data['id'];
 			    $pipe->setex("league:game:$id", 600, json_encode($this->data));
-			    $pipe->setex("league:game_reference:$id", 600, json_encode($this->reference->data));
+			    $pipe->setex("league:game_reference:$id", 600, $this->reference->to_json());
 			    if ($this->data['status'] != 'ended')
 				  $pipe->sadd('league:active_games', $id);
 			    else
