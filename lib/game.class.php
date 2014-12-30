@@ -1593,7 +1593,7 @@ class game
 	{
 		if($reference===null)
 			$reference = &$this->reference;
-		return $reference->data['[Reference]'][0]['Game'];
+		return remove_quotes($reference->data['[Reference]'][0]['Game']);
 	}
 	
 	function get_build_from_reference(&$reference = null)
