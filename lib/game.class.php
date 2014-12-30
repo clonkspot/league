@@ -172,11 +172,11 @@ class game
 					global $cfg_settle_with_latest_engine_only;
 					if(true == $cfg_settle_with_latest_engine_only)
 					{
-						$reference_version = $this->get_version_from_reference($game_reference);
+						$reference_game = $this->get_game_from_reference($game_reference);
 						$reference_build = $this->get_build_from_reference($game_reference);
 						global $database;
 						$a = $database->get_array("SELECT version FROM lg_products
-							WHERE version LIKE '".$database->escape($reference_version)."%'");
+							WHERE name LIKE '".$database->escape($reference_game)."'");
 						
 						//get build out of version string like 4,9,10,0,317
 						$build = explode(',',$a[0]['version']);
@@ -1589,11 +1589,11 @@ class game
 		return $teams;
 	}
 	
-	function get_version_from_reference(&$reference = null)
+	function get_game_from_reference(&$reference = null)
 	{
 		if($reference===null)
 			$reference = &$this->reference;
-		return $reference->data['[Reference]'][0]['Version'];
+		return $reference->data['[Reference]'][0]['Game'];
 	}
 	
 	function get_build_from_reference(&$reference = null)
@@ -1605,14 +1605,14 @@ class game
 	
 	function get_product_id_from_reference(&$reference = null)
 	{
-		$version = $this->get_version_from_reference($reference);
+		$game = $this->get_game_from_reference($reference);
 		
-		if(!$version[0])
-			return false; //no version
+		if(!$game)
+			return false; //no game version
 		
 		global $database;
 		$a = $database->get_array("SELECT id FROM lg_products
-			WHERE version LIKE '".$database->escape($version[0])."%'");
+			WHERE name LIKE '".$database->escape($game)."'");
 			
 		if(!$a[0])
 			return false;
@@ -1622,14 +1622,14 @@ class game
 	
 	function get_product_string_from_reference(&$reference = null)
 	{
-		$version = $this->get_version_from_reference($reference);
+		$game = $this->get_game_from_reference($reference);
 		
-		if(!$version[0])
-			return false; //no version
+		if(!$game)
+			return false; //no game version
 		
 		global $database;
 		$a = $database->get_array("SELECT product_string FROM lg_products
-			WHERE version LIKE '".$database->escape($version[0])."%'");
+			WHERE name LIKE '".$database->escape($game)."'");
 			
 		if(!$a[0])
 			return false;
