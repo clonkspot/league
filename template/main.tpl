@@ -25,7 +25,7 @@
 {elseif 'league'==$part}
     {if 'list'==$method}
         {include file='league_list.tpl'}
-    {else if 'ranking'==$method}
+    {else if 'ranking'==$method || 'clan_ranking'==$method}
         {include file='league_ranking.tpl'}
     {/if}
 {elseif 'game'==$part}
