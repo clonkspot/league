@@ -78,7 +78,7 @@
           {if $u->get_id() == $user.id}
           <td>
           {if $score.league.type!='settle' && $score.score > 0 && $score.league.date_start <= $smarty.now && $score.league.date_end >= $smarty.now}
-          <form action="index.php{url part="user" method="suicide"}" method="post">
+          <form action="{url part="user" method="suicide"}" method="post">
           <input type="hidden" name="user[id]" value="{$user.id}">
           <input type="hidden" name="league[id]" value="{$score.league_id}">
           <input type="submit" onClick="return confirm('{$l->s('suicide_confirm')}')" value="{$l->s('suicide')}">
