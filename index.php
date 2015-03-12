@@ -62,6 +62,7 @@ else
 }
 
 
+$smarty->assign("base_path", $base_path);
 
 switch($part) {
 	
@@ -347,7 +348,6 @@ switch($part) {
 	}
 }
 
-$smarty->assign("base_path", $base_path);
 $smarty->assign("user_logged_in",$user->is_logged_in());
 $smarty->assign("user_logged_in_via_cookie",$user->is_logged_in_via_cookie());
 $smarty->assign("user_is_admin",$user->is_admin());
