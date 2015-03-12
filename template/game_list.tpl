@@ -2,16 +2,16 @@
   {*{include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.type" value="melee"}
   {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.type" value="noleague"}
   {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.type" value="" text=$l->s('leagues')}
-  <img class="vrbar" src="images/vr_bar.gif">*}
+  <img class="vrbar" src="{$base_path}images/vr_bar.gif">*}
   {foreach from=$leagues item=league}
       {include file="func_filter.tpl" link="{url part="game" method="list"}" name="league_id" value=$league.id text=$league.name icon_on=$league.filter_icon_on icon_off=$league.filter_icon_off}
   {/foreach}
   {include file="func_filter.tpl" link="{url part="game" method="list"}" name="league_id" value="" text=$l->s('leagues')}
-  <img class="vrbar" src="images/vr_bar.gif">
+  <img class="vrbar" src="{$base_path}images/vr_bar.gif">
   {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.status" value="lobby"}
   {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.status" value="running"}
   {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.status" value="" text=$l->s('games')}
-  <img class="vrbar" src="images/vr_bar.gif">
+  <img class="vrbar" src="{$base_path}images/vr_bar.gif">
   {include file="func_search.tpl" link="{url part="game" method="list"}"}
   {include file="func_filter.tpl" link="{url part="game" method="list"}" name="search" value="" text=$l->s('search')}
 </div>

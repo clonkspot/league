@@ -41,14 +41,14 @@
     {foreach from=$scores item=score}
       <tr>
           <td>
-            <a href="{url part="league" method="ranking" q="league[id]={$score.league_id}"}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{/if} {$score.league_name}</a>
+            <a href="{url part="league" method="ranking" q="league[id]={$score.league_id}"}">{if $score.league_icon}<img src="{$base_path}{$score.league_icon}" title="{$score.league_name}">{/if} {$score.league_name}</a>
           </td>
           <td>
             <a href="{url part="league" method="ranking" q="league[id]={$score.league_id}&highlight={$score.user_id}"}"><b>{$score.rank}</b></a>
           </td>
           <td>
             {if $score.rank_icon}
-                 <img src="{$score.rank_icon}">
+                 <img src="{$base_path}{$score.rank_icon}">
             {/if}
           </td>
           <td>

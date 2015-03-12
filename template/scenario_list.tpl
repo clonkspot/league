@@ -3,7 +3,7 @@
       {include file="func_filter.tpl" link="{url part="scenario" method="list"}" name="league_id" value=$league.id text=$league.name icon_on=$league.filter_icon_on icon_off=$league.filter_icon_off}
   {/foreach}
   {include file="func_filter.tpl" link="{url part="scenario" method="list"}" name="league_id" value="" text=$l->s('leagues')}
-  <img class="vrbar" src="images/vr_bar.gif">
+  <img class="vrbar" src="{$base_path}images/vr_bar.gif">
   {include file="func_search.tpl" link="{url part="scenario" method="list"}"}
   {include file="func_filter.tpl" link="{url part="scenario" method="list"}" name="search" value="" text=$l->s('search')}
 </div>
@@ -25,15 +25,15 @@
             <td>
             	{foreach from=$leagues item=league}
             		{if $u->check_operator_permission("scenario", "league_toggle", $league.id)}
-            		(<a href="{url part="scenario" method="toggle_league" q="scenario={$scenario.id}&league={$league.id}"}"><img src="{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>)
+            		(<a href="{url part="scenario" method="toggle_league" q="scenario={$scenario.id}&league={$league.id}"}"><img src="{$base_path}{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>)
             		{/if}
             	{/foreach}
             	{foreach from=$scenario.leagues item=league}
-            		<a href="{url part="league" method="ranking" q="league[id]={$league.id}"}"><img src="{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>
+            		<a href="{url part="league" method="ranking" q="league[id]={$league.id}"}"><img src="{$base_path}{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>
             	{/foreach}
             </td>
             <td>
-                {*{if $scenario.icon_number >= 0 && $scenario.icon_number != ''}<img src="images/icons/scenarios/{$scenario.icon_number}.png">{/if}*}
+                {*{if $scenario.icon_number >= 0 && $scenario.icon_number != ''}<img src="{$base_path}images/icons/scenarios/{$scenario.icon_number}.png">{/if}*}
                 <b><a href="{url part="game" method="list" q="filter[scenario_name][]={$scenario.name|escape}&filter[scenario_id][]={$scenario.id}&sort[col]=settle_rank&sort[dir]=asc"}">{$scenario.name|escape}</a></b>
             </td>
             {*<td>{$scenario.active}</td>*}

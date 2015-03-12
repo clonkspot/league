@@ -1,7 +1,7 @@
 {if $game.is_revoked}<br><span class="revoked">{$l->s('game_revoked')}</span><br><br>
 <div class="revoked">{/if}<div class="textleft">
 <b>Szenario:</b>
-{if $game.icon_number >= 0 && $game.icon_number != ''}<img src="images/icons/scenarios/{$game.icon_number}.png">{/if}
+{if $game.icon_number >= 0 && $game.icon_number != ''}<img src="{$base_path}images/icons/scenarios/{$game.icon_number}.png">{/if}
 {if $game.type!='noleague'}
     <a href="{url part="game" method="list" q="filter[scenario_name][]={$game.scenario_name|escape}&filter[scenario_id][]={$game.scenario_id}&sort[col]=settle_rank&sort[dir]=asc"}">{$game.scenario_name|escape}</a>
 {else}
@@ -22,14 +22,14 @@
 <br><b>{$l->s('date_last_update')}:</b> {$game.date_last_update|date_format:"%d.%m.%y - %H:%M:%S"}
 <br><b>{$l->s('status')}:</b>
                 {if $game.status == 'running'}
-                    <img src="images/icons/status_running_16.gif" title="{$l->s('running')}">
-                    {if $game.is_join_allowed}<img src="images/icons/status_runtimejoin_16.gif" title="{$l->s('is_join_allowed')}">{/if}
+                    <img src="{$base_path}images/icons/status_running_16.gif" title="{$l->s('running')}">
+                    {if $game.is_join_allowed}<img src="{$base_path}images/icons/status_runtimejoin_16.gif" title="{$l->s('is_join_allowed')}">{/if}
                 {elseif $game.status == 'lobby'}
-                    <img src="images/icons/status_lobby_16.gif" title="{$l->s('lobby')}">
+                    <img src="{$base_path}images/icons/status_lobby_16.gif" title="{$l->s('lobby')}">
                 {/if}
-                {if $game.is_official_server}<img src="images/icons/official_server_16.png" title="{$l->s('official_server')}">{/if}
-                {if $game.is_password_needed}<img src="images/icons/password_needed_16.png" title="{$l->s('password_needed')}">{/if}
-                {if $game.is_fair_crew_strength}<img src="images/icons/fair_crew_strength_16.png" title="{$l->s('fair_crew_strength')}">{/if}
+                {if $game.is_official_server}<img src="{$base_path}images/icons/official_server_16.png" title="{$l->s('official_server')}">{/if}
+                {if $game.is_password_needed}<img src="{$base_path}images/icons/password_needed_16.png" title="{$l->s('password_needed')}">{/if}
+                {if $game.is_fair_crew_strength}<img src="{$base_path}images/icons/fair_crew_strength_16.png" title="{$l->s('fair_crew_strength')}">{/if}
 
 				{if $u->check_operator_permission("game","download_record", $leagues) && !$game.is_revoked }
 					{include file="admin/game_download_record.tpl"}
@@ -74,7 +74,7 @@
                   {if $game.type=='melee'}
                     <td>
                       {foreach from=$player.scores item=score name="score"}
-                          <a href="{url part="league" method="ranking" q="league[id]={$score.league_id}"}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
+                          <a href="{url part="league" method="ranking" q="league[id]={$score.league_id}"}">{if $score.league_icon}<img src="{$base_path}{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
                               {$score.old_player_score}
                           {if !$smarty.foreach.score.last && $smarty.foreach.score.total>1} | {/if}
                       {/foreach}
@@ -84,7 +84,7 @@
                   {if $game.status=='ended'}
                   <td>
                     {foreach from=$player.scores item=score name="score"}
-                        <a href="{url part="league" method="ranking" q="league[id]={$score.league_id}"}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
+                        <a href="{url part="league" method="ranking" q="league[id]={$score.league_id}"}">{if $score.league_icon}<img src="{$base_path}{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
                         <span class="{if $team.team_status == 'won' && $game.status=='ended'}scorewon{elseif $team.team_status == 'lost' && $game.status=='ended'}scorelost{else}score{/if}">{if $score.score > 0}+{/if}{$score.score}{if $game.type=='settle' && $score.score && $score.settle_rank} ({$l->s('rank')} {$score.settle_rank}){/if}</span>
                         {if !$smarty.foreach.score.last && $smarty.foreach.score.total>1} | {/if}
                     {/foreach}
@@ -100,7 +100,7 @@
                   {if $game.type=='melee'}
                     <td>
                       {foreach from=$player.scores item=score name="score"}
-                          <a href="{url part="league" method="ranking" q="league[id]={$score.league_id}"}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
+                          <a href="{url part="league" method="ranking" q="league[id]={$score.league_id}"}">{if $score.league_icon}<img src="{$base_path}{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
                               {$score.old_player_score+$score.score+$score.bonus}
                           {if !$smarty.foreach.score.last && $smarty.foreach.score.total>1} | {/if}
                       {/foreach}

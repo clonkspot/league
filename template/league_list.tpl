@@ -11,7 +11,7 @@
         </tr>
     {foreach item=league from=$leagues name="league"}
         <tr {if !$league.is_current}class="revoked"{/if}>
-            <td><a href="{url part="league" method="ranking" q="league[id]={$league.id}"}"><img src="{$league.filter_icon_on}" alt=""></a></td>
+            <td><a href="{url part="league" method="ranking" q="league[id]={$league.id}"}"><img src="{$base_path}{$league.filter_icon_on}" alt=""></a></td>
             <td><a href="{url part="league" method="ranking" q="league[id]={$league.id}"}">{$league.name}</a></td>
             <td>{$league.description}</td>
             <td>{$l->s($league.type)}{if $league.scenario_restriction == 'N'}, {$l->s('open_league')}{/if}</td>

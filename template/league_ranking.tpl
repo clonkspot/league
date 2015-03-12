@@ -1,15 +1,15 @@
 <div class="filter">
 {* links to all leagues: *}
   {foreach from=$leagues item=lg}
-    <a href="{url part="league" method="" q="{if $clan_ranking}clan_{/if}ranking&league[id]={$lg.id}"}">{if $league.id==$lg.id}<img src="{$lg.filter_icon_on}" title="{$lg.name}"  alt="{$lg.name}">{else}<img src="{$lg.filter_icon_off}" title="{$lg.name}" alt="{$lg.name}">{/if}</a>
+    <a href="{url part="league" method="" q="{if $clan_ranking}clan_{/if}ranking&league[id]={$lg.id}"}">{if $league.id==$lg.id}<img src="{$base_path}{$lg.filter_icon_on}" title="{$lg.name}"  alt="{$lg.name}">{else}<img src="{$base_path}{$lg.filter_icon_off}" title="{$lg.name}" alt="{$lg.name}">{/if}</a>
   {/foreach}
   &nbsp;&nbsp;
   {foreach from=$old_leagues item=lg}
-    <a href="{url part="league" method="" q="{if $clan_ranking}clan_{/if}ranking&league[id]={$lg.id}"}">{if $league.id==$lg.id}<img src="{$lg.filter_icon_on}" title="{$lg.name}"  alt="{$lg.name}">{else}<img src="{$lg.filter_icon_off}" title="{$lg.name}" alt="{$lg.name}">{/if}</a>
+    <a href="{url part="league" method="" q="{if $clan_ranking}clan_{/if}ranking&league[id]={$lg.id}"}">{if $league.id==$lg.id}<img src="{$base_path}{$lg.filter_icon_on}" title="{$lg.name}"  alt="{$lg.name}">{else}<img src="{$base_path}{$lg.filter_icon_off}" title="{$lg.name}" alt="{$lg.name}">{/if}</a>
   {/foreach}
-  <img class="vrbar" src="images/vr_bar.gif">
-  <a href="{url part="league" method="ranking" q="league[id]={$smarty.request.league.id}"}">{if $clan_ranking}<img src="images/icons/filter_player_off.gif" title="{$l->s('filter_player_ranking')}">{else}<img src="images/icons/filter_player.gif" title="{$l->s('filter_player_ranking')}">{/if}</a>
-  <a href="{url part="league" method="clan_ranking" q="league[id]={$smarty.request.league.id}"}">{if $clan_ranking}<img src="images/icons/filter_team.gif" title="{$l->s('filter_clan_ranking')}">{else}<img src="images/icons/filter_team_off.gif" title="{$l->s('filter_clan_ranking')}">{/if}</a>
+  <img class="vrbar" src="{$base_path}images/vr_bar.gif">
+  <a href="{url part="league" method="ranking" q="league[id]={$smarty.request.league.id}"}">{if $clan_ranking}<img src="{$base_path}images/icons/filter_player_off.gif" title="{$l->s('filter_player_ranking')}">{else}<img src="{$base_path}images/icons/filter_player.gif" title="{$l->s('filter_player_ranking')}">{/if}</a>
+  <a href="{url part="league" method="clan_ranking" q="league[id]={$smarty.request.league.id}"}">{if $clan_ranking}<img src="{$base_path}images/icons/filter_team.gif" title="{$l->s('filter_clan_ranking')}">{else}<img src="{$base_path}images/icons/filter_team_off.gif" title="{$l->s('filter_clan_ranking')}">{/if}</a>
 </div>
 
 {if $clan_ranking}
@@ -57,7 +57,7 @@
             {if $clan_ranking==0}
                 <td>
                     {if $score.rank_icon}
-                        <img src="{$score.rank_icon}">
+                        <img src="{$base_path}{$score.rank_icon}">
                     {/if}
                 </td>
             {/if}
@@ -78,9 +78,9 @@
 {* -- Trend disabled for now
             <td>
               {if $score.trend=='up'}
-                   <img src="images/icons/icon_trend_up_16.png" title="{$l->s('trend_up')}">
+                   <img src="{$base_path}images/icons/icon_trend_up_16.png" title="{$l->s('trend_up')}">
               {elseif $score.trend=='down'}
-                   <img src="images/icons/icon_trend_down_16.png" title="{$l->s('trend_down')}">
+                   <img src="{$base_path}images/icons/icon_trend_down_16.png" title="{$l->s('trend_down')}">
               {/if}
             </td>
 *}
