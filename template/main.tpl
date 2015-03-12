@@ -4,7 +4,7 @@
     <meta http-equiv='content-type' content='text/html; charset=iso-8859-1'>
     <title>Clonkspot {$l->s('league')}</title>
     <link rel="stylesheet" type="text/css" href="/css/clonkspot.css">
-    <link rel="stylesheet" type="text/css" href="league.css">
+    <link rel="stylesheet" type="text/css" href="{$base_path}league.css">
 </head>
 <body>
 

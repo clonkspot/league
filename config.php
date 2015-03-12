@@ -41,7 +41,7 @@ $cfg_settle_with_latest_engine_only = false;
 
 $cronjob_password = '';
 
-// Set base path with leading / to get nice urls.
+// Set base path with leading and trailing / to get nice urls.
 // Will need rewriting by the web server.
 $base_path = null;
 
