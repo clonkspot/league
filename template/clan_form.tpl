@@ -1,4 +1,4 @@
-<form action="?part=clan&method=edit2" method="post">
+<form action="{url part="clan" method="edit2"}" method="post">
 {if $edit_type=="edit"}
     <input type="hidden" name="method" value="edit2">
 {else}

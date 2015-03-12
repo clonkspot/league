@@ -14,6 +14,7 @@ $smarty->template_dir = $webroot.'template/';
 $smarty->compile_dir = $webroot.'template_c/';
 $smarty->cache_dir = $webroot.'cache/';
 $smarty->config_dir = $webroot.'configs/';
+$smarty->addPluginsDir($webroot.'smarty_plugins/');
 // Always disable notices for templates as there are just too many to be useful.
 $smarty->error_reporting = error_reporting() ^ E_NOTICE;
 
@@ -39,6 +40,10 @@ $cfg_settle_on_official_server_only = false;
 $cfg_settle_with_latest_engine_only = false;
 
 $cronjob_password = '';
+
+// Set base path with leading / to get nice urls.
+// Will need rewriting by the web server.
+$base_path = null;
 
 // Name of the mwf login cookie.
 $mwf_cookie = NULL;

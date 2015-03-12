@@ -1,21 +1,21 @@
 <div class="filter">
 {* links to all leagues: *}
   {foreach from=$leagues item=lg}
-    <a href="?part=league&method={if $clan_ranking}clan_{/if}ranking&league[id]={$lg.id}">{if $league.id==$lg.id}<img src="{$lg.filter_icon_on}" title="{$lg.name}"  alt="{$lg.name}">{else}<img src="{$lg.filter_icon_off}" title="{$lg.name}" alt="{$lg.name}">{/if}</a>
+    <a href="{url part="league" method=""}{if $clan_ranking}clan_{/if}ranking&league[id]={$lg.id}">{if $league.id==$lg.id}<img src="{$lg.filter_icon_on}" title="{$lg.name}"  alt="{$lg.name}">{else}<img src="{$lg.filter_icon_off}" title="{$lg.name}" alt="{$lg.name}">{/if}</a>
   {/foreach}
   &nbsp;&nbsp;
   {foreach from=$old_leagues item=lg}
-    <a href="?part=league&method={if $clan_ranking}clan_{/if}ranking&league[id]={$lg.id}">{if $league.id==$lg.id}<img src="{$lg.filter_icon_on}" title="{$lg.name}"  alt="{$lg.name}">{else}<img src="{$lg.filter_icon_off}" title="{$lg.name}" alt="{$lg.name}">{/if}</a>
+    <a href="{url part="league" method=""}{if $clan_ranking}clan_{/if}ranking&league[id]={$lg.id}">{if $league.id==$lg.id}<img src="{$lg.filter_icon_on}" title="{$lg.name}"  alt="{$lg.name}">{else}<img src="{$lg.filter_icon_off}" title="{$lg.name}" alt="{$lg.name}">{/if}</a>
   {/foreach}
   <img class="vrbar" src="images/vr_bar.gif">
-  <a href="?part=league&method=ranking&league[id]={$smarty.request.league.id}">{if $clan_ranking}<img src="images/icons/filter_player_off.gif" title="{$l->s('filter_player_ranking')}">{else}<img src="images/icons/filter_player.gif" title="{$l->s('filter_player_ranking')}">{/if}</a>
-  <a href="?part=league&method=clan_ranking&league[id]={$smarty.request.league.id}">{if $clan_ranking}<img src="images/icons/filter_team.gif" title="{$l->s('filter_clan_ranking')}">{else}<img src="images/icons/filter_team_off.gif" title="{$l->s('filter_clan_ranking')}">{/if}</a>
+  <a href="{url part="league" method="ranking"}league[id]={$smarty.request.league.id}">{if $clan_ranking}<img src="images/icons/filter_player_off.gif" title="{$l->s('filter_player_ranking')}">{else}<img src="images/icons/filter_player.gif" title="{$l->s('filter_player_ranking')}">{/if}</a>
+  <a href="{url part="league" method="clan_ranking"}league[id]={$smarty.request.league.id}">{if $clan_ranking}<img src="images/icons/filter_team.gif" title="{$l->s('filter_clan_ranking')}">{else}<img src="images/icons/filter_team_off.gif" title="{$l->s('filter_clan_ranking')}">{/if}</a>
 </div>
 
 {if $clan_ranking}
-    {assign var="link" value="?part=league&method=clan_ranking&league[id]=`$smarty.request.league.id`"}
+    {assign var="link" value="{url part="league" method="clan_ranking"}league[id]=`$smarty.request.league.id`"}
 {else}
-    {assign var="link" value="?part=league&method=ranking&league[id]=`$smarty.request.league.id`"}
+    {assign var="link" value="{url part="league" method="ranking"}league[id]=`$smarty.request.league.id`"}
 {/if}
 {include file="func_header_line.tpl" func="ranking" text=$league.name page_link=$link}
 
@@ -66,9 +66,9 @@
                     -
                 {else}
                     {if $clan_ranking}
-                        <a href="?part=league&method=ranking&league[id]={$league.id}&filter[clan_name][]={$score.name}">{$score.score}</a>
+                        <a href="{url part="league" method="ranking"}league[id]={$league.id}&filter[clan_name][]={$score.name}">{$score.score}</a>
                     {else}
-                        {if $league.type=='settle'}<a href="?part=game&method=list&filter[league_id][]={$league.id}&filter[user_name][]={$score.name}&sort[col]=settle_rank&sort[dir]=asc">{$score.score}</a>
+                        {if $league.type=='settle'}<a href="{url part="game" method="list"}filter[league_id][]={$league.id}&filter[user_name][]={$score.name}&sort[col]=settle_rank&sort[dir]=asc">{$score.score}</a>
                         {else}
                            {$score.score}
                         {/if}
@@ -88,11 +88,11 @@
             <td>(+{$score.bonus_account})</td>
             {/if}
             {if $clan_ranking==0}
-              <td><a href="?part=clan&method=details&clan[id]={$score.clan_id}">{$score.clan_tag}</a></td>
-              <td><a href="?part=user&method=details&user[id]={$score.user_id}">{$score.name}</a></td>
+              <td><a href="{url part="clan" method="details"}clan[id]={$score.clan_id}">{$score.clan_tag}</a></td>
+              <td><a href="{url part="user" method="details"}user[id]={$score.user_id}">{$score.name}</a></td>
             {else}
                 <td>{$score.clan_tag}</td>
-                <td><a href="?part=clan&method=details&clan[id]={$score.clan_id}">{$score.name}</a></td>
+                <td><a href="{url part="clan" method="details"}clan[id]={$score.clan_id}">{$score.name}</a></td>
                 <td>{$score.user_count}{if $score.user_count<3} (!){/if}</td>
             {/if}
              <td>{$score.games_count}</td>

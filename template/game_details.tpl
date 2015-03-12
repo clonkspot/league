@@ -3,7 +3,7 @@
 <b>Szenario:</b>
 {if $game.icon_number >= 0 && $game.icon_number != ''}<img src="images/icons/scenarios/{$game.icon_number}.png">{/if}
 {if $game.type!='noleague'}
-    <a href="?part=game&method=list&filter[scenario_name][]={$game.scenario_name|escape}&filter[scenario_id][]={$game.scenario_id}&sort[col]=settle_rank&sort[dir]=asc">{$game.scenario_name|escape}</a>
+    <a href="{url part="game" method="list"}filter[scenario_name][]={$game.scenario_name|escape}&filter[scenario_id][]={$game.scenario_id}&sort[col]=settle_rank&sort[dir]=asc">{$game.scenario_name|escape}</a>
 {else}
     {$game.scenario_name|escape}
 {/if}
@@ -64,9 +64,9 @@
                   <td>
                     <font style="color:{$player.color|string_format:"%06X"}; font-weight:bold;">&bull;</font>
                     <span class="{if $team.team_status == 'won' && $game.status=='ended'}scorewon{elseif $team.team_status == 'lost' && $game.status=='ended'}scorelost{else}score{/if}"> 
-                        <a href="?part=user&method=details&user[id]={$player.user_id}">{if $player.status=='active' && $game.status=='running'}({if $player.clan_tag}[{$player.clan_tag}]{/if}{$player.name|escape}){else}{if $player.clan_tag}[{$player.clan_tag}]{/if}{$player.name|escape}{/if}</a>{if $player.is_disconnected} ({$l->s('disconnected')}){/if}
+                        <a href="{url part="user" method="details"}user[id]={$player.user_id}">{if $player.status=='active' && $game.status=='running'}({if $player.clan_tag}[{$player.clan_tag}]{/if}{$player.name|escape}){else}{if $player.clan_tag}[{$player.clan_tag}]{/if}{$player.name|escape}{/if}</a>{if $player.is_disconnected} ({$l->s('disconnected')}){/if}
 						{if $player.reg_uid && $u->is_any_operator() && $player.reg_uid != $player.user_id}
-                        (@ <a href="?part=user&method=details&user[id]={$player.reg_uid}">{$player.reg_name|escape}</a>)
+                        (@ <a href="{url part="user" method="details"}user[id]={$player.reg_uid}">{$player.reg_name|escape}</a>)
                         {/if}
                     </span>
                   </td>
@@ -74,7 +74,7 @@
                   {if $game.type=='melee'}
                     <td>
                       {foreach from=$player.scores item=score name="score"}
-                          <a href="?part=league&method=ranking&league[id]={$score.league_id}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
+                          <a href="{url part="league" method="ranking"}league[id]={$score.league_id}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
                               {$score.old_player_score}
                           {if !$smarty.foreach.score.last && $smarty.foreach.score.total>1} | {/if}
                       {/foreach}
@@ -84,7 +84,7 @@
                   {if $game.status=='ended'}
                   <td>
                     {foreach from=$player.scores item=score name="score"}
-                        <a href="?part=league&method=ranking&league[id]={$score.league_id}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
+                        <a href="{url part="league" method="ranking"}league[id]={$score.league_id}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
                         <span class="{if $team.team_status == 'won' && $game.status=='ended'}scorewon{elseif $team.team_status == 'lost' && $game.status=='ended'}scorelost{else}score{/if}">{if $score.score > 0}+{/if}{$score.score}{if $game.type=='settle' && $score.score && $score.settle_rank} ({$l->s('rank')} {$score.settle_rank}){/if}</span>
                         {if !$smarty.foreach.score.last && $smarty.foreach.score.total>1} | {/if}
                     {/foreach}
@@ -100,7 +100,7 @@
                   {if $game.type=='melee'}
                     <td>
                       {foreach from=$player.scores item=score name="score"}
-                          <a href="?part=league&method=ranking&league[id]={$score.league_id}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
+                          <a href="{url part="league" method="ranking"}league[id]={$score.league_id}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{else}{$score.league_name}{/if}</a>
                               {$score.old_player_score+$score.score+$score.bonus}
                           {if !$smarty.foreach.score.last && $smarty.foreach.score.total>1} | {/if}
                       {/foreach}

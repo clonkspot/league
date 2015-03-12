@@ -1,22 +1,22 @@
 <div class="filter">
-  {*{include file="func_filter.tpl" link="?part=game&method=list" name="g.type" value="melee"}
-  {include file="func_filter.tpl" link="?part=game&method=list" name="g.type" value="noleague"}
-  {include file="func_filter.tpl" link="?part=game&method=list" name="g.type" value="" text=$l->s('leagues')}
+  {*{include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.type" value="melee"}
+  {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.type" value="noleague"}
+  {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.type" value="" text=$l->s('leagues')}
   <img class="vrbar" src="images/vr_bar.gif">*}
   {foreach from=$leagues item=league}
-      {include file="func_filter.tpl" link="?part=game&method=list" name="league_id" value=$league.id text=$league.name icon_on=$league.filter_icon_on icon_off=$league.filter_icon_off}
+      {include file="func_filter.tpl" link="{url part="game" method="list"}" name="league_id" value=$league.id text=$league.name icon_on=$league.filter_icon_on icon_off=$league.filter_icon_off}
   {/foreach}
-  {include file="func_filter.tpl" link="?part=game&method=list" name="league_id" value="" text=$l->s('leagues')}
+  {include file="func_filter.tpl" link="{url part="game" method="list"}" name="league_id" value="" text=$l->s('leagues')}
   <img class="vrbar" src="images/vr_bar.gif">
-  {include file="func_filter.tpl" link="?part=game&method=list" name="g.status" value="lobby"}
-  {include file="func_filter.tpl" link="?part=game&method=list" name="g.status" value="running"}
-  {include file="func_filter.tpl" link="?part=game&method=list" name="g.status" value="" text=$l->s('games')}
+  {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.status" value="lobby"}
+  {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.status" value="running"}
+  {include file="func_filter.tpl" link="{url part="game" method="list"}" name="g.status" value="" text=$l->s('games')}
   <img class="vrbar" src="images/vr_bar.gif">
-  {include file="func_search.tpl" link="?part=game&method=list"}
-  {include file="func_filter.tpl" link="?part=game&method=list" name="search" value="" text=$l->s('search')}
+  {include file="func_search.tpl" link="{url part="game" method="list"}"}
+  {include file="func_filter.tpl" link="{url part="game" method="list"}" name="search" value="" text=$l->s('search')}
 </div>
 
-{include file="func_header_line.tpl" func="games" text_array=$filter_text_array page_link="?part=game&method=list"}
+{include file="func_header_line.tpl" func="games" text_array=$filter_text_array page_link="{url part="game" method="list"}"}
 
 {assign var="show_settle_scores" value=0}
 {if $games.0.scenario_type=='settle' &&
@@ -27,20 +27,20 @@
 
 <table>
         <tr class="th">
-            {include file="func_tableheader.tpl" link="?part=game&method=list" value="g.type" text=$l->s('leagues')}
-            {include file="func_tableheader.tpl" link="?part=game&method=list" value="g.status" text=$l->s('status')}
-            {include file="func_tableheader.tpl" link="?part=game&method=list" value="scenario_name" text=$l->s('scenario')}
-            {include file="func_tableheader.tpl" link="?part=game&method=list" value="date_created" text=$l->s('date_start')}
-            {include file="func_tableheader.tpl" link="?part=game&method=list" value="duration" text=$l->s('duration')}
+            {include file="func_tableheader.tpl" link="{url part="game" method="list"}" value="g.type" text=$l->s('leagues')}
+            {include file="func_tableheader.tpl" link="{url part="game" method="list"}" value="g.status" text=$l->s('status')}
+            {include file="func_tableheader.tpl" link="{url part="game" method="list"}" value="scenario_name" text=$l->s('scenario')}
+            {include file="func_tableheader.tpl" link="{url part="game" method="list"}" value="date_created" text=$l->s('date_start')}
+            {include file="func_tableheader.tpl" link="{url part="game" method="list"}" value="duration" text=$l->s('duration')}
             
             {if $show_settle_scores}
-                {include file="func_tableheader.tpl" link="?part=game&method=list" value="settle_rank" text=$l->s('duration_equivalent')}
+                {include file="func_tableheader.tpl" link="{url part="game" method="list"}" value="settle_rank" text=$l->s('duration_equivalent')}
             {/if}
 
-            {include file="func_tableheader.tpl" link="?part=game&method=list" value="player_count" text=$l->s('players')}
+            {include file="func_tableheader.tpl" link="{url part="game" method="list"}" value="player_count" text=$l->s('players')}
             {if $show_settle_scores}
-                {include file="func_tableheader.tpl" link="?part=game&method=list" value="settle_rank" text=$l->s('rank')}
-                {include file="func_tableheader.tpl" link="?part=game&method=list" value="settle_score" text=$l->s('score')}
+                {include file="func_tableheader.tpl" link="{url part="game" method="list"}" value="settle_rank" text=$l->s('rank')}
+                {include file="func_tableheader.tpl" link="{url part="game" method="list"}" value="settle_score" text=$l->s('score')}
             {/if}
         </tr>
     {foreach item=game from=$games name="game"}

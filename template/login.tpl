@@ -6,7 +6,7 @@
 
 {$l->s('login_notice')}
 
-<form action="?part=login&method=login" method="post">
+<form action="{url part="login" method="login"}" method="post">
 <table class="simple">
 <tr>
     <td>

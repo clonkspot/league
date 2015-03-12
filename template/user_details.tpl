@@ -11,7 +11,7 @@
 {if $user.clan_id}
 <tr>
 <td><b>{$l->s('clan')}:</b></td>
-<td><a href="?part=clan&method=details&clan[id]={$user.clan_id}">{$user.clan_name|escape}</a>
+<td><a href="{url part="clan" method="details"}clan[id]={$user.clan_id}">{$user.clan_name|escape}</a>
 </td></tr>
 {/if}
 {if $user.real_name}
@@ -21,7 +21,7 @@
 <tr><td><b>{$l->s('date_created')}:</b></td><td>{$user.date_created|date_format:"%d.%m.%Y"}
 </td></tr>
 <tr><td colspan="2">
-<b><a href="?part=game&method=list&filter[user_name][]={$user.name|escape}">{$l->s('all_games_by_user')}</a></b>
+<b><a href="{url part="game" method="list"}filter[user_name][]={$user.name|escape}">{$l->s('all_games_by_user')}</a></b>
 </td></tr>
 </table>
 </div>
@@ -41,10 +41,10 @@
     {foreach from=$scores item=score}
       <tr>
           <td>
-            <a href="?part=league&method=ranking&league[id]={$score.league_id}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{/if} {$score.league_name}</a>
+            <a href="{url part="league" method="ranking"}league[id]={$score.league_id}">{if $score.league_icon}<img src="{$score.league_icon}" title="{$score.league_name}">{/if} {$score.league_name}</a>
           </td>
           <td>
-            <a href="?part=league&method=ranking&league[id]={$score.league_id}&highlight={$score.user_id}"><b>{$score.rank}</b></a>
+            <a href="{url part="league" method="ranking"}league[id]={$score.league_id}&highlight={$score.user_id}"><b>{$score.rank}</b></a>
           </td>
           <td>
             {if $score.rank_icon}
@@ -53,9 +53,9 @@
           </td>
           <td>
             {if $score.league.type=='settle'}
-                <a href="?part=game&method=list&filter[league_id][]={$score.league.id}&filter[user_name][]={$score.name}&sort[col]=settle_rank&sort[dir]=asc">{$score.score}</a>
+                <a href="{url part="game" method="list"}filter[league_id][]={$score.league.id}&filter[user_name][]={$score.name}&sort[col]=settle_rank&sort[dir]=asc">{$score.score}</a>
             {elseif $u->check_operator_permission("score","set", $score.league_id)}
-                <form method='post' action='?part=user&method=set_score&user[id]={$user.id}'>
+                <form method='post' action='{url part="user" method="set_score"}user[id]={$user.id}'>
                    <input name="league[id]" type="hidden" value="{$score.league_id}"/>
                    <input name="score" size="5" value="{$score.score}"/>
                 </form>
@@ -78,7 +78,7 @@
           {if $u->get_id() == $user.id}
           <td>
           {if $score.league.type!='settle' && $score.score > 0 && $score.league.date_start <= $smarty.now && $score.league.date_end >= $smarty.now}
-          <form action="index.php?part=user&method=suicide" method="post">
+          <form action="index.php{url part="user" method="suicide"}" method="post">
           <input type="hidden" name="user[id]" value="{$user.id}">
           <input type="hidden" name="league[id]" value="{$score.league_id}">
           <input type="submit" onClick="return confirm('{$l->s('suicide_confirm')}')" value="{$l->s('suicide')}">

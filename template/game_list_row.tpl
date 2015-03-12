@@ -3,7 +3,7 @@
             <td>
                 {if $game.leagues}
                   {foreach from=$game.leagues item=league}
-                      <a href="?part=league&method=ranking&league[id]={$league.id}"><img src="{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>
+                      <a href="{url part="league" method="ranking"}league[id]={$league.id}"><img src="{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>
                   {/foreach}
                 {/if}
             </td>
@@ -25,7 +25,7 @@
                 {if $game.type=='noleague'}
                     {$game.scenario_name|escape}
                 {else}
-                    <a href="?part=game&method=details&game[id]={$game.id}">{$game.scenario_name|escape}</a>
+                    <a href="{url part="game" method="details"}game[id]={$game.id}">{$game.scenario_name|escape}</a>
                 {/if}
             </td>
             <td align="right">

@@ -35,7 +35,7 @@
   {foreach item=clan_user from=$clan.users name="users"}
       <tr>
           <td>
-            <b><a href="?part=user&method=details&user[id]={$clan_user.id}">{$clan_user.name}</a></b>
+            <b><a href="{url part="user" method="details"}user[id]={$clan_user.id}">{$clan_user.name}</a></b>
             {if $clan_user.id == $clan.founder_user_id}({$l->s('clan_founder')}){/if}
           </td>
           <td>
