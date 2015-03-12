@@ -10,6 +10,6 @@
     {if $user_logged_in && !$user_logged_in_via_cookie}<li><a href="{url part="user" method="logout"}">{$l->s('logout')}</a></li>{/if}
     {if !$user_logged_in}<li><a href="{url part="user" method="login"}">{$l->s('login')}</a></li>{/if}
     {if isset($helplink)}<li><a href="{$helplink}">{$l->s('help')}</a></li>{/if}
-    {if $user_is_admin}<li><a href="admin.php{url part="log" method="list"}">{$l->s('admin')}</a></li>{/if}
+    {if $user_is_admin}<li><a href="{$base_path}admin.php?part=log&method=list">{$l->s('admin')}</a></li>{/if}
   </ul>
 </div>
