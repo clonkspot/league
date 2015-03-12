@@ -15,12 +15,12 @@
         </tr>
     {foreach item=clan from=$clans name="clans"}
         <tr>
-            <td><a href="{url part="clan" method="details"}clan[id]={$clan.id}">{$clan.name|escape}</a></td>
+            <td><a href="{url part="clan" method="details" q="clan[id]={$clan.id}"}">{$clan.name|escape}</a></td>
             <td>{$clan.tag|escape}</td>
             <td><a target="_blank" href="http://{$clan.link|escape}">{$clan.link|escape}</a></td>
             <td>{$clan.date_created|date_format:"%d.%m.%Y"}</td>
             <td>
-                {foreach item=user from=$clan.users name="users"} <b><a href="{url part="user" method="details"}user[id]={$user.id}">{$user.name|escape}</a></b>{if !$smarty.foreach.users.last},{/if}{/foreach}
+                {foreach item=user from=$clan.users name="users"} <b><a href="{url part="user" method="details" q="user[id]={$user.id}"}">{$user.name|escape}</a></b>{if !$smarty.foreach.users.last},{/if}{/foreach}
             </td>
         </tr>
     {/foreach}

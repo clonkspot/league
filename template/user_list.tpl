@@ -18,8 +18,8 @@
         </tr>
     {foreach item=user from=$users name="users"}
         <tr>
-            <td><a href="{url part="clan" method="details"}clan[id]={$user.clan_id}">{$user.clan_tag|escape}</a></td>
-            <td><a href="{url part="user" method="details"}user[id]={$user.id}">{$user.name|escape}</a></td>
+            <td><a href="{url part="clan" method="details" q="clan[id]={$user.clan_id}"}">{$user.clan_tag|escape}</a></td>
+            <td><a href="{url part="user" method="details" q="user[id]={$user.id}"}">{$user.name|escape}</a></td>
             <td>{$user.real_name|escape}</td>
             <td>{$user.games_melee_won}</td>
             <td>{$user.games_melee_lost}</td>

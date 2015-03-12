@@ -25,16 +25,16 @@
             <td>
             	{foreach from=$leagues item=league}
             		{if $u->check_operator_permission("scenario", "league_toggle", $league.id)}
-            		(<a href="{url part="scenario" method="toggle_league"}scenario={$scenario.id}&league={$league.id}"><img src="{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>)
+            		(<a href="{url part="scenario" method="toggle_league" q="scenario={$scenario.id}&league={$league.id}"}"><img src="{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>)
             		{/if}
             	{/foreach}
             	{foreach from=$scenario.leagues item=league}
-            		<a href="{url part="league" method="ranking"}league[id]={$league.id}"><img src="{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>
+            		<a href="{url part="league" method="ranking" q="league[id]={$league.id}"}"><img src="{$league.icon}" alt="{$league.name}" title="{$league.name}"></a>
             	{/foreach}
             </td>
             <td>
                 {*{if $scenario.icon_number >= 0 && $scenario.icon_number != ''}<img src="images/icons/scenarios/{$scenario.icon_number}.png">{/if}*}
-                <b><a href="{url part="game" method="list"}filter[scenario_name][]={$scenario.name|escape}&filter[scenario_id][]={$scenario.id}&sort[col]=settle_rank&sort[dir]=asc">{$scenario.name|escape}</a></b>
+                <b><a href="{url part="game" method="list" q="filter[scenario_name][]={$scenario.name|escape}&filter[scenario_id][]={$scenario.id}&sort[col]=settle_rank&sort[dir]=asc"}">{$scenario.name|escape}</a></b>
             </td>
             {*<td>{$scenario.active}</td>*}
             <td>{if $scenario.type == 'melee'}{$l->s('melee')}
