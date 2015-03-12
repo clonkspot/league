@@ -47,7 +47,7 @@
         ($smarty.section.pages.index < $page+$maxpages && $smarty.section.pages.index > $page-$maxpages)
         || $smarty.section.pages.index >= $page_count - $maxpages}
       {if $smarty.section.pages.index == $page}<b>{/if}
-        <a href="{$page_link}{foreach from=$smarty.request.filter item=f key=fn}{foreach from=$f item=fv}{if $fv}&filter[{$fn|escape}][]={$fv|escape}{/if}{/foreach}{/foreach}&sort[col]={$smarty.request.sort.col|escape}&sort[dir]={$smarty.request.sort.dir|escape}&page={$smarty.section.pages.index}">{$smarty.section.pages.index+1}</a>
+        <a href="{append_query url="{$page_link}" q="{foreach from=$smarty.request.filter item=f key=fn}{foreach from=$f item=fv}{if $fv}&filter[{$fn|escape}][]={$fv|escape}{/if}{/foreach}{/foreach}&sort[col]={$smarty.request.sort.col|escape}&sort[dir]={$smarty.request.sort.dir|escape}&page={$smarty.section.pages.index}"}">{$smarty.section.pages.index+1}</a>
       {if $smarty.section.pages.index == $page}</b>{/if}
       {assign var="last3dots" value=0}
     {elseif $last3dots==0 && ($smarty.section.pages.index == $maxpages
