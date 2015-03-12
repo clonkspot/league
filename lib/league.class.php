@@ -708,6 +708,7 @@ class league
 				$league_data = $ld;
 		
 		$a = $this->get_all_leagues(2);
+		if ($a === false) $a = array();
 		$smarty->assign("old_leagues", $a);
 		
 		foreach($a AS $ld)
