@@ -24,7 +24,7 @@
             {include file="func_tableheader.tpl" link=$link value="rank"}
             {if $clan_ranking==0}<th></th>{/if}
             {include file="func_tableheader.tpl" link=$link value="score"}
-{*            {include file="func_tableheader.tpl" link=$link value="trend"} *}
+            {include file="func_tableheader.tpl" link=$link value="trend"}
             {if $league.bonus_account_max>0 && !$clan_ranking}
             {include file="func_tableheader.tpl" link=$link value="bonus_account" text=$l->s('bonus')}
             {/if}
@@ -75,7 +75,6 @@
                     {/if}
                 {/if}
             </td>
-{* -- Trend disabled for now
             <td>
               {if $score.trend=='up'}
                    <img src="{$base_path}images/icons/icon_trend_up_16.png" title="{$l->s('trend_up')}">
@@ -83,7 +82,6 @@
                    <img src="{$base_path}images/icons/icon_trend_down_16.png" title="{$l->s('trend_down')}">
               {/if}
             </td>
-*}
             {if $league.bonus_account_max>0 && !$clan_ranking}
             <td>(+{$score.bonus_account})</td>
             {/if}
