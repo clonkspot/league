@@ -2,7 +2,7 @@
 
 <th>
 
-<a href="{$link}{foreach from=$smarty.request.filter item=f key=fn}{foreach from=$f item=fv}{if $fv}&filter[{$fn|escape}][]={$fv|escape}{/if}{/foreach}{/foreach}&sort[col]={$value|escape}&sort[dir]={if $smarty.request.sort.dir == 'desc' && $smarty.request.sort.col==$value}asc{else}desc{/if}"
+<a href="{append_query url="{$link}" q="{foreach from=$smarty.request.filter item=f key=fn}{foreach from=$f item=fv}{if $fv}&filter[{$fn|escape}][]={$fv|escape}{/if}{/foreach}{/foreach}&sort[col]={$value|escape}&sort[dir]={if $smarty.request.sort.dir == 'desc' && $smarty.request.sort.col==$value}asc{else}desc{/if}"}"
 title="{if $smarty.request.sort.dir == 'desc'}{$l->s('sort_down')}{else}{$l->s('sort_up')}{/if} {$l->s('by')} '{if $text}{$text|escape}{else}{$l->s($value)}{/if}'">
 {if $text}{$text|escape}{else}{$l->s($value)}{/if}
 
