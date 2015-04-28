@@ -93,10 +93,17 @@ class league_backend
 	
 	function get_motd()
 	{
-		global $database; global $language;
-		$a = $database->get_array("SELECT ".$language->get_string_with_fallback_sql('motd_sid')." AS motd
-			FROM lg_products WHERE name = '".$database->escape($this->get_agent_product())."'");
-		return $a[0]['motd'];
+		global $redis; global $database; global $language;
+		if ($redis) {
+			$lang = $language->get_current_language_code();
+			$motd = $redis->srandmember("league:motd:$lang");
+		}
+		if (empty($motd)) {
+			$a = $database->get_array("SELECT ".$language->get_string_with_fallback_sql('motd_sid')." AS motd
+				FROM lg_products WHERE name = '".$database->escape($this->get_agent_product())."'");
+			$motd = $a[0]['motd'];
+		}
+		return $motd;
 	}	
 	
 	function add_version_to_reference(&$game_reference)
