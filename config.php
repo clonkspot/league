@@ -6,7 +6,7 @@ $webroot = 'D:/www/league2/';
 // MwfAuth path
 require_once($_SERVER['DOCUMENT_ROOT'].'/../auth/mwf_auth.php');
 
-require_once('smarty/libs/SmartyBC.class.php');
+require_once('vendor/smarty/smarty/libs/SmartyBC.class.php');
 SmartyBC::$_CHARSET = 'ISO-8859-1';
 $smarty = new SmartyBC();
 
