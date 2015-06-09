@@ -1,0 +1,15 @@
+{
+    "name": "clonkspot/league",
+    "description": "Clonk league server",
+    "require": {
+        "smarty/smarty": "^3.1",
+        "predis/predis": "^1.0"
+    },
+    "license": "ISC",
+    "authors": [
+        {
+            "name": "Lukas Werling",
+            "email": "lukas.werling@gmail.com"
+        }
+    ]
+}

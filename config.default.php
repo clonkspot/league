@@ -6,7 +6,7 @@ $webroot = __DIR__.'/';
 // MwfAuth path
 require_once($_SERVER['DOCUMENT_ROOT'].'/../auth/mwf_auth.php');
 
-require_once('smarty/libs/SmartyBC.class.php');
+require_once('vendor/smarty/smarty/libs/SmartyBC.class.php');
 $smarty = new SmartyBC();
 
 $smarty->template_dir = $webroot.'template/';
