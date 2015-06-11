@@ -8,6 +8,7 @@ include_once('league_settle_custom.class.php');
 include_once('scenario.class.php');
 include_once('log.class.php');
 include_once('game_reference.class.php');
+include_once('game_reference_format.class.php');
 
 include_once('game_team.class.php');
 
@@ -769,7 +770,60 @@ class game
 		return true;
 	}
 
-	
+	// Returns a (limited) representation of the game suitable for using json_encode() on.
+	function to_json()
+	{
+		$data = $this->data;
+		$ref = $this->reference->get_data()['[Reference]'][0];
+		return array(
+			'id'         => game_reference_format::number($data['id']),
+			'title'      => game_reference_format::string($ref['Title']),
+			'status'     => $data['status'],
+			'type'       => $data['type'],
+			'comment'    => isset($ref['Comment']) ? game_reference_format::string($ref['Comment']) : NULL,
+			'maxPlayers' => game_reference_format::number($ref['MaxPlayers']),
+			'host'       => game_reference_format::string($ref['[Client]'][0]['Name']),
+
+			'created'    => date(DATE_ISO8601, $data['date_created']),
+			'updated'    => date(DATE_ISO8601, $data['date_last_update']),
+
+			'flags' => array(
+				'joinAllowed'    => !!$data['is_join_allowed'],
+				'passwordNeeded' => !!$data['is_password_needed'],
+			),
+
+			'scenario' => array(
+				'fileSize'    => game_reference_format::number($ref['[Scenario]'][0]['FileSize']),
+				'fileCRC'     => game_reference_format::number($ref['[Scenario]'][0]['FileCRC']),
+				'contentsCRC' => game_reference_format::number($ref['[Scenario]'][0]['ContentsCRC']),
+				'filename'    => game_reference_format::string($ref['[Scenario]'][0]['Filename']),
+				'author'      => game_reference_format::string($ref['[Scenario]'][0]['Author']),
+			),
+
+			// PHP IIFE
+			'players' => call_user_func(function($clients) {
+				// Filter out clients with players.
+				$clients = array_filter($clients, function($client) {
+					return isset($client['[Player]']);
+				});
+				// Get an array of arrays of all players...
+				$players = array_map(function($client) {
+					return $client['[Player]'];
+				}, $clients);
+				// ...flatten once...
+				$players = array_reduce($players, 'array_merge', array());
+				// ...then map to the desired output form.
+				return array_map(function($player) {
+					return array(
+						'name'  => game_reference_format::string($player['Name']),
+						'team'  => isset($player['Team']) ? game_reference_format::number($player['Team']) : NULL,
+						'color' => game_reference_format::number($player['Color']),
+					);
+				}, $players);
+			}, $ref['[PlayerInfos]'][0]['[Client]']),
+		);
+	}
+
 	function insert_client_address(&$reference)
 	{
       if($reference->data['[Reference]'][0]['Address'])
