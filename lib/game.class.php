@@ -813,8 +813,15 @@ class game
 			'id'         => game_reference_format::number($data['id']),
 			'title'      => game_reference_format::string($ref['Title']),
 			'status'     => $data['status'],
+			'type'       => $data['type'],
 			'comment'    => isset($ref['Comment']) ? game_reference_format::string($ref['Comment']) : NULL,
 			'maxPlayers' => game_reference_format::number($ref['MaxPlayers']),
+			'host'       => game_reference_format::string($ref['[Client]'][0]['Name']),
+
+			'flags' => array(
+				'joinAllowed'    => !!$data['is_join_allowed'],
+				'passwordNeeded' => !!$data['is_password_needed'],
+			),
 
 			'scenario' => array(
 				'fileSize'    => game_reference_format::number($ref['[Scenario]'][0]['FileSize']),
