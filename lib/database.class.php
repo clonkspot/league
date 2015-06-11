@@ -112,10 +112,7 @@ class database
 			}
 		}
 
-		if(count($a))
-			return $a;
-		else 
-			return FALSE;
+		return $a;
 	}
 	
 	function insert($table,$a)
