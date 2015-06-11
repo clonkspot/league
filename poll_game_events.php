@@ -65,7 +65,7 @@ while (true) {
 		return !in_array($game_id, $current_games);
 	});
 	foreach ($deleted_games as $game_id) {
-		echo_event('delete', array('id' => $game_id));
+		echo_event('delete', array('id' => intval($game_id, 10)));
 	}
 	$last_game_ids = $current_games;
 }
