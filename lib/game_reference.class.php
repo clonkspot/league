@@ -284,27 +284,6 @@ class game_reference
 		array_deep_copy($data, $this->data);
 	}
 
-	function to_json() {
-		$data = array();
-		array_deep_copy($this->data, $data);
-		array_walk_recursive($data, function(&$item) {
-			// Try to convert numbers and booleans.
-			// This should be safe as most free fields are wrapped in extra quotes.
-			if ($item == 'true')
-				$item = true;
-			else if ($item == 'false')
-				$item = false;
-			else if (preg_match('/^\\d+$/', $item))
-				$item = intval($item, 10);
-			else {
-				// It's a string.
-				$item = decode_octal(remove_quotes($item));
-				$item = mb_convert_encoding($item, 'UTF-8', 'ISO-8859-1');
-			}
-		});
-		return json_encode($data);
-	}
-
 }
 
 
