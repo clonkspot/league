@@ -818,6 +818,9 @@ class game
 			'maxPlayers' => game_reference_format::number($ref['MaxPlayers']),
 			'host'       => game_reference_format::string($ref['[Client]'][0]['Name']),
 
+			'created'    => date(DATE_ISO8601, $data['date_created']),
+			'updated'    => date(DATE_ISO8601, $data['date_last_update']),
+
 			'flags' => array(
 				'joinAllowed'    => !!$data['is_join_allowed'],
 				'passwordNeeded' => !!$data['is_password_needed'],
