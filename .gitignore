@@ -1,4 +1,7 @@
-/template_c
+/template_c/
 /records/*.c4r
 
 /vendor/
+/config.php
+/layout/
+/favicon.ico
