@@ -30,18 +30,24 @@ function echo_event($event, $data) {
 	$data = json_encode($data);
 	echo "event: $event\n";
 	echo "data: $data\n\n";
-	ob_flush();
-	flush();
 }
 
-// Those are needed later to find deleted games.
-$last_game_ids = get_active_game_ids();
+function echo_id($prev_ids) {
+	$id = json_encode(array('time' => time(), 'games' => $prev_ids));
+	echo "id: $id\n\n";
+}
 
-echo_event('init', array_map('get_game_json', $last_game_ids));
-
-while (true) {
-	$last_update = time();
-	sleep(1);
+// Is this the first request?
+if (!isset($_SERVER['HTTP_LAST_EVENT_ID'])) {
+	// Those are needed later to find deleted games.
+	$game_ids = get_active_game_ids();
+	echo_event('init', array_map('get_game_json', $game_ids));
+	echo_id($game_ids);
+} else {
+	// Decode the header.
+	$id = json_decode($_SERVER['HTTP_LAST_EVENT_ID']);
+	$last_update = $id->time;
+	$last_game_ids = $id->games;
 
 	$updated_games = get_updated_games($last_update);
 	foreach ($updated_games as $game_id) {
@@ -62,5 +68,5 @@ while (true) {
 	foreach ($deleted_games as $game_id) {
 		echo_event('delete', array('id' => intval($game_id, 10)));
 	}
-	$last_game_ids = $current_games;
+	echo_id($current_games);
 }
