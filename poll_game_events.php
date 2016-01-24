@@ -5,8 +5,6 @@ require_once('lib/game.class.php');
 require_once('config.php');
 
 header("Content-Type: text/event-stream\n\n");
-// Don't stop the script after 30s.
-set_time_limit(0);
 
 function get_game_json($game_id) {
 	$game = new game;
@@ -34,6 +32,8 @@ function echo_event($event, $data) {
 
 function echo_id($prev_ids) {
 	$id = json_encode(array('time' => time(), 'games' => $prev_ids));
+	echo "retry: 2000\n";
+	echo "data: null\n";
 	echo "id: $id\n\n";
 }
 
@@ -49,24 +49,36 @@ if (!isset($_SERVER['HTTP_LAST_EVENT_ID'])) {
 	$last_update = $id->time;
 	$last_game_ids = $id->games;
 
-	$updated_games = get_updated_games($last_update);
-	foreach ($updated_games as $game_id) {
-		$game = get_game_json($game_id);
-		if (!in_array($game_id, $last_game_ids))
-			$event = 'create';
-		else if ($game['status'] == 'ended')
-			$event = 'end';
-		else
-			$event = 'update';
-		echo_event($event, $game);
-	}
+	$did_output = false;
+	$retries = 10;
+	while (!$did_output && $retries--) {
+		$updated_games = get_updated_games($last_update);
+		foreach ($updated_games as $game_id) {
+			$game = get_game_json($game_id);
+			if (!in_array($game_id, $last_game_ids))
+				$event = 'create';
+			else if ($game['status'] == 'ended')
+				$event = 'end';
+			else
+				$event = 'update';
+			echo_event($event, $game);
+			$did_output = true;
+		}
 
-	$current_games = get_active_game_ids();
-	$deleted_games = array_filter($last_game_ids, function($game_id) use ($current_games) {
-		return !in_array($game_id, $current_games);
-	});
-	foreach ($deleted_games as $game_id) {
-		echo_event('delete', array('id' => intval($game_id, 10)));
+		$current_games = get_active_game_ids();
+		$deleted_games = array_filter($last_game_ids, function($game_id) use ($current_games) {
+			return !in_array($game_id, $current_games);
+		});
+		foreach ($deleted_games as $game_id) {
+			echo_event('delete', array('id' => intval($game_id, 10)));
+			$did_output = true;
+		}
+		if ($did_output) {
+			echo_id($current_games);
+		} else {
+			$last_update = time();
+			$last_game_ids = $current_games;
+			sleep(1);
+		}
 	}
-	echo_id($current_games);
 }
