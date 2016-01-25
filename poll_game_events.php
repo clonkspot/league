@@ -33,6 +33,7 @@ function echo_event($event, $data) {
 function echo_id($prev_ids) {
 	$id = json_encode(array('time' => time(), 'games' => $prev_ids));
 	echo "retry: 2000\n";
+	// Chrome doesn't properly sent Last-Event-ID when finishing with a lone "id: ...".
 	echo "data: null\n";
 	echo "id: $id\n\n";
 }
@@ -55,9 +56,11 @@ if (!isset($_SERVER['HTTP_LAST_EVENT_ID'])) {
 		$updated_games = get_updated_games($last_update);
 		foreach ($updated_games as $game_id) {
 			$game = get_game_json($game_id);
-			if (!in_array($game_id, $last_game_ids))
+			if (!in_array($game_id, $last_game_ids)) {
+				if ($game['status'] == 'ended')
+					continue;
 				$event = 'create';
-			else if ($game['status'] == 'ended')
+			} else if ($game['status'] == 'ended')
 				$event = 'end';
 			else
 				$event = 'update';
