@@ -47,8 +47,8 @@ function remove_quotes($string)
 
 function decode_octal($string)
 {
-	$string = preg_replace_callback('/(^|[^\\\])\\\([0-9]+)/m', function($m) {
-		return $m[1] . chr(octdec($m[2]));
+	$string = preg_replace_callback('/(?<!\\\)\\\([0-9]+)/m', function($m) {
+		return chr(octdec($m[1]));
 	}, $string);
 	$string = str_replace('\\\\','\\',$string);
 	return $string;
