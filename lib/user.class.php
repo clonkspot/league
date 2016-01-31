@@ -247,13 +247,14 @@ class user
 		
 		//check username:
 		//forbid numeric usernames (numeric values are interpreted as CUIDs) (not really any more. but maybe there's still places in the code...)
+		/* -- disabled for now, because the forum already does name-checking and any valid forum name is a valid league name
 		if(false == $this->check_name($name))
 		{
 			$log->add_user_error("user $name could not be created: invalid username");
 			$this->error = 'error_invalid_user_name';
 			$message_box->add_error($language->s('error_invalid_user_name'));
 			return FALSE;
-		}
+		}*/ 
 		
 		
 		// if a custom password is to be set, check password (TODO: check for secure password?)
