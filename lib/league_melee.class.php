@@ -494,16 +494,13 @@ class league_melee extends league
 	function apply_inactivity_malus()
 	{
     
-    	// Decay interval: 7 days minus 12 hours. Leaves some room for cron-job changes.
-    	$interval = (7 * 24 - 12) * 60 * 60;
-    
     	// Find leagues with decay
 		global $database;
 		$a = $database->get_array("SELECT l.* FROM lg_leagues l
 			WHERE l.date_start <= '".time()."' AND l.date_end >= '".time()."'
 			AND type = 'melee'
 			AND l.score_decay > 0
-			AND GREATEST(l.date_last_decay, l.date_start) + $interval <= ".time());
+			AND GREATEST(l.date_last_decay, l.date_start) + l.decay_interval <= ".time());
     	
     	// No leagues with decay?
     	if(!is_array($a) || count($a) == 0)
