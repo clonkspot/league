@@ -62,3 +62,5 @@ function decode_octal_array(&$a, $index)
 
 	}
 }
+
+?>

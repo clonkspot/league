@@ -13,3 +13,5 @@ class game_reference_format {
     }
 
 }
+
+?>
