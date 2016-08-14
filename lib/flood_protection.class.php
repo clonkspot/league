@@ -3,11 +3,23 @@
 class flood_protection
 {
 
+	public function getRemoteIPAddress() {
+		if (!empty($_SERVER['HTTP_CLIENT_IP']))
+		{
+			return $_SERVER['HTTP_CLIENT_IP'];
+		}
+		else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+		{
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		return $_SERVER['REMOTE_ADDR'];
+	}
+
 	//string is just for display
 	function check_exit($floodKey, $floodMax, $floodSeconds, $string="")
 	{
 		$floodNow = time();
-		$floodKey = "flood_".$floodKey."_".$_SERVER[REMOTE_ADDR];
+		$floodKey = "flood_".$floodKey."_".getRemoteIPAddress();
 		$floodVal = apc_fetch($floodKey);
 	
 		if ($floodVal === FALSE) { 

@@ -66,6 +66,17 @@ class game
 		return TRUE;
 	}
 	
+	public function getRemoteIPAddress() {
+		if (!empty($_SERVER['HTTP_CLIENT_IP']))
+		{
+			return $_SERVER['HTTP_CLIENT_IP'];
+		}
+		else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+		{
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		return $_SERVER['REMOTE_ADDR'];
+	}
 	
 	function create(&$game_reference)
 	{
@@ -80,23 +91,18 @@ class game
 		
 		global $database;
 
-		
-		//HACK: exception just for Quit
-		if($_SERVER["REMOTE_ADDR"] != '213.239.212.12') //(der grosse quit-server.)
+		//check host-ip:
+		$max_game_count = 3;
+		$min_time = time() - 5 * 60;
+		$a = $database->get_array("SELECT COUNT(*) AS c FROM lg_games 
+			WHERE host_ip = '".$database->escape($this->getRemoteIPAddress())."'
+			AND date_created >= $min_time"); 
+		if($a[0]['c'] >= $max_game_count)
 		{
-			//check host-ip:
-			$max_game_count = 3;
-			$min_time = time() - 5 * 60;
-			$a = $database->get_array("SELECT COUNT(*) AS c FROM lg_games 
-				WHERE host_ip = '".$database->escape($_SERVER['REMOTE_ADDR'])."'
-				AND date_created >= $min_time"); 
-			if($a[0]['c'] >= $max_game_count)
-			{
-				$this->error = 'error_too_many_gamestarts';
-				$log = new log;
-				$log->add_user_error("tried to start a game, but too many games in the last few minutes: host-ip: ".$_SERVER['REMOTE_ADDR']);
-				return 0;
-			}
+			$this->error = 'error_too_many_gamestarts';
+			$log = new log;
+			$log->add_user_error("tried to start a game, but too many games in the last few minutes: host-ip: ".$this->getRemoteIPAddress());
+			return 0;
 		}
 		
 		//insert game-data to database:
@@ -162,7 +168,7 @@ class game
 					if(true == $cfg_settle_on_official_server_only)
 					{
 						global $cfg_official_server;
-						if(false == in_array($_SERVER["REMOTE_ADDR"],$cfg_official_server))
+						if(false == in_array($this->getRemoteIPAddress(),$cfg_official_server))
 						{
 							$leagues_to_add = array(); //remove from all leagues
 							$this->error = 'error_settle_no_official_server';	
@@ -263,7 +269,7 @@ class game
 		else
 			$this->data['is_official_server'] = 0;
 		
-		$game_data['host_ip'] = $_SERVER['REMOTE_ADDR'];
+		$game_data['host_ip'] = $this->getRemoteIPAddress();
 		
 		$game_data['icon_number'] = $game_reference->data['[Reference]'][0]['Icon'];
 			
@@ -287,7 +293,7 @@ class game
 		
 		
 		$log = new log;
-		$log->add_game_start("Host-IP: ".$_SERVER['REMOTE_ADDR'],$csid);
+		$log->add_game_start("Host-IP: ".$this->getRemoteIPAddress(),$csid);
 		//print_a(array(""=>$game_data['reference']));
 		
 		//insert reference-data just here after setting the league-names:
@@ -322,7 +328,7 @@ class game
 		{
 			$log = new log();
 			//$log->add_error("game: update: game with csid $csid not found: ".$game_reference->get_ini());
-			$log->add_error("game: update: game with csid $csid not found -IP: ".$_SERVER["REMOTE_ADDR"]);
+			$log->add_error("game: update: game with csid $csid not found -IP: ".$this->getRemoteIPAddress());
 			$this->error = 'error_game_not_found';
 			return FALSE;
 		}
@@ -337,11 +343,11 @@ class game
 		
 		//melees: check host ip:
 		if('melee' == $this->data['type']
-			&& $_SERVER["REMOTE_ADDR"] != $this->data['host_ip'])
+			&& $this->getRemoteIPAddress() != $this->data['host_ip'])
 		{
 			$log = new log();
 			$log->add_error("game: update: game with csid $csid: wrong host ip: 
-				old: ".$this->data['host_ip']." new: ".$_SERVER["REMOTE_ADDR"]." ".$game_reference->get_ini());
+				old: ".$this->data['host_ip']." new: ".$this->getRemoteIPAddress()." ".$game_reference->get_ini());
 			$this->error = 'error_wrong_host_ip';
 			return FALSE;
 		}
@@ -673,7 +679,7 @@ class game
 					$a = $database->get_array("SELECT ip FROM lg_game_players
 						WHERE fbid = '".$database->escape($player_data['FBID'])."'
 							AND player_id = '".$database->escape($player_data['ID'])."'");
-					if($_SERVER["REMOTE_ADDR"] != $a[0]['ip'])
+					if($this->getRemoteIPAddress() != $a[0]['ip'])
 					{
 						$log->add_game_info("client: player id: ".$player_data['ID']." (FBID: ".$player_data['FBID'].") disconnect-report (reason: ".$game_reference->data['[Request]'][0]['Reason'].") invalid: client-ip changed since auth", $csid);
 					}
@@ -829,7 +835,7 @@ class game
       if($reference->data['[Reference]'][0]['Address'])
       {
 		$reference->data['[Reference]'][0]['Address'] 
-			= str_replace(":0.0.0.0:",":".$_SERVER["REMOTE_ADDR"].":",$reference->data['[Reference]'][0]['Address']);
+			= str_replace(":0.0.0.0:",":".$this->getRemoteIPAddress().":",$reference->data['[Reference]'][0]['Address']);
 	  }
 	}
 	
@@ -841,7 +847,7 @@ class game
 	function insert_official_server_flag(&$reference)
 	{
 	  global $cfg_official_server; 
-      if(in_array($_SERVER["REMOTE_ADDR"], $cfg_official_server))
+      if(in_array($this->getRemoteIPAddress(), $cfg_official_server))
       {
 		$reference->data['[Reference]'][0]['OfficialServer']="true";
 	  }
@@ -854,9 +860,9 @@ class game
 	{
 		global $cfg_official_server; 
 		if("clonk.de" ==  strtolower(trim(remove_quotes($reference->data['[Reference]'][0]['[Client]'][0]['Name'])))
-			&& false == in_array($_SERVER["REMOTE_ADDR"], $cfg_official_server))
+			&& false == in_array($this->getRemoteIPAddress(), $cfg_official_server))
 		{
-			$reference->data['[Reference]'][0]['[Client]'][0]['Name'] = '"'.$_SERVER["REMOTE_ADDR"].'"';
+			$reference->data['[Reference]'][0]['[Client]'][0]['Name'] = '"'.$this->getRemoteIPAddress().'"';
 			
 			$log = new log();
 			$log->add("Hostname was clonk.de -> changed to: ".$reference->data['[Reference]'][0]['[Client]'][0]['Name']);
@@ -1167,7 +1173,7 @@ class game
 				date_auth = ".time().",
 				auid = '$auid',
 				fbid = '$fbid',
-				ip = '".$database->escape($_SERVER["REMOTE_ADDR"])."'
+				ip = '".$database->escape($this->getRemoteIPAddress())."'
 				WHERE user_id = '$user_id' AND status = 'auth'");
 			$log = new log();	
 			$log->add_auth_join_info("Auth: Update: user-id=$user_id, auid=$auid");
@@ -1180,7 +1186,7 @@ class game
 				date_auth = ".time().",
 				auid = '$auid',
 				fbid = '$fbid',
-				ip = '".$database->escape($_SERVER["REMOTE_ADDR"])."'");
+				ip = '".$database->escape($this->getRemoteIPAddress())."'");
 			$log = new log();	
 			$log->add_auth_join_info("Auth: Insert: user-id=$user_id, auid=$auid");
 		}
@@ -1998,7 +2004,7 @@ class game
 		$data['type'] = 'melee';
 		$data['status'] = 'running';
 		$data['date_created'] = strtotime($data['date_created']);
-		$data['host_ip'] = $_SERVER["REMOTE_ADDR"]; 
+		$data['host_ip'] = $this->getRemoteIPAddress(); 
 		
 		
 		$data['id'] = $database->insert('lg_games', $data);
@@ -2137,11 +2143,11 @@ class game
 		
 		//melees: check host ip:
 		if('melee' == $this->data['type']
-			&& $_SERVER["REMOTE_ADDR"] != $this->data['host_ip'])
+			&& $this->getRemoteIPAddress() != $this->data['host_ip'])
 		{
 			$log = new log();
 			$log->add_error("game: recieve_record_stream: game with csid ".$this->data['csid'].": wrong host ip: 
-				old: ".$this->data['host_ip']." new: ".$_SERVER["REMOTE_ADDR"]);
+				old: ".$this->data['host_ip']." new: ".$this->getRemoteIPAddress());
 			$this->error = 'error_wrong_host_ip';
 			return FALSE;
 		}	
