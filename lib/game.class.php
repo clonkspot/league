@@ -832,11 +832,29 @@ class game
 
 	function insert_client_address(&$reference)
 	{
-      if($reference->data['[Reference]'][0]['Address'])
-      {
-		$reference->data['[Reference]'][0]['Address'] 
-			= str_replace(":0.0.0.0:",":".$this->getRemoteIPAddress().":",$reference->data['[Reference]'][0]['Address']);
-	  }
+		$refaddrs = $reference->data['[Reference]'][0]['Address'];
+		if ($refaddrs)
+		{
+			$addr = $this->getRemoteIPAddress();
+			// Old IPv4-only engines put an all-zero address in.
+			$refaddrs = str_replace(":0.0.0.0:", ":".$addr.":", $refaddrs);
+			// For new dual-stack engines, we have to be more intelligent as the engine may also connect via IPv6.
+			if (strpos($refaddrs, $addr) === false)
+			{
+				// Add brackets to IPv6 addresses (::1 => [::1]).
+				if (strpos($addr, ':') !== false)
+					$addr = "[$addr]";
+				// The address is new, but we need a port for each protocol to add it.
+				$add_addr = function($protocol) use (&$refaddrs, $addr)
+				{
+					if (preg_match('/'.$protocol.':[^,]*:(\\d+)/', $refaddrs, $matches))
+						$refaddrs .= ','.$protocol.':"'.$addr.':'.$matches[1].'"';
+				};
+				$add_addr('TCP');
+				$add_addr('UDP');
+			}
+			$reference->data['[Reference]'][0]['Address'] = $refaddrs;
+		}
 	}
 	
 	function insert_seed(&$reference)
