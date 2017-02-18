@@ -11,6 +11,7 @@ include_once('game_reference.class.php');
 include_once('game_reference_format.class.php');
 
 include_once('game_team.class.php');
+include_once('game_statistics.class.php');
 
 include_once('table_filter.class.php');
 
@@ -530,6 +531,13 @@ class game
 				$this->delete();
 				return;
 			}							
+		}
+		else
+		{
+			// collect statistics
+			global $statistics_db;
+			$stats = new game_statistics($statistics_db);
+			$stats->collect($this, $game_reference);
 		}
 		
 		//still needed after evaluating Removed-Flag?

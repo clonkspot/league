@@ -15,6 +15,7 @@ $smarty->cache_dir = $webroot.'cache/';
 $smarty->config_dir = $webroot.'configs/';
 
 $record_folder = $webroot."records/";
+$statistics_db = $webroot."statistics.sqlite";
 
 unset($webroot);
 
