@@ -1,6 +1,6 @@
 <?php
 
-$webroot = 'D:/www/league2/';
+$webroot = __DIR__.'/';
 //$webroot = '/is/htdocs/wp1144497_5BDDWAFPQY/openclonk/league/';
 
 // MwfAuth path
