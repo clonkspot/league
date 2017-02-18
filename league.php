@@ -106,7 +106,7 @@ else
 // Send buffered output
 $response = $league_backend->get_response();
 if(!isset($debug_req)) {
-	header("HTTP/1.x 200 OK");
+	header("HTTP/1.0 200 OK");
 	header("Content-Type: text/plain");
 	header("Content-Length: " . strlen($response)); 
 	echo $response;
