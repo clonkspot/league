@@ -852,14 +852,19 @@ class game
 				// Add brackets to IPv6 addresses (::1 => [::1]).
 				if (strpos($addr, ':') !== false)
 					$addr = "[$addr]";
+				$new_addrs = 0;
 				// The address is new, but we need a port for each protocol to add it.
-				$add_addr = function($protocol) use (&$refaddrs, $addr)
+				$add_addr = function($protocol) use (&$refaddrs, $addr, &$new_addrs)
 				{
 					if (preg_match('/'.$protocol.':[^,]*:(\\d+)/', $refaddrs, $matches))
+					{
 						$refaddrs .= ','.$protocol.':"'.$addr.':'.$matches[1].'"';
+						$new_addrs++;
+					}
 				};
 				$add_addr('TCP');
 				$add_addr('UDP');
+				$reference->data['[Reference]'][0]['AddressCount'] += $new_addrs;
 			}
 			$reference->data['[Reference]'][0]['Address'] = $refaddrs;
 		}
