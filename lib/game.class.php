@@ -344,17 +344,6 @@ class game
 			return FALSE;
 		}		
 
-		//melees: check host ip:
-		if('melee' == $this->data['type']
-			&& $_SERVER["REMOTE_ADDR"] != $this->data['host_ip'])
-		{
-			$log = new log();
-			$log->add_error("game: update: game with csid $csid: wrong host ip: 
-				old: ".$this->data['host_ip']." new: ".$_SERVER["REMOTE_ADDR"]." ".$game_reference->get_ini());
-			$this->error = 'error_wrong_host_ip';
-			return FALSE;
-		}
-
 		$this->insert_game_id($game_reference);
 
 		$this->insert_league_names($game_reference);	
@@ -2183,17 +2172,6 @@ class game
 			$this->error = 'error_game_record_too_large';
 			return false;
 		}
-
-		//melees: check host ip:
-		if('melee' == $this->data['type']
-			&& $_SERVER["REMOTE_ADDR"] != $this->data['host_ip'])
-		{
-			$log = new log();
-			$log->add_error("game: recieve_record_stream: game with csid ".$this->data['csid'].": wrong host ip: 
-				old: ".$this->data['host_ip']." new: ".$_SERVER["REMOTE_ADDR"]);
-			$this->error = 'error_wrong_host_ip';
-			return FALSE;
-		}	
 
 		if('none' == $this->data['record_status'])
 		{

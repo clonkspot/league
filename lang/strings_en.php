@@ -269,7 +269,6 @@ $this->strings['error_user_banned'] = "User banned";
 $this->strings['error_max_user_count'] = "Maximum user count reached";
 $this->strings['error_invalid_product_id'] = "Invalid product or version";
 $this->strings['error_no_frame_count'] = "Current frame count is missing";
-$this->strings['error_wrong_host_ip'] = "Wrong/changed host ip";
 $this->strings['error_search_term_too_short'] = "Search term ist too short and will be ignored.";
 
 $this->strings['error_league_scen_not_a_melee'] = "this scenario version is not registered in any league. Only melees can be played in the open league";
