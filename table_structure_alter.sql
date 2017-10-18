@@ -1,3 +1,7 @@
+-- 2017-10-18 Make host_ip field long enough for IPv6 addresses
+
+ALTER TABLE `lg_games` MODIFY COLUMN `host_ip` varchar(45) COLLATE latin1_general_ci NOT NULL DEFAULT '';
+
 -- Enable login tokens for backend login
 
 ALTER TABLE `lg_users` ADD `login_token` varchar(32) COLLATE latin1_general_ci DEFAULT NULL;
