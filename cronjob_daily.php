@@ -6,6 +6,7 @@ $profiling_start_time = microtime_float();
 
 require_once('config.php');
 require_once('lib/log.class.php');
+require_once('lib/language.class.php');
 require_once('lib/game.class.php');
 
 include_once('lib/debug_counter.class.php');
@@ -13,6 +14,7 @@ include_once('lib/debug_counter.class.php');
 $debug_sql_slow_log = FALSE; //cronjob can be slow?
 
 $log = new log();
+$language = new language();
 
 if(!($_REQUEST['password'] == $cronjob_password || !isset($_SERVER['REMOTE_USER'])))
 {
