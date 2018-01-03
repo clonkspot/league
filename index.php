@@ -88,6 +88,8 @@ switch($part) {
 				$league->show_clan_ranking(param('league')['id'],param('filter'),param('page'), param('sort'), param('highlight'));
 				break;
 			}
+			default:
+				$method = 'invalid';
 		}
 	break;
 	}
@@ -116,6 +118,8 @@ switch($part) {
 				break;	
 			}
 	
+			default:
+				$method = 'invalid';
 		}
 	break;
 	}
@@ -140,11 +144,14 @@ switch($part) {
 				$game->show_list();
 				break;	
 			}
+			default:
+				$method = 'invalid';
 		}
 	break;
 	}
 	case 'clan':
 	{
+		$method_may_be_invalid = false;
 		require_once('lib/clan.class.php');
 		$clan = new clan();
 		if($user->is_logged_in())
@@ -234,6 +241,8 @@ switch($part) {
 					$clan->show_list(param('filter'), param('page'), param('sort'));
 					break;	
 				}
+				default:
+					$method_may_be_invalid = true;
 			}
 		}
 		switch($method) {
@@ -247,11 +256,15 @@ switch($part) {
 				$clan->show_details(param('clan')['id']);
 				break;
 			}
+			default:
+				if ($method_may_be_invalid)
+					$method = 'invalid';
 		}
 	break;
 	}
 	case 'user':
 	{
+		$method_may_be_invalid = false;
 		if($user->is_logged_in())
 		{
 			switch($method) {
@@ -283,8 +296,6 @@ switch($part) {
 					$user->show_edit();
 					break;
 				}
-			}
-			switch($method) {
 				case 'edit2':
 				{
 					$user->edit($_POST['user']);
@@ -297,6 +308,8 @@ switch($part) {
 					//$user->delete(param('scenario')['id']);
 					break;	
 				}
+				default:
+					$method_may_be_invalid = true;
 			}
 		}
 		switch($method) {
@@ -310,6 +323,9 @@ switch($part) {
 				$user->show_list(param('filter'), param('page'), param('sort'));
 				break;
 			}
+			default:
+				if ($method_may_be_invalid)
+					$method = 'invalid';
 		}
 	break;
 	}
@@ -343,9 +359,15 @@ switch($part) {
 				}
 				break;
 			}
+			default:
+				$method = 'invalid';
 		}
 	break;
 	}
+
+	default:
+		$part = "invalid";
+		$method = "invalid";
 }
 
 $smarty->assign("user_logged_in",$user->is_logged_in());
