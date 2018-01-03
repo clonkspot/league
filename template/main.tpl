@@ -80,6 +80,12 @@
     {/if}
 {/if}
 
+{if 'invalid'==$part || 'invalid'==$method}
+    <p>
+        <b>Not found</b>
+    </p>
+{/if}
+
 </div>
 </div>
 

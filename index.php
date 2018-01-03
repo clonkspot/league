@@ -78,6 +78,8 @@ switch(@$_REQUEST['part']) {
 				$league->show_clan_ranking($_REQUEST['league']['id'],$_REQUEST['filter'],$_REQUEST['page'], $_REQUEST['sort'], $_REQUEST['highlight']);
 				break;
 			}
+			default:
+				$method = 'invalid';
 		}
 	break;
 	}
@@ -106,6 +108,8 @@ switch(@$_REQUEST['part']) {
 				break;	
 			}
 	
+			default:
+				$method = 'invalid';
 		}
 	break;
 	}
@@ -130,11 +134,14 @@ switch(@$_REQUEST['part']) {
 				$game->show_list();
 				break;	
 			}
+			default:
+				$method = 'invalid';
 		}
 	break;
 	}
 	case 'clan':
 	{
+		$method_may_be_invalid = false;
 		require_once('lib/clan.class.php');
 		$clan = new clan();
 		if($user->is_logged_in())
@@ -224,6 +231,8 @@ switch(@$_REQUEST['part']) {
 					$clan->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
 					break;	
 				}
+				default:
+					$method_may_be_invalid = true;
 			}
 		}
 		switch(@$_REQUEST['method']) {
@@ -237,11 +246,15 @@ switch(@$_REQUEST['part']) {
 				$clan->show_details($_REQUEST['clan']['id']);
 				break;
 			}
+			default:
+				if ($method_may_be_invalid)
+					$method = 'invalid';
 		}
 	break;
 	}
 	case 'user':
 	{
+		$method_may_be_invalid = false;
 		if($user->is_logged_in())
 		{
 			switch(@$_REQUEST['method']) {
@@ -273,8 +286,6 @@ switch(@$_REQUEST['part']) {
 					$user->show_edit();
 					break;
 				}
-			}
-			switch(@$_POST['method']) {
 				case 'edit2':
 				{
 					$user->edit($_POST['user']);
@@ -287,6 +298,8 @@ switch(@$_REQUEST['part']) {
 					//$user->delete($_REQUEST['scenario']['id']);
 					break;	
 				}
+				default:
+					$method_may_be_invalid = true;
 			}
 		}
 		switch(@$_REQUEST['method']) {
@@ -300,6 +313,9 @@ switch(@$_REQUEST['part']) {
 				$user->show_list($_REQUEST['filter'], $_REQUEST['page'], $_REQUEST['sort']);
 				break;
 			}
+			default:
+				if ($method_may_be_invalid)
+					$method = 'invalid';
 		}
 	break;
 	}
@@ -333,9 +349,15 @@ switch(@$_REQUEST['part']) {
 				}
 				break;
 			}
+			default:
+				$method = 'invalid';
 		}
 	break;
 	}
+
+	default:
+		$part = "invalid";
+		$method = "invalid";
 }
 
 $smarty->assign("user_logged_in",$user->is_logged_in());
