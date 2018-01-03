@@ -27,7 +27,9 @@ function print_counter($name, $labels, $duration, $timestamp)
 		echo "\n# TYPE $metric_name counter\n";
 		$type_seen[] = $metric_name;
 	}
-	echo "$metric_name$lstr $duration $timestamp\n";
+	// Don't print timestamps - our metrics are always valid at the time of the scrape.
+	//echo "$metric_name$lstr $duration $timestamp\n";
+	echo "$metric_name$lstr $duration\n";
 }
 
 foreach ($counters as $counter)
