@@ -37,10 +37,23 @@ foreach ($counters as $counter)
 	$labels = array();
 	$name = $counter["name"];
 	$name_parts = explode("_", $name, 2);
-	if (count($name_parts) == 2 && in_array($name_parts[0], array("site", "action")))
+	switch ($name_parts[0])
 	{
-		$name = $name_parts[0];
-		$labels[$name] = $name_parts[1];
+	case "site":
+		if (count($name_parts) == 2)
+		{
+			$name = "site";
+			list($part, $method) = explode("_", $name_parts[1], 2);
+			$labels["part"] = $part;
+			$labels["method"] = $method;
+		}
+		// Skip the "total" counter which can easily be aggregated from the others.
+		else continue 2;
+		break;
+	case "action":
+		$name = "backend";
+		$labels["action"] = $name_parts[1];
+		break;
 	}
 	print_counter($name, $labels, $counter["duration"], $counter["timestamp"]);
 }
