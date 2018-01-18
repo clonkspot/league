@@ -2098,6 +2098,7 @@ class game
 					$game_player['player_id'] = $player_id;
 					$game_player['performance'] = $player['performance'];
 
+					$log = new log();
 					$log->add('game::add. player='.print_r($player,TRUE));
 					$database->insert('lg_game_players',$game_player);	
 
@@ -2629,3 +2630,4 @@ class game
 
 
 ?>
+

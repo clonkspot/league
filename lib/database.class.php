@@ -30,19 +30,19 @@ class database
 	
 	function connect()
 	{
-		$this->link = mysql_connect($this->host,$this->user,$this->password,true)
+		$this->link = mysqli_connect($this->host,$this->user,$this->password)
 			or die("Keine Verbindung möglich");
 			
 		if($this->name !== NULL)
 		{
-			mysql_select_db($this->name,$this->link) 
+			mysqli_select_db($this->link,$this->name) 
 				or die("Datenbank nicht gefunden oder keine Berechtigung");
 		}
 	}
 	
 	function disconnect()
 	{
-		mysql_close($this->link);
+		mysqli_close($this->link);
 	}
 	
 	function query($sql)
@@ -55,12 +55,12 @@ class database
 			
 			$profiling_start_time = microtime_float();
 		}
-		$r = mysql_query($sql,$this->link);
-		$error = mysql_error();
+		$r = mysqli_query($this->link,$sql);
+		$error = mysqli_error($this->link);
 		if (!$r) 
 		{
 			//$log = new log();
-			//$log->add_error(mysql_error()." - im Query: $sql");
+			//$log->add_error(mysqli_error($this->link)." - im Query: $sql");
 			
 			$file = fopen("logs/sql_error_log.txt",'a+');
 			$date=date("d.m.Y",time());
@@ -87,7 +87,7 @@ class database
 				$file = fopen("logs/sql_slow_log.txt",'a+');
 				$date=date("d.m.Y",time());
 				$time=date("H:i:s",time());
-				$error = mysql_error();
+				$error = mysqli_error($this->link);
 				fwrite($file,"\n [$date - $time] $duration: $sql");
 				if(!$r)
 					fwrite($file,"\n ERROR: $error");
@@ -105,7 +105,7 @@ class database
 		if ($r)
 		{
 			$i=0;
-			while ($row = mysql_fetch_assoc($r))
+			while ($row = mysqli_fetch_assoc($r))
 			{
 				$a[$i]=$row;
 				$i++;
@@ -120,14 +120,14 @@ class database
 		foreach($a as $key=>$value)
 		{
 			$cols.="".$key.",";
-			$vals.="'".mysql_real_escape_string($value,$this->link)."',";
+			$vals.="'".mysqli_real_escape_string($this->link,$value)."',";
 		}
 		$cols=substr($cols,0,strlen($cols)-1);
 		$vals=substr($vals,0,strlen($vals)-1);
 		$sql="INSERT INTO $table ($cols) values ($vals)";
 
 		$this->query($sql);
-		if (mysql_affected_rows($this->link) == -1)
+		if (mysqli_affected_rows($this->link) == -1)
 			return FALSE;
 		else
 			return $this->get_last_insert_id();
@@ -140,13 +140,13 @@ class database
 			$setstr="";
 			foreach($a as $key=>$value)
 			{
-				$setstr.="$key = '".mysql_real_escape_string($value,$this->link)."', ";
+				$setstr.="$key = '".mysqli_real_escape_string($this->link,$value)."', ";
 			}
 			$setstr=substr($setstr,0,strlen($setstr)-2);
 			$sql="INSERT INTO $table SET $setstr 
 			ON DUPLICATE KEY UPDATE $setstr";
 			$this->query($sql);
-			if (mysql_affected_rows($this->link) == -1)
+			if (mysqli_affected_rows($this->link) == -1)
 				return FALSE;
 			else
 				return $this->get_last_insert_id();
@@ -157,9 +157,9 @@ class database
 
 	function delete($table,$id)
 	{
-		$sql="DELETE FROM $table WHERE id = '".mysql_real_escape_string($id,$this->link)."'";
+		$sql="DELETE FROM $table WHERE id = '".mysqli_real_escape_string($this->link,$id)."'";
 		$this->query($sql);
-		if (mysql_affected_rows($this->link) == -1)
+		if (mysqli_affected_rows($this->link) == -1)
 			return FALSE;
 		else
 			return TRUE;
@@ -181,7 +181,7 @@ class database
 				fclose($file);
 			}            */
 			
-			if (mysql_affected_rows($this->link) == -1)
+			if (mysqli_affected_rows($this->link) == -1)
 				return FALSE;
 			else
 				return TRUE;
@@ -195,7 +195,7 @@ class database
 		foreach($arr as $key=>$value)
 		{
 			if ($key != "id")
-				$setstr.="$key = '".mysql_real_escape_string($value,$this->link)."', ";
+				$setstr.="$key = '".mysqli_real_escape_string($this->link,$value)."', ";
 			else
 				$id=$value;
 		}
@@ -207,7 +207,7 @@ class database
 		//$this->query("S#$setstr#$sql#$rand<hr>");
 	//	print_a($arr);
 		//echo "#$setstr#$sql#$rand<hr>";
-		if (mysql_affected_rows($this->link) == -1)
+		if (mysqli_affected_rows($this->link) == -1)
 			return FALSE;
 		else
 			return TRUE;
@@ -220,12 +220,12 @@ class database
 			$setstr="";
 			foreach($a as $key=>$value)
 			{
-				$setstr.="$key = '".mysql_real_escape_string($value,$this->link)."', ";
+				$setstr.="$key = '".mysqli_real_escape_string($this->link,$value)."', ";
 			}
 			$setstr=substr($setstr,0,strlen($setstr)-2);
 			$sql="UPDATE $table SET $setstr WHERE $where";
 			$this->query($sql);
-			if (mysql_affected_rows($this->link) == -1)
+			if (mysqli_affected_rows($this->link) == -1)
 				return FALSE;
 			else
 				return TRUE;
@@ -246,22 +246,22 @@ class database
 	
 	function get_last_insert_id()
 	{
-		return mysql_insert_id($this->link);
+		return mysqli_insert_id($this->link);
 	}
 
 	function get_num_rows(&$result)
 	{
-		return mysql_num_rows($result);
+		return mysqli_num_rows($result);
 	}
 	
 	function escape($s)
 	{
-        return mysql_real_escape_string($s,$this->link);
+        return mysqli_real_escape_string($this->link,$s);
     }
 	
 	function get_affected_rows()
 	{
-		return mysql_affected_rows($this->link);
+		return mysqli_affected_rows($this->link);
 	}
 	
 	function display_debug_sql()
