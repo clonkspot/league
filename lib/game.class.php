@@ -1800,7 +1800,7 @@ class game
 	{
 		global $database;
 		$a = $database->get_array("SELECT p.*, IF(u.name IS NULL, p.name, u.name) AS name,
-			clan.tag AS clan_tag, reg.id AS reg_uid, reg.name as reg_name
+			clan.tag AS clan_tag
 			FROM lg_game_players p
 			LEFT JOIN lg_users u ON p.user_id = u.id
 			LEFT JOIN lg_clans clan ON u.clan_id = clan.id

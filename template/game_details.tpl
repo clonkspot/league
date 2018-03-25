@@ -64,9 +64,6 @@
                     <font style="color:{$player.color|string_format:"%06X"}; font-weight:bold;">&bull;</font>
                     <span class="{if $team.team_status == 'won' && $game.status=='ended'}scorewon{elseif $team.team_status == 'lost' && $game.status=='ended'}scorelost{else}score{/if}"> 
                         <a href="?part=user&method=details&user[id]={$player.user_id}">{if $player.status=='active' && $game.status=='running'}({if $player.clan_tag}[{$player.clan_tag}]{/if}{$player.name|escape}){else}{if $player.clan_tag}[{$player.clan_tag}]{/if}{$player.name|escape}{/if}</a>{if $player.is_disconnected} ({$l->s('disconnected')}){/if}
-						{if $player.reg_uid && $u->is_any_operator() && $player.reg_uid != $player.user_id}
-                        (@ <a href="?part=user&method=details&user[id]={$player.reg_uid}">{$player.reg_name|escape}</a>)
-                        {/if}
                     </span>
                   </td>
 
