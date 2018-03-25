@@ -1507,7 +1507,8 @@ class game
 								$player->player_data['player_id'] = $p['ID'];
 								$player->player_data['color'] = $p['Color'];
 								$player->player_data['name'] = remove_quotes($p['Name']);
-								$player->player_data['performance'] = $p['LeaguePerformance'];
+								if (isset($p['LeaguePerformance']))
+								      $player->player_data['performance'] = $p['LeaguePerformance'];
 								
 								$player->player_data['client_id'] = $client['ID'];
 								
