@@ -36,16 +36,13 @@ $language->load_stringtable();
 
 $league_backend = new league_backend();
 
-//$post_data = $GLOBALS['HTTP_RAW_POST_DATA'];
-
 // Input socket
 $inputSocket = fopen('php://input','rb');
 $post_data = stream_get_contents($inputSocket);
 fclose($inputSocket);
 
-
 //to debug with test_client.php:
-if(!$GLOBALS['HTTP_RAW_POST_DATA'] && $_REQUEST['r'])
+if(!$post_data && $_REQUEST['r'])
 	$post_data = $_REQUEST['r'];
 
 global $debug_req;
