@@ -170,11 +170,13 @@ class language
 		{
 			$log = new log();
 			$trace = debug_backtrace(false);
-			$log->add_error("string $code not found, from ".
+			$log->add_error("string '$code' not found, from ".
 				$trace[0]["file"].".".$trace[0]["line"].", ".
 				$trace[1]["file"].".".$trace[1]["line"]);
 			return false;
 		}
+		else
+			return "<<$code>>";
 	}
 	
 	function get_strings()
