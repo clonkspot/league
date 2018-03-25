@@ -258,7 +258,7 @@ class game
 		
 		$game_data['scenario_title'] = $scenario->clean_scenario_title($game_reference->data['[Reference]'][0]['Title']);
 			
-		$game_data['scenario_id'] = $scenario->data['id'];
+		$game_data['scenario_id'] = isset($scenario->data['id']) ? $scenario->data['id'] : 0;
 		
 		//additional game-flags:
 		if($game_reference->data['[Reference]'][0]['PasswordNeeded'] == 'true')
@@ -280,6 +280,13 @@ class game
 		$g_ref['reference'] = $game_data['reference'];
 		unset($game_data['reference']);
 		$game_data['id'] = $database->insert('lg_games',$game_data);
+		if ($game_data['id'] === FALSE)
+		{
+			$log = new log();
+			$log->add_error("game create: error inserting into lg_games, check SQL error log");
+			$this->error = 'error_internal';
+			return 0;
+		}
 		$g_ref['game_id'] = $game_data['id'];
 		$game_data['id'] = $database->insert('lg_game_reference',$g_ref);
 		$game_data['reference'] = $g_ref['reference'];

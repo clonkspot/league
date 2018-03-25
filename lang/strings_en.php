@@ -233,6 +233,7 @@ $this->strings['filter_icon_all_off'] = "filter_all_off.png";
 //errors:
 $this->strings['error'] = "Error";
 $this->strings['info'] = "Info";
+$this->strings['error_internal'] = "Internal error";
 $this->strings['error_no_league_selected'] = "No league selected";
 $this->strings['error_access_denied'] = "Access denied";
 $this->strings['error_login_failed'] = "Login failed";
