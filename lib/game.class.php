@@ -396,11 +396,13 @@ class game
 			
 			
 			
-		$this->data['duration'] = $this->reference->data['[Reference]'][0]['Time'];
+		if (isset($this->reference->data['[Reference]'][0]['Time']))
+		      $this->data['duration'] = $this->reference->data['[Reference]'][0]['Time'];
 		
 		$this->data['icon_number'] = $this->reference->data['[Reference]'][0]['Icon'];
 		
-		$this->data['frame'] = $this->reference->data['[Reference]'][0]['Frame'];
+		if (isset($this->reference->data['[Reference]'][0]['Frame']))
+		      $this->data['frame'] = $this->reference->data['[Reference]'][0]['Frame'];
 			
 		//do this for league- and for noleague-games...:
 		$this->get_and_update_teams_from_game_reference();
