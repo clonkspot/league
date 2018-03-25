@@ -1,3 +1,6 @@
+-- 2018-03-25 Drop obsolete lg_game_players.client_cuid column
+ALTER TABLE `lg_game_players` DROP COLUMN `client_cuid`;
+
 -- 2017-10-18 Make host_ip field long enough for IPv6 addresses
 
 ALTER TABLE `lg_games` MODIFY COLUMN `host_ip` varchar(45) COLLATE latin1_general_ci NOT NULL DEFAULT '';

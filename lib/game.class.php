@@ -1508,8 +1508,6 @@ class game
 								$player->player_data['color'] = $p['Color'];
 								$player->player_data['name'] = remove_quotes($p['Name']);
 								$player->player_data['performance'] = $p['LeaguePerformance'];
-								if(isset($client_info))
-									$player->player_data['client_cuid'] = remove_quotes($client_info['CUID']);
 								
 								$player->player_data['client_id'] = $client['ID'];
 								
@@ -1805,7 +1803,6 @@ class game
 			FROM lg_game_players p
 			LEFT JOIN lg_users u ON p.user_id = u.id
 			LEFT JOIN lg_clans clan ON u.clan_id = clan.id
-			LEFT JOIN lg_users reg ON NOT p.client_cuid = '' AND p.client_cuid = reg.cuid
 			WHERE p.game_id = '".$this->data['id']."'
 			AND p.team_id = '".$database->escape($team_id)."'
 			");
