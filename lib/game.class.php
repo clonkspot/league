@@ -17,6 +17,7 @@ include_once('table_filter.class.php');
 
 include_once('resource.class.php');
 
+include_once('game_list_html_cache.class.php');
 include_once('flood_protection.class.php'); //used to limit game-list-search-requests
 
 class game
@@ -309,6 +310,11 @@ class game
 		$this->data['reference'] = $game_reference->get_serialized_data();
 		$this->save();
 		
+		global $redis;
+		if (isset($redis)) {
+			$redis->publish('league:game:create', $this->data['id']);
+		}
+
 		//called in save():
 		//$this->cache_reference();
 		
@@ -407,12 +413,16 @@ class game
 		//do this for league- and for noleague-games...:
 		$this->get_and_update_teams_from_game_reference();
 		
+		$cache = create_game_list_html_cache();
+		$cache->del($this->data['id']);
+		$result = $this->save();
 		
-		//clear game-list-html-cache:
-		global $database; //TODO: is updat faster than delete when table becomes large???
-		$database->delete_where('lg_game_list_html',"game_id = '".$database->escape($this->data['id'])."'");
+		global $redis;
+		if (isset($redis)) {
+			$redis->publish('league:game:update', $this->data['id']);
+		}
 
-		return $this->save();
+		return $result;
 	}
 	
 	function end(&$game_reference, $timeout = false)
@@ -651,6 +661,10 @@ class game
 		
 		//$log->add_game_info("game ended",$csid);
 		
+		global $redis;
+		if (isset($redis)) {
+			$redis->publish('league:game:end', $this->data['id']);
+		}
 		
 		//WARNING: DO NOT USE $this->save(); AFTER evaluation as evaluation might change game-data in the tables
 		//(it does for settle-scores for example)
@@ -763,6 +777,7 @@ class game
 	function save()
 	{
 		global $database;
+		global $redis;
 		
 		// Reference is saved into seperate table
 		$g_ref = array();
@@ -776,6 +791,20 @@ class game
 		$database->update('lg_games',$this->data);
 	
 		$database->update_where('lg_game_reference',"game_id = '".$database->escape($this->data['id'])."'", $g_ref);
+
+		if (isset($redis)) {
+			// Cache game and reference as JSON in Redis. Games expire after ~10 minutes (cronjob), but are cached longer.
+			$redis->pipeline(function($pipe) {
+				$expiry = 30 * 60;
+				$id = $this->data['id'];
+				$pipe->setex("league:game:$id", $expiry, json_encode($this->to_json()));
+				if ($this->data['status'] != 'ended')
+					$pipe->sadd('league:active_games', $id);
+				else
+					$pipe->srem('league:active_games', $id);
+			});
+		}
+
 		$this->data['reference'] = $g_ref['reference'];
 		
 		$this->cache_reference();
@@ -1159,10 +1188,18 @@ class game
 		$this->delete_league_data();
 		$database->delete_where('lg_game_players', "game_id = ".$this->data['id']);
 		$database->delete_where('lg_game_teams', "game_id = ".$this->data['id']);
-		$database->delete_where('lg_game_list_html', "game_id = ".$this->data['id']);
 		$database->delete_where('lg_game_reference', "game_id = ".$this->data['id']);
 		$database->delete_where('lg_game_reference_cache', "game_id = ".$this->data['id']);
 		$database->delete('lg_games', $this->data['id']);
+
+		global $redis;
+		if (isset($redis)) {
+			$redis->pipeline(function($pipe) {
+				$pipe->srem('league:active_games', $this->data['id']);
+				$pipe->publish('league:game:delete', $this->data['id']);
+			});
+		}
+
 	}
 	
 	//player did not joined a game:
@@ -1307,13 +1344,14 @@ class game
 		//delete player- and team-data:
 		if(is_array($a))
 		{
+			$cache = create_game_list_html_cache();
 			foreach($a AS $g)
 			{
 				$database->delete_where('lg_game_players', "game_id = ".$g['id']);
 				$database->delete_where('lg_game_teams', "game_id = ".$g['id']);
-				$database->delete_where('lg_game_list_html', "game_id = ".$g['id']);
 				$database->delete_where('lg_game_reference', "game_id = ".$g['id']);
 				$database->delete_where('lg_game_reference_cache', "game_id = ".$g['id']);
+				$cache->del($g['id']);
 			}
 		}
 	}
@@ -1983,7 +2021,8 @@ class game
 
 		
 		//TODO remove game-list-row from cache only if the template is changed...
-		$database->delete_where("lg_game_list_html", "game_id = '".$database->escape($this->data['id'])."'");
+		$cache = create_game_list_html_cache();
+		$cache->del($this->data['id']);
 	}
 	
 	
@@ -2260,14 +2299,14 @@ class game
 		$join = "";
 		
 		//replace some stuff:
-		if(is_array($filter['g.status']) && 
+		if(isset($filter['g.status']) && is_array($filter['g.status']) && 
 			(FALSE !== $key = array_search('lobby',$filter['g.status'])))
 		{
 			$filter['g.status'][]='created';
 		}
 		
 		//filter by user-id:
-		if(is_array($filter['user_name']))
+		if(isset($filter['user_name']) && is_array($filter['user_name']))
 		{
 			$join .=  "
 				JOIN lg_game_players gp ON gp.game_id = g.id
@@ -2302,7 +2341,7 @@ class game
 		$search_filter_used = false;
 
 	
-		if(is_array($filter['search']) && $filter['search'][0])
+		if(isset($filter['search']) && is_array($filter['search']) && $filter['search'][0])
 		{
 			//use flood_protection to prevent too many searches in a short time (like pressing enter multiple times)
 			$flood_protection = new flood_protection();
@@ -2324,7 +2363,7 @@ class game
 		}
 		
 		//do some special stuff for league_id:
-		if(is_array($filter['league_id']))
+		if(isset($filter['league_id']) && is_array($filter['league_id']))
 		{
 			
 			$league_ids = array();
@@ -2355,7 +2394,7 @@ class game
 		}
 		
 		//filter by product:
-		if(is_array($filter['p.name']))
+		if(isset($filter['p.name']) && is_array($filter['p.name']))
 		{
 			//get product-id
 			$a = $database->query("SELECT id FROM lg_products WHERE name = '".$database->escape($filter['p.name'][0])."'");
@@ -2399,7 +2438,7 @@ class game
 		
 		// Start building SQL clause
 		// 1. SELECT
-		$sql_select = "SELECT g.*, ghtml.game_list_html, ghtml.game_list_html_2, p.name AS product_name, p.icon AS product_icon, sc.type AS scenario_type, sc.name_sid ";
+		$sql_select = "SELECT g.*, p.name AS product_name, p.icon AS product_icon, sc.type AS scenario_type, sc.name_sid ";
 
 		
 		//fetch player-count only if it is needed
@@ -2458,8 +2497,7 @@ class game
 		// filters must not use these, while sorts can!
 		$sql_from_add = "
 			LEFT JOIN lg_scenarios AS sc ON g.scenario_id = sc.id 
-			LEFT JOIN lg_products AS p ON g.product_id = p.id 
-			LEFT JOIN lg_game_list_html ghtml ON g.id = ghtml.game_id AND ghtml.language_id = '".$database->escape($language->get_current_language_id())."' ";
+			LEFT JOIN lg_products AS p ON g.product_id = p.id";
 		
 		// 3. WHERE
 		$sql_where =" WHERE $where";
@@ -2496,11 +2534,19 @@ class game
 		$a = $database->get_array($wrap_front . $sql_select . $sql_from . $sql_from_add . $sql_where . $sql_order . $sql_limit . $wrap_end);
 		$a2 = $database->get_array("SELECT COUNT(*) AS count " . $sql_from . $sql_where);
 		
+		$cache = create_game_list_html_cache();
+
 		if(!is_array($a))
 			$a = NULL;
 		for($i=0;$i<count($a);$i++)
 		{
-			if($a[$i]['game_list_html'])
+			$language_id = $language->get_current_language_id();
+			$game_id = $a[$i]['id'];
+
+			// Try to get the entries from cache.
+			$a[$i] = array_merge($a[$i], $cache->get($game_id));
+
+			if($a[$i]['game_list_html'] !== NULL && $a[$i]['game_list_html_2'] !== NULL)
 				//already saved, continue
 				continue;
 			
@@ -2518,21 +2564,13 @@ class game
 			$this->data = $a[$i];
 			$a[$i]['teams'] = $this->get_team_data();
 			
-			
 			//create and save html
 			$smarty->assign("l",$language);
 			$smarty->assign("game",$a[$i]);
 			$a[$i]['game_list_html'] = $smarty->fetch("game_list_row.tpl");
 			$a[$i]['game_list_html_2'] = $smarty->fetch("game_list_row_2.tpl");
 						
-			//save: quick and dirty:
-			$g_html = array();
-			$g_html['game_id'] = $a[$i]['id'];
-			$g_html['game_list_html'] = $a[$i]['game_list_html'];
-			$g_html['game_list_html_2'] = $a[$i]['game_list_html_2'];
-			$g_html['language_id'] = $language->get_current_language_id();
-			//use insert_update, because of multithreading, there could be concurrent inserts throwing errors (at least, that's what i think/hope the reason for the duplicate-key-errors is)
-			$database->insert_update('lg_game_list_html',$g_html);
+			$cache->set($game_id, $a[$i]);
 		}	
 		
 		$smarty->assign("games",$a);

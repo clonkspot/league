@@ -18,7 +18,8 @@ class league_backend
 		$game_reference = new game_reference();
 		$game_reference->parse_ini($raw_data);
 		
-		switch($game_reference->data['[Request]'][0]['Action']) {
+		$action = isset($game_reference->data['[Request]']) ? $game_reference->data['[Request]'][0]['Action'] : NULL;
+		switch($action) {
 		    case 'Start':
 		    {
 				$this->start_game($game_reference);
@@ -52,7 +53,7 @@ class league_backend
 			case 'Query':
 			default:
 			{
-				if($_REQUEST['action'] == 'query' && $_REQUEST['product_id'])
+				if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'query' && isset($_REQUEST['product_id']))
 					$this->send_game_list($_REQUEST['product_id']);
 				else
 					$this->send_game_list();
@@ -65,7 +66,7 @@ class league_backend
 		$debug_counter->increment('recieve_reference',$duration);
 		
 		//do game-end-debug-counters in $this->end_game()
-		$debug_counter->increment('action_'.strtolower($game_reference->data['[Request]'][0]['Action']),$duration);
+		$debug_counter->increment('action_'.strtolower($action),$duration);
 	}
 	
 	function send_version()
@@ -86,14 +87,23 @@ class league_backend
 		global $database;
 		$a = $database->get_array("SELECT version FROM lg_products
 			WHERE name = '".$database->escape($this->get_agent_product())."'");
+			
+		return $a[0]['version'];
 	}
 	
 	function get_motd()
 	{
-		global $database; global $language;
+		global $redis; global $database; global $language;
+		if (isset($redis)) {
+			$lang = $language->get_current_language_code();
+			$motd = $redis->srandmember("league:motd:$lang");
+		}
+		if (empty($motd)) {
 		$a = $database->get_array("SELECT ".$language->get_string_with_fallback_sql('motd_sid')." AS motd
 			FROM lg_products WHERE name = '".$database->escape($this->get_agent_product())."'");
-		return $a[0]['motd'];
+			$motd = $a[0]['motd'];
+		}
+		return $motd;
 	}	
 	
 	function add_version_to_reference(&$game_reference)
