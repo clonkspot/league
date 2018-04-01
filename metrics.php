@@ -57,3 +57,31 @@ foreach ($counters as $counter)
 	}
 	print_counter($name, $labels, $counter["duration"], $counter["timestamp"]);
 }
+
+global $redis;
+if (isset($redis))
+{
+	$counters = [
+		'games_created_total' => [
+			'type' => 'counter',
+			'desc' => 'total number of games registered with the masterserver',
+		],
+		'games_ended_total' => [
+			'type' => 'counter',
+			'desc' => 'total number of games that ended',
+		],
+		'games_duration_seconds_total' => [
+			'type' => 'counter',
+			'desc' => 'total ingame time of all ended games in seconds',
+		],
+	];
+	foreach ($counters as $counter => $cfg)
+	{
+		$counter_name = "league_$counter";
+		$counter_value = $redis->get("league:metrics:$counter");
+		if (!$counter_value) $counter_value = 0;
+		echo "\n# HELP $counter_name $cfg[desc]\n";
+		echo "# TYPE $counter_name $cfg[type]\n";
+		echo "$counter_name $counter_value\n";
+	}
+}
