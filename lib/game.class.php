@@ -313,6 +313,7 @@ class game
 		global $redis;
 		if (isset($redis)) {
 			$redis->publish('league:game:create', $this->data['id']);
+			$redis->incr('league:metrics:games_created_total');
 		}
 
 		//called in save():
@@ -664,6 +665,8 @@ class game
 		global $redis;
 		if (isset($redis)) {
 			$redis->publish('league:game:end', $this->data['id']);
+			$redis->incr('league:metrics:games_ended_total');
+			$redis->incrby('league:metrics:games_duration_seconds_total', $this->data['duration']);
 		}
 		
 		//WARNING: DO NOT USE $this->save(); AFTER evaluation as evaluation might change game-data in the tables
