@@ -70,6 +70,10 @@ if (isset($redis))
 			'type' => 'counter',
 			'desc' => 'total number of games that ended',
 		],
+		'games_deleted_total' => [
+			'type' => 'counter',
+			'desc' => 'total number of games that were deleted (excluding those that ended)',
+		],
 		'games_duration_seconds_total' => [
 			'type' => 'counter',
 			'desc' => 'total ingame time of all ended games in seconds',
