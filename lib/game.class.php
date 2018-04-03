@@ -1171,6 +1171,9 @@ class game
 			$redis->pipeline(function($pipe) {
 				$pipe->srem('league:active_games', $this->data['id']);
 				$pipe->publish('league:game:delete', $this->data['id']);
+				// We track ended games separately, so that (games_created_total - games_ended_total - games_deleted_total) == <number of active games>
+				if ($this->data['status'] != 'ended')
+				      $pipe->incr('league:metrics:games_deleted_total');
 			});
 		}
 
