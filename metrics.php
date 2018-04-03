@@ -78,6 +78,14 @@ if (isset($redis))
 			'type' => 'counter',
 			'desc' => 'total ingame time of all ended games in seconds',
 		],
+		'sql_errors_total' => [
+			'type' => 'counter',
+			'desc' => 'total number of entries written to sql_error_log.txt',
+		],
+		'sql_slow_queries_total' => [
+			'type' => 'counter',
+			'desc' => 'total number of entries written to sql_slow_log.txt',
+		],
 	];
 	foreach ($counters as $counter => $cfg)
 	{

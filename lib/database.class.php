@@ -67,6 +67,11 @@ class database
 			$time=date("H:i:s",time());
 			fwrite($file,"\n [$date - $time] ".$error." - im Query: $sql");
 			fclose($file);
+
+			global $redis;
+			if (isset($redis)) {
+				$redis->incr('league:metrics:sql_errors_total');
+			}
 		}
 		
 		if($debug || $debug_user)
@@ -92,6 +97,11 @@ class database
 				if(!$r)
 					fwrite($file,"\n ERROR: $error");
 				fclose($file);
+
+				global $redis;
+				if (isset($redis)) {
+					$redis->incr('league:metrics:sql_slow_queries_total');
+				}
 			}
 		}
 
