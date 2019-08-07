@@ -115,7 +115,11 @@ class league_backend
 	
 	function get_version_string()
 	{
-		return "[".$this->get_agent_product()."]\nVersion=".$this->get_version()."\nMOTD=".$this->get_motd();
+		global $language;
+		return "[LegacyClonk]\nVersion=".$this->get_version()."\nMOTD=".$this->get_motd().
+			"\n\n[".$this->get_agent_product()."]\nVersion=4.9.10.7,330\nMOTD=".
+			($language->get_current_language_code() == 'de' ? "Bitte zu LegacyClonk updaten.\nMOTDURL=https://clonkspot.org/lc" :
+			"Please update to LegacyClonk.\nMOTDURL=https://clonkspot.org/lc-en");
 	}
 	
 	function send_references($references)
