@@ -855,8 +855,15 @@ class game
 	{
 		if($reference->data['[Reference]'][0]['Address'])
 		{
-			$reference->data['[Reference]'][0]['Address'] 
-				= str_replace(":0.0.0.0:",":".$_SERVER["REMOTE_ADDR"].":",$reference->data['[Reference]'][0]['Address']);
+			$remote = $_SERVER['REMOTE_ADDR'];
+			if(strstr($remote, ':'))
+			{
+				$remote = '['.$remote.']';
+			}
+			$address= $reference->data['[Reference]'][0]['Address'];
+			$address = str_replace(':0.0.0.0:',':'.$remote.':',$address);
+			$address = str_replace(':"0.0.0.0:',':"'.$remote.':',$address);
+			$reference->data['[Reference]'][0]['Address'] = $address;
 		}
 	}
 
