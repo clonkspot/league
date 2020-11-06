@@ -355,45 +355,6 @@ class league_backend
 			//success:
 			$success = true;
 		}
-		else
-		{
-			//if CUID is set: try to create a new account
-			//check CUID and Password as Webcode
-			if(is_numeric($name))
-			{
-				$cuid = $name;
-				if($new_name && TRUE == $auth_user->check_account_exists($cuid) && $auth_user->check_webcode($cuid, $password))
-				{
-					if($new_password)
-						$password = $new_password;
-						
-					if($auth_user->create($new_name, $password, $cuid))
-					{
-						$success = true;
-					}
-					else
-					{
-						$response->data['[Response]'][0]['Message'] = $language->s($auth_user->get_error()); 
-					}
-				}
-				elseif(!$new_name && TRUE == $auth_user->check_account_exists($cuid) && $auth_user->check_webcode($cuid, $password))
-				{
-					//return Status=Register
-					$status_register = true;
-				}
-				else if($auth_user->get_error() != NULL)
-				{
-					$response->data['[Response]'][0]['Message'] =  $language->s($auth_user->get_error()); 
-				}
-			}
-			else
-			{
-				if($auth_user->get_error())
-					$response->data['[Response]'][0]['Message'] =  $language->s($auth_user->get_error());
-				else	
-					$response->data['[Response]'][0]['Message'] =  $language->s('error_login_failed');	
-			}
-		}
 		
 		//set new password
 		if(true == $success && $new_password)
