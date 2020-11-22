@@ -38,6 +38,10 @@ class database
 			mysqli_select_db($this->link,$this->name) 
 				or die("Datenbank nicht gefunden oder keine Berechtigung");
 		}
+
+		// Disable strict mode.
+		mysqli_query($this->link, "SET sql_mode=''")
+		        or die ("Failed to set sql_mode");
 	}
 	
 	function disconnect()
