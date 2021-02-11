@@ -810,6 +810,11 @@ class game
 			'maxPlayers' => game_reference_format::number($ref['MaxPlayers']),
 			'host'       => game_reference_format::string($ref['[Client]'][0]['Name']),
 
+			// Engine title is saved with quotes
+			'engine'         => trim($ref['Game'], '"'),
+			'engineBuild'    => $ref['Build'],
+			'contentVersion' => $ref['Version'],
+			
 			'created'    => date(DATE_ISO8601, $data['date_created']),
 			'updated'    => date(DATE_ISO8601, $data['date_last_update']),
 
