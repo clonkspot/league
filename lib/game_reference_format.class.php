@@ -6,7 +6,7 @@ include_once('game_reference_utils.inc.php');
 class game_reference_format {
     static function string($str) {
         $str = decode_octal(remove_quotes($str));
-        return mb_convert_encoding($str, 'UTF-8', 'ISO-8859-1');
+        return mb_convert_encoding($str, 'UTF-8', 'Windows-1252');
     }
 
     static function number($str) {
