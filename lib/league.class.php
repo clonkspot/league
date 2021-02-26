@@ -135,8 +135,6 @@ class league
 			FROM lg_leagues AS l
 			$filter
 			ORDER BY l.date_start DESC");
-		if(!$a[0])
-			return false;
 		return $a;
 	}
 	
@@ -708,7 +706,7 @@ class league
 				$league_data = $ld;
 		
 		$a = $this->get_all_leagues(2);
-		if ($a === false) $a = array();
+		if (!$a[0]) $a = array();
 		$smarty->assign("old_leagues", $a);
 		
 		foreach($a AS $ld)

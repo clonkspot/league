@@ -551,7 +551,7 @@ class user
 	
 	function is_admin()
 	{
-		return $this->data['admin'];
+		return $this->data != null ? $this->data['admin'] : null;
 	}
 	
 	function is_any_operator()

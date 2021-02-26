@@ -2562,12 +2562,12 @@ class game
 		$smarty->assign("products", $a);
 
 		$league = new league();
-		$a = $league->get_all_active_leagues();
-		$smarty->assign("leagues", $a);
+		$activeLeagues = $league->get_all_active_leagues();
+		$smarty->assign("leagues", $activeLeagues);
 
 		//make array for template-filter-status:
 		$filter_text_array = array();
-		foreach($a AS $ld)
+		foreach($activeLeagues AS $ld)
 		{
 			$filter_text_array['league_id'][$ld['id']] = $ld['name'];
 		}
