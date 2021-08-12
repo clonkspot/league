@@ -5,6 +5,7 @@
     <title>Clonkspot {$l->s('league')}</title>
     <link rel="stylesheet" type="text/css" href="/css/clonkspot.css">
     <link rel="stylesheet" type="text/css" href="{$base_path}league.css">
+    <script src="js/date-offset.js"></script>
 </head>
 <body>
 
@@ -25,13 +26,13 @@
 {elseif 'league'==$part}
     {if 'list'==$method}
         {include file='league_list.tpl'}
-    {else if 'ranking'==$method || 'clan_ranking'==$method}
+    {elseif 'ranking'==$method || 'clan_ranking'==$method}
         {include file='league_ranking.tpl'}
     {/if}
 {elseif 'game'==$part}
     {if 'list'==$method}
         {include file='game_list.tpl'}
-    {else if 'details'==$method}
+    {elseif 'details'==$method}
         {include file='game_details.tpl'}
     {/if}
 {elseif 'clan'==$part}
