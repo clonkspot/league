@@ -7,7 +7,7 @@
 {else}
     {$game.scenario_name|escape}
 {/if}
-<br><b>{$l->s('date_start')}:</b> {$game.date_created|date_format:"%d.%m.%y - %H:%M:%S"}
+<br><b>{$l->s('date_start')}:</b> <span class="date_field">{$game.date_created|date_format:"%d.%m.%y - %H:%M:%S"}</span>
 <br><b>{$l->s('duration')}:</b> {include file="game_duration.tpl"}
 {if $game.type == 'settle'}
   <br><b>{$l->s('duration_equivalent')}:</b>
@@ -19,7 +19,7 @@
                 {$hours}:{$minutes}:{$seconds}
 {/if}
 
-<br><b>{$l->s('date_last_update')}:</b> {$game.date_last_update|date_format:"%d.%m.%y - %H:%M:%S"}
+<br><b>{$l->s('date_last_update')}:</b> <span class="date_field">{$game.date_last_update|date_format:"%d.%m.%y - %H:%M:%S"}</span>
 <br><b>{$l->s('status')}:</b>
                 {if $game.status == 'running'}
                     <img src="{$base_path}images/icons/status_running_16.gif" title="{$l->s('running')}">
