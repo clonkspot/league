@@ -70,18 +70,3 @@
         </tr>
     {/foreach}
 </table>
-<script>
-    /*
-    This script is calculating the references by local browser's time.
-    */
-
-    for (let dateField of document.getElementsByClassName('date_field')) {
-        if (dateField.textContent == null) continue;
-        //u00a0 represents &nbsp;
-        const inputArray = dateField.textContent.replace(/\u00a0-\u00a0/, '.').replace(' ', '').split(/[.:]/);
-        //Date month is indexed -> 0 represents january. Converting offset to milliseconds.
-        const date = new Date(new Date(20 + inputArray[2], inputArray[1] - 1, inputArray[0], inputArray[3], inputArray[4]).getTime() - new Date().getTimezoneOffset() * 60000);
-        //Adding leading zero to month, day, hour and minute but only keeping the last two numbers
-        dateField.textContent = ("0" + date.getDate()).slice(-2) + '.' + ("0" + (date.getMonth() + 1)).slice(-2) + '.' + date.getFullYear().toString().slice(2) + "\u00a0-\u00a0" + ("0" + date.getHours()).slice(-2) + ':' + ("0" + date.getMinutes()).slice(-2);
-    }
-</script>
