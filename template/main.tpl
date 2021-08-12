@@ -5,7 +5,7 @@
     <title>Clonkspot {$l->s('league')}</title>
     <link rel="stylesheet" type="text/css" href="/css/clonkspot.css">
     <link rel="stylesheet" type="text/css" href="{$base_path}league.css">
-    <script src="js/date-offset.js"></script>
+    <script src="{$base_path}js/date-offset.js"></script>
 </head>
 <body>
 
