@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     for (let dateField of document.getElementsByClassName('date_field')) {
         if (dateField.textContent == null) continue;
         //u00a0 represents &nbsp;
-        const inputArray = dateField.textContent.replace(/\u00a0-\u00a0/, '.').replace(' ', '').split(/[.:]/);
+        const inputArray = dateField.textContent.replace(/\u00a0-\u00a0/, '.').replace(' ', '').split(/[-.:]/);
         //Date month is indexed -> 0 represents january. Converting offset to milliseconds.
         if (inputArray.length === 5) {
             //Format for e.g. game list "12.08.21 - 17:24"
