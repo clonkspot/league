@@ -19,10 +19,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
             if (precision >= 1) outputDate = (("0" + date.getDate()).slice(-2) + '.').concat(outputDate);
             //Date month is indexed -> 0 represents january.
             //u00a0 represents &nbsp;
-            if (precision >= 3) outputDate = outputDate.concat("\u00a0-\u00a0" + ("0" + date.getHours()).slice(-2));
-            if (precision === 3) outputDate = outputDate.concat(":00");
-            if (precision >= 4) outputDate = outputDate.concat(':' + ("0" + date.getMinutes()).slice(-2));
-            if (precision >= 5) outputDate = outputDate.concat(':' + ("0" + date.getSeconds()).slice(-2));
+            if (precision >= 3) outputDate += "\u00a0-\u00a0" + ("0" + date.getHours()).slice(-2);
+            if (precision === 3) outputDate += ":00";
+            if (precision >= 4) outputDate += ':' + ("0" + date.getMinutes()).slice(-2);
+            if (precision >= 5) outputDate += ':' + ("0" + date.getSeconds()).slice(-2);
 
             dateField.textContent = outputDate;
         }
