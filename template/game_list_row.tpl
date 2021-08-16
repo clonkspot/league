@@ -28,7 +28,7 @@
                     <a href="{url part="game" method="details" q="game[id]={$game.id}"}">{$game.scenario_name|escape}</a>
                 {/if}
             </td>
-            <td align="right" class="date_field">
+            <td align="right" class="date_field" data-iso-timestamp="{$game.date_created|date_format:"%Y-%m-%dT%H:%M:%S%z"}" data-timestamp-precision="MINUTES">
                 {*{if $smarty.now|date_format:"%d.%m.%Y" == $game.date_created|date_format:"%d.%m.%Y"}
                     {$game.date_created|date_format:"%H:%M:%S"}
                 {else}
