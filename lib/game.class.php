@@ -833,6 +833,7 @@ class game
 
 			// PHP IIFE
 			'players' => call_user_func(function($clients) {
+				if ($clients === NULL) return array();
 				// Filter out clients with players.
 				$clients = array_filter($clients, function($client) {
 					return isset($client['[Player]']);
