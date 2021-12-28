@@ -20,7 +20,7 @@ class game_player extends user
 	}
 	
 	//params: player_id, game_id
-	function load_data($player_id, $game_id)
+	function load_player_data($player_id, $game_id)
 	{
 		//load player-data
 		global $database;

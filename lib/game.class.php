@@ -1370,7 +1370,7 @@ class game
 			foreach($a AS $p)
 			{
 				$player = new game_player();
-				$player->load_data($p['player_id'], $this->data['id']);
+				$player->load_player_data($p['player_id'], $this->data['id']);
 				$players[] = $player;
 			}
 		}
@@ -1471,7 +1471,7 @@ class game
 
 						}
 
-						if($player->load_data($p['ID'],$this->data['id']))
+						if($player->load_player_data($p['ID'],$this->data['id']))
 						{ //is a league-game:
 
 							//if game-Status is running and the State is not Joined, remove:

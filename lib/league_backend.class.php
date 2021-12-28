@@ -457,7 +457,7 @@ class league_backend
 			$game->insert_score_data_into_join_response($response->data['[Response]'][0], $game_reference->data['[PlrInfo]'][0]['ID']);
 			
 			$game_player = new game_player();
-			$game_player->load_data($game_reference->data['[PlrInfo]'][0]['ID'], $game->data['id']);
+			$game_player->load_player_data($game_reference->data['[PlrInfo]'][0]['ID'], $game->data['id']);
 			$response->data['[Response]'][0]['Account'] = $game_player->data['name'];
 			if($clan_tag = $game_player->get_clan_tag())
 				$response->data['[Response]'][0]['ClanTag'] = $clan_tag;

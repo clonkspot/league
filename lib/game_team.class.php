@@ -54,7 +54,7 @@ class game_team
 			foreach($a AS $p)
 			{
 				$player = new game_player();
-				$player->load_data($p['player_id'],$this->data['game_id']);
+				$player->load_player_data($p['player_id'],$this->data['game_id']);
 				$players[] = $player;
 			}
 		}
