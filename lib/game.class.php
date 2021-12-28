@@ -2292,7 +2292,7 @@ class game
 
 			// filtering by user and exactly one settlement league?
 			// (PETER: Actually, this /might/ also work for multiple settlement leagues, now wouldn't it? :) )
-			if(count($filter['league_id'])==1 
+			if(isset($filter['league_id']) && count($filter['league_id']) == 1
 				&& $database->exists("SELECT id FROM lg_leagues
 					WHERE id = '".$database->escape($filter['league_id'][0])."'
 					AND type = 'settle'"))
