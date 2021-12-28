@@ -4,11 +4,6 @@
 class table_filter
 {
 	
-	function table_filter()
-	{
-		
-	}
-	
 	//$filter is the array from the templates
 	function get_where_clause($filter, $valid_filters)
 	{

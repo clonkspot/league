@@ -6,11 +6,6 @@ class clan
 
 	var $data;
 	
-	function clan()
-	{
-		
-	}
-	
 	function load_data($id)
 	{
 		if(0 == $id)

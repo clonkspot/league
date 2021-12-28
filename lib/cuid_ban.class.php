@@ -6,11 +6,6 @@ class cuid_ban
 
 	var $data;
 	
-	function cuid_ban()
-	{
-		
-	}
-	
 	function load_data($cuid)
 	{
 		global $database;

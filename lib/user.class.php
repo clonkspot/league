@@ -11,7 +11,7 @@ class user
 	
 	var $error; //last error-id (string)
 
-	function user()
+	function __construct()
 	{
 		$this->error = NULL; 
 	}

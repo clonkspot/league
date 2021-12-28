@@ -6,12 +6,6 @@ class news_statistics
 {
 
 
-	function news_statistics()
-	{
-		
-	}
-
-
 	function gather_statistics()
 	{
 		global $database;

@@ -11,7 +11,7 @@ class scenario_user_data
 	var $user_id;
 	var $data;
 	
-	function scenario_user_data()
+	function __construct()
 	{
 		$this->scenario_id = 0;
 		$this->user_id = 0;

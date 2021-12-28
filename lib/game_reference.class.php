@@ -12,7 +12,7 @@ class game_reference
 	var $ini_string;
 	
 	
-	function game_reference()
+	function __construct()
 	{
 		$this->data = array();
 		$this->current_path = array();

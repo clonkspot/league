@@ -5,11 +5,6 @@ class resource
 {
 	var $data;
 	
-	function resource()
-	{
-		
-	}
-	
 	function load_data($hash)
 	{
 		global $database;

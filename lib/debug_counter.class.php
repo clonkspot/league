@@ -3,11 +3,6 @@
 class debug_counter
 {
 
-	function debug_counter()
-	{
-		
-	}
-	
 	function increment($name, $mean_duration = NULL)
 	{
 		global $database;

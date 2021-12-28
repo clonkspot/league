@@ -5,11 +5,6 @@ require_once('table_filter.class.php');
 
 class log
 {
-	function log()
-	{
-		
-	}
-	
 	function add_error($string)
 	{
 		global $debug;

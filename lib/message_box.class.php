@@ -4,7 +4,7 @@ class message_box
 {
 	var $messages;
 	
-	function message_box()
+	function __construct()
 	{
 		$this->messages = array();
 	}

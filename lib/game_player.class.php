@@ -12,9 +12,9 @@ class game_player extends user
 	
 	var $bonus_factor;
 	
-	function game_player()
+	function __construct()
 	{
-		user::user();
+		parent::__construct();
 		$this->scores = array();
 		$this->bonus_factor = NULL;
 	}

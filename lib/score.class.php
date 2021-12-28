@@ -5,12 +5,6 @@ class score
 	
 	var $data;
 	
-	function score()
-	{
-		
-	}
-	
-	
 	function load_data($user_id,$league_id)
 	{
 		global $database;

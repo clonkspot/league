@@ -27,7 +27,7 @@ class game
 
 	var $error; //last error-id (string)
 
-	function game()
+	function __construct()
 	{
 		$this->error = NULL;
 	}

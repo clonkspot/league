@@ -16,7 +16,7 @@ class database
 	
 	var $debug_sql;
 	
-	function database($host, $user, $password, $name = NULL)
+	function __construct($host, $user, $password, $name = NULL)
 	{
 		$this->host = $host;
 		$this->user = $user;
