@@ -14,10 +14,9 @@ let
   configFile = writePhpFile "league-config.php" (''
     ini_set('default_charset', 'ISO-8859-1');
     require 'vendor/autoload.php';
-    require_once('vendor/smarty/smarty/libs/SmartyBC.class.php');
-    SmartyBC::$_CHARSET = 'ISO-8859-1';
+    Smarty::$_CHARSET = 'ISO-8859-1';
 
-    $smarty = new SmartyBC();
+    $smarty = new Smarty();
     $webroot = __DIR__.'/';
     $smarty->template_dir = $webroot.'template/';
     $smarty->compile_dir = '${cfg.stateDir}/template_c/';

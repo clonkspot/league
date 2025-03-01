@@ -21,5 +21,5 @@ php.buildComposerProject (finalAttrs: {
     cp ${smartyConfigFileEN} configs/main-en.conf
   '');
 
-  vendorHash = "sha256-SoBYRBZ980WnO7TRlpGmYFoRyX5yKF51X1vkXOBwfQY=";
+  vendorHash = "sha256-KuL2vLmcwiJxhP3Gkk594zsGRrN442UsUQcRtQxKKBo=";
 })
