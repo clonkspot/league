@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once('lib/database.class.php');
 $profiling_start_time = microtime_float();
 
@@ -92,10 +93,13 @@ else
 
 // Send buffered output
 $response = $league_backend->get_response();
+$out = ob_get_clean();
+$out = preg_replace('/^/m', ';', $out);
 if(!isset($debug_req)) {
 	header("HTTP/1.x 200 OK");
 	header("Content-Type: text/plain");
-	header("Content-Length: " . strlen($response)); 
+	header("Content-Length: " . (strlen($out) + strlen($response))); 
+	echo $out;
 	echo $response;
 }
 else
