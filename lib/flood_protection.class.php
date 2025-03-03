@@ -26,8 +26,9 @@ class flood_protection
 	//string is just for display
 	function check_exit($floodKey, $floodMax, $floodSeconds, $string="")
 	{
+		global $remote_ip_address;
 		$floodNow = time();
-		$floodKey = "league:flood:".$floodKey.":".$_SERVER['REMOTE_ADDR'];
+		$floodKey = "league:flood:".$floodKey.":".$remote_ip_address;
 		$floodVal = $this->get($floodKey);
 	
 		if (!$floodVal) { 
