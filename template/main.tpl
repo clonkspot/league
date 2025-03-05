@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv='content-type' content='text/html; charset=iso-8859-1'>
     <title>Clonkspot {$l->s('league')}</title>
-    <link rel="stylesheet" type="text/css" href="/css/clonkspot.css">
+    <link rel="stylesheet" type="text/css" href="https://clonkspot.org/css/clonkspot.css">
     <link rel="stylesheet" type="text/css" href="{$base_path}league.css">
     <script src="{$base_path}js/date-offset.js"></script>
 </head>
