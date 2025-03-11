@@ -258,6 +258,7 @@ in
           }
 
           @game_events path /game_events /game_events.php /poll_game_events.php
+          header @game_events Access-Control-Allow-Origin *
           reverse_proxy @game_events ${gameEventsListen}
 
           error 404
