@@ -230,10 +230,10 @@ in
       enable = true;
       virtualHosts.${cfg.hostname}.extraConfig = ''
         root * ${pkg}/share/php/league
-        encode zstd gzip
 
         route {
           @static_files path /images/* *.css
+          encode @static_files
           file_server @static_files
           @dyn_files path /records/* /data/*
           file_server @dyn_files {
