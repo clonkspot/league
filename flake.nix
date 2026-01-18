@@ -43,6 +43,9 @@
               footerFileDE = pkgs.writeText "footer.html" "";
               headerFileEN = pkgs.writeText "header.html" "";
               footerFileEN = pkgs.writeText "footer.html" "";
+              extraConf = ''
+                require_once('lib/dummy_auth.class.php');
+              '';
             };
 
           })
