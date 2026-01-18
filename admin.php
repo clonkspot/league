@@ -393,6 +393,45 @@ if($user->is_logged_in() && $user->is_admin())
 					}
 				}
 			}
+			case 'motd':
+			{
+				if (!$redis) {
+					$message_box->add_error('not implemented');
+					break;
+				}
+				$lang_codes = array_column($language->get_languages(), 'code');
+				switch (@$_POST['method']) {
+					case 'add':
+					{
+						$lang = $_POST['language'];
+						if (!in_array($lang, $lang_codes, true)) {
+							$message_box->add_error('invalid language');
+							break;
+						}
+						$motd = $_POST['motd'];
+						$redis->sadd("league:motd:$lang", $motd);
+						break;
+					}
+					case 'remove':
+					{
+						$lang = $_POST['language'];
+						if (!in_array($lang, $lang_codes, true)) {
+							$message_box->add_error('invalid language');
+							break;
+						}
+						$motd = $_POST['motd'];
+						$redis->srem("league:motd:$lang", $motd);
+						break;
+					}
+				}
+				$smarty->assign('lang_codes', $lang_codes);
+				$motds = array();
+				foreach ($lang_codes as $lang) {
+					$motds[$lang] = $redis->smembers("league:motd:$lang");
+				}
+				$smarty->assign("motds", $motds);
+				break;
+			}
 		}
 	}
 	else

@@ -64,6 +64,8 @@
       {elseif 'add'==$method || 'edit'==$method}
           {include file='resource_add_edit.tpl'}
       {/if}
+  {elseif 'motd'==$part}
+      {include file='motd.tpl'}
   {/if}
 {else}
   {include file='login.tpl'}

@@ -8,5 +8,6 @@
 <a href="?part=user&method=list">{$l->s('player')}</a>
 <a href="?part=clan&method=list">{$l->s('clan')}</a>
 <a href="?part=cuid_ban&method=list">{$l->s('cuid_ban')}</a>
+<a href="?part=motd&method=list">MOTD</a>
 <a href="?part=user&method=logout">{$l->s('logout')}</a>
 </br></br>
